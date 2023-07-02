@@ -6,6 +6,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import song.spring4.dto.UserDto;
 import song.spring4.entity.User;
 import song.spring4.mapper.UserMapper;
@@ -19,13 +20,14 @@ public class UserController {
 
     private final UserService userService;
 
-    @GetMapping("/user}")
-    public String getUser(@AuthenticationPrincipal UserDetailsImpl userDetails,
+    @ResponseBody
+    @GetMapping("/user")
+    public UserDto getUser(@AuthenticationPrincipal UserDetailsImpl userDetails,
                           Model model) {
         User findUser = userService.findUserById(userDetails.getId());
         UserDto userDto = UserMapper.toUserDto(findUser);
 
         model.addAttribute("userDto", userDto);
-        return "user";
+        return userDto;
     }
 }

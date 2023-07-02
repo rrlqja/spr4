@@ -8,7 +8,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import song.spring4.entity.User;
-import song.spring4.exception.UserNotFoundException;
+import song.spring4.exception.notfoundexception.UserNotFoundException;
 import song.spring4.repository.UserJpaRepository;
 
 @Slf4j
@@ -20,10 +20,10 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     @Override
     @Transactional
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User findUser = userRepository.findByUsername(username).orElseThrow(() -> {
-            throw new UserNotFoundException("사용자를 찾을 수 없습니다.");
-        });
+        User findUser = userRepository.findByUsername(username).orElseThrow(() -> new UserNotFoundException("사용자를 찾을 수 없습니다."));
 
-        return new UserDetailsImpl(findUser.getId(), findUser.getUsername(), findUser.getPassword());
+        return new UserDetailsImpl(findUser.getId(), findUser.getUsername(), findUser.getPassword(),
+                findUser.isAccountNonExpired(), findUser.isAccountNonLocked(), findUser.isCredentialsNonExpired(), findUser.isEnabled());
+
     }
 }

@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import song.spring4.dto.SignupDto;
 import song.spring4.entity.User;
-import song.spring4.exception.UserNotFoundException;
+import song.spring4.exception.notfoundexception.UserNotFoundException;
 import song.spring4.repository.UserJpaRepository;
 
 @Slf4j
@@ -28,6 +28,42 @@ public class UserService {
     }
 
     @Transactional
+    public Long updateUsername(Long id, String username) {
+        User findUser = getById(id);
+
+        validUpdateParam(username);
+
+        findUser.setUsername(username);
+
+        User updateUser = userRepository.save(findUser);
+        return updateUser.getId();
+    }
+
+    @Transactional
+    public Long updateName(Long id, String name) {
+        User findUser = getById(id);
+
+        validUpdateParam(name);
+
+        findUser.setName(name);
+
+        User updateUser = userRepository.save(findUser);
+        return updateUser.getId();
+    }
+
+    @Transactional
+    public Long updatePassword(Long id, String password) {
+        User findUser = getById(id);
+
+        validUpdateParam(password);
+
+        findUser.setPassword(passwordEncoder.encode(password));
+
+        User updateUser = userRepository.save(findUser);
+        return updateUser.getId();
+    }
+
+    @Transactional
     public User findUserById(Long id) {
         User findUser = getById(id);
 
@@ -40,7 +76,14 @@ public class UserService {
     }
 
     private User getById(Long id) {
-        return userRepository.findById(id).orElseThrow(()->{
-            throw new UserNotFoundException("사용자를 찾을 수 없습니다.");});
+        return userRepository.findById(id).orElseThrow(
+                ()-> new UserNotFoundException("사용자를 찾을 수 없습니다.")
+        );
+    }
+
+    private void validUpdateParam(String str) {
+        if (str == null && "".equals(str)) {
+            throw new IllegalArgumentException("입력값이 잘못되었습니다.");
+        }
     }
 }

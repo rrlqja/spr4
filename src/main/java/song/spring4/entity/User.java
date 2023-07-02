@@ -8,7 +8,7 @@ import lombok.Setter;
 
 @Entity
 @Getter @Setter
-public class User {
+public class User extends BaseTimeEntity{
     @Id @GeneratedValue
     private Long id;
 
@@ -16,6 +16,10 @@ public class User {
     private String password;
     private String name;
     private String email;
+    private boolean isAccountNonExpired;
+    private boolean isAccountNonLocked;
+    private boolean isCredentialsNonExpired;
+    private boolean isEnabled;
 
     public void encodePassword(String encodedPassword) {
         this.password = encodedPassword;
