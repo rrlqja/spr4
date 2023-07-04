@@ -8,7 +8,7 @@ import java.time.LocalDateTime;
 
 @Entity
 @Getter @Setter
-public class FindPasswordToken {
+public class ResetPasswordToken {
     @Id @GeneratedValue
     private Long id;
 

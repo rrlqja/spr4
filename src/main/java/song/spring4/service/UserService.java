@@ -35,8 +35,6 @@ public class UserService {
     public Long updateUsername(Long id, String username) {
         User findUser = getById(id);
 
-        validStringParam(username);
-
         findUser.setUsername(username);
 
         User updateUser = userRepository.save(findUser);
@@ -47,8 +45,6 @@ public class UserService {
     public Long updateName(Long id, String name) {
         User findUser = getById(id);
 
-        validStringParam(name);
-
         findUser.setName(name);
 
         User updateUser = userRepository.save(findUser);
@@ -58,8 +54,6 @@ public class UserService {
     @Transactional
     public Long updatePassword(Long id, String password) {
         User findUser = getById(id);
-
-        validStringParam(password);
 
         findUser.setPassword(passwordEncoder.encode(password));
 
@@ -76,27 +70,34 @@ public class UserService {
 
     @Transactional
     public String findUsername(FindUsernameDto findUsernameDto) {
-        String name = findUsernameDto.getName();
-        String email = findUsernameDto.getEmail();
-        validStringParam(name, email);
-
-        User finsUser = userRepository.findByNameAndEmail(name, email).orElseThrow(() ->
-                new UserNotFoundException("사용자를 찾을 수 없습니다."));
+        User finsUser = userRepository.findByNameAndEmail(findUsernameDto.getName(), findUsernameDto.getEmail())
+                .orElseThrow(() -> new UserNotFoundException("사용자를 찾을 수 없습니다."));
 
         return finsUser.getUsername();
     }
 
     @Transactional
     public String findPassword(FindPasswordDto findPasswordDto) {
-        String username = findPasswordDto.getUsername();
-        String name = findPasswordDto.getName();
-        String email = findPasswordDto.getEmail();
-        validStringParam(username, name, email);
-
-        User findUser = userRepository.findbyUsernameAndNameAndEmail(username, name, email)
-                .orElseThrow(() -> new UserNotFoundException("사용자를 찾을 수 없습니다."));
+        User findUser = userRepository.findbyUsernameAndNameAndEmail(findPasswordDto.getUsername(),
+                        findPasswordDto.getName(), findPasswordDto.getName()).orElseThrow(()
+                -> new UserNotFoundException("사용자를 찾을 수 없습니다."));
 
         return findUser.getEmail();
+    }
+
+    @Transactional
+    public Long resetPassword(String email, String newPassword) {
+        User findUser = getByEmail(email);
+
+        findUser.setPassword(passwordEncoder.encode(newPassword));
+
+        User updateUser = userRepository.save(findUser);
+        return updateUser.getId();
+    }
+
+    private User getByEmail(String email) {
+        return userRepository.findByEmail(email).orElseThrow(() ->
+                new UserNotFoundException("사용자를 찾을 수 없습니다."));
     }
 
     @Transactional
@@ -109,13 +110,4 @@ public class UserService {
                 ()-> new UserNotFoundException("사용자를 찾을 수 없습니다.")
         );
     }
-
-    private void validStringParam(String... str) {
-        for (String s : str) {
-            if (StringUtils.hasText(s)) {
-                throw new IllegalRequestArgumentException("입력값이 잘못되었습니다.");
-            }
-        }
-    }
-
 }
