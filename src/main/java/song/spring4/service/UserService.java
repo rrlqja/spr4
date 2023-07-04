@@ -5,12 +5,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.StringUtils;
 import song.spring4.dto.FindPasswordDto;
 import song.spring4.dto.FindUsernameDto;
 import song.spring4.dto.SignupDto;
 import song.spring4.entity.User;
-import song.spring4.exception.IllegalRequestArgumentException;
 import song.spring4.exception.notfoundexception.UserNotFoundException;
 import song.spring4.repository.UserJpaRepository;
 
@@ -78,9 +76,9 @@ public class UserService {
 
     @Transactional
     public String findPassword(FindPasswordDto findPasswordDto) {
-        User findUser = userRepository.findbyUsernameAndNameAndEmail(findPasswordDto.getUsername(),
-                        findPasswordDto.getName(), findPasswordDto.getName()).orElseThrow(()
-                -> new UserNotFoundException("사용자를 찾을 수 없습니다."));
+        User findUser = userRepository.findByUsernameAndNameAndEmail(findPasswordDto.getUsername(),
+                        findPasswordDto.getName(), findPasswordDto.getEmail())
+                .orElseThrow(() -> new UserNotFoundException("사용자를 찾을 수 없습니다."));
 
         return findUser.getEmail();
     }

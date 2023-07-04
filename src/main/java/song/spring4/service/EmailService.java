@@ -13,7 +13,7 @@ public class EmailService {
 
     private final JavaMailSender emailSender;
 
-    public void sendSimpleMessage(String to, String subject, String text) {
+    public String sendSimpleMessage(String to, String subject, String text) {
         SimpleMailMessage message = new SimpleMailMessage();
         message.setFrom("dkclasltmf@naver.com");
         message.setTo(to);
@@ -22,5 +22,6 @@ public class EmailService {
 
         log.info("[send email] to = {}, message = {}", message.getTo(), message.getText());
         emailSender.send(message);
+        return text;
     }
 }

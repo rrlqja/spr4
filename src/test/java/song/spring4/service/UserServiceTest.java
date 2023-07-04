@@ -18,7 +18,6 @@ import static org.assertj.core.api.Assertions.*;
 
 @Slf4j
 @SpringBootTest
-@Transactional
 @ActiveProfiles("test")
 class UserServiceTest {
 
@@ -42,10 +41,11 @@ class UserServiceTest {
 
     @Test
     void find1() {
-        assertThatThrownBy(() -> userService.findUserById(2L)).isInstanceOf(UserNotFoundException.class);
+        assertThatThrownBy(() -> userService.findUserById(-1L)).isInstanceOf(UserNotFoundException.class);
     }
 
     @Test
+    @Transactional
     void update1() {
         SignupDto signupDto = new SignupDto();
         signupDto.setUsername("username");

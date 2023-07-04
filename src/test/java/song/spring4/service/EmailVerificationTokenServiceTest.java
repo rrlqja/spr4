@@ -12,7 +12,6 @@ import static org.assertj.core.api.Assertions.*;
 
 @Slf4j
 @SpringBootTest
-@Transactional
 @ActiveProfiles("test")
 class EmailVerificationTokenServiceTest {
 

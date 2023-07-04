@@ -47,13 +47,13 @@ public class UserController {
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
     @PostMapping("/findPassword")
-    public String postFindPassword(@RequestParam FindPasswordDto findPasswordDto) {
+    public String postFindPassword(@ModelAttribute FindPasswordDto findPasswordDto) {
         String email = userService.findPassword(findPasswordDto);
         String token = resetPasswordService.createPasswordToken(email);
-        emailService.sendSimpleMessage(email, "reset password",
-                "localhost:8080/user/resetPassword?token=" + token);
+        String text = emailService.sendSimpleMessage(email, "reset password",
+                "localhost:8080/user/resetPassword/" + token);
 
-        return "이메일로 전송된 링크로 접속해주세요.";
+        return text;
     }
 
     @GetMapping("/resetPassword/{token}")
@@ -67,7 +67,7 @@ public class UserController {
     @ResponseBody
     @PostMapping("/resetPassword/{token}")
     public Long postResetPassword(@PathVariable(name = "token") String token,
-                                    String newPassword) {
+                                  String newPassword) {
         String email = resetPasswordService.getUserEmail(token);
 
         Long userId = userService.resetPassword(email, newPassword);

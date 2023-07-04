@@ -21,7 +21,7 @@ public class EmailVerifyController {
     @PostMapping("/verifyEmail")
     public String postVerifyEmail(@RequestParam(value = "email") String email) {
         String token = emailVerificationTokenService.createToken(email);
-        emailService.sendSimpleMessage(email, "verify email", "token: " + token);
+        String sendEmail = emailService.sendSimpleMessage(email, "verify email", "token: " + token);
 
         return "이메일을 성공적으로 전송했습니다";
     }
