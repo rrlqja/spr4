@@ -16,6 +16,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 
 @Slf4j
 @SpringBootTest
+@AutoConfigureMockMvc
 @ActiveProfiles("test")
 class UserControllerTest {
 
@@ -23,14 +24,8 @@ class UserControllerTest {
     UserController userController;
 
     @Autowired
-    WebApplicationContext webApplicationContext;
-
     MockMvc mockMvc;
 
-    @BeforeEach
-    public void init() {
-        mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
-    }
     @Test
     void reset1() throws Exception {
         mockMvc.perform(get("/user/findPassword"))
