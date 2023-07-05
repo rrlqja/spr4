@@ -7,6 +7,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import song.spring4.dto.EmailDto;
 import song.spring4.dto.FindPasswordDto;
 import song.spring4.dto.UserDto;
 import song.spring4.entity.User;
@@ -45,15 +46,13 @@ public class UserController {
     }
 
     @ResponseStatus(HttpStatus.CREATED)
-    @ResponseBody
     @PostMapping("/findPassword")
-    public String postFindPassword(@ModelAttribute FindPasswordDto findPasswordDto) {
+    public void postFindPassword(@ModelAttribute FindPasswordDto findPasswordDto) {
         String email = userService.findPassword(findPasswordDto);
         String token = resetPasswordService.createPasswordToken(email);
-        String text = emailService.sendSimpleMessage(email, "reset password",
+        EmailDto emailDto = emailService.sendSimpleMessage(email, "reset password",
                 "localhost:8080/user/resetPassword/" + token);
-
-        return text;
+        emailService.saveEmail(emailDto);
     }
 
     @GetMapping("/resetPassword/{token}")

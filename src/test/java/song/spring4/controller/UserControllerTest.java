@@ -1,8 +1,6 @@
 package song.spring4.controller;
 
 import lombok.extern.slf4j.Slf4j;
-import org.assertj.core.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -11,13 +9,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import org.springframework.web.context.WebApplicationContext;
-import song.spring4.dto.FindPasswordDto;
 import song.spring4.entity.User;
-import song.spring4.exception.TokenNotFoundException;
-import song.spring4.exception.notfoundexception.UserNotFoundException;
 import song.spring4.service.UserService;
 
 import static org.assertj.core.api.Assertions.*;
@@ -54,7 +46,6 @@ class UserControllerTest {
         MvcResult mvcResult = mockMvc.perform(post("/user/findPassword").param("email", "dkclasltmf@naver.com")
                 .param("username", "u1").param("name", "n1")).andReturn();
 
-        assertThat(mvcResult.getResponse().getContentAsString()).isEqualTo("이메일로 전송된 링크로 접속해주세요.");
         assertThat(mvcResult.getResponse().getStatus()).isEqualTo(201);
     }
 
