@@ -63,7 +63,6 @@ public class UserController {
     }
 
     @ResponseStatus(HttpStatus.OK)
-    @ResponseBody
     @PostMapping("/resetPassword/{token}")
     public void postResetPassword(@PathVariable(name = "token") String token,
                                   String newPassword) {
