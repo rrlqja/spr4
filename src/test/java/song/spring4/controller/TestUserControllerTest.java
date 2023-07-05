@@ -20,10 +20,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @AutoConfigureMockMvc
 @ActiveProfiles("test")
-class UserControllerTest {
+class TestUserControllerTest {
 
-    @Autowired
-    UserController userController;
     @Autowired
     UserService userService;
     @Autowired
@@ -34,7 +32,7 @@ class UserControllerTest {
 
     @Test
     void findPassword1() throws Exception {
-        MvcResult mvcResult = mockMvc.perform(get("/user/findPassword"))
+        MvcResult mvcResult = mockMvc.perform(get("/test/user/findPassword"))
                 .andExpect(view().name("user/findPassword"))
                 .andReturn();
 
@@ -43,7 +41,7 @@ class UserControllerTest {
 
     @Test
     void findPassword2() throws Exception {
-        MvcResult mvcResult = mockMvc.perform(post("/user/findPassword").param("email", "dkclasltmf@naver.com")
+        MvcResult mvcResult = mockMvc.perform(post("/test/user/findPassword").param("email", "dkclasltmf@naver.com")
                 .param("username", "u1").param("name", "n1")).andReturn();
 
         assertThat(mvcResult.getResponse().getStatus()).isEqualTo(201);
@@ -51,7 +49,7 @@ class UserControllerTest {
 
     @Test
     void resetPassword1() throws Exception {
-        MvcResult mvcResult = mockMvc.perform(post("/user/findPassword").param("email", "dkclasltmf@naver.com")
+        MvcResult mvcResult = mockMvc.perform(post("/test/user/findPassword").param("email", "dkclasltmf@naver.com")
                 .param("username", "u1").param("name", "n1")).andReturn();
         String result = mvcResult.getResponse().getContentAsString();
         String url = result.replace("localhost:8080", "");
@@ -65,7 +63,7 @@ class UserControllerTest {
 
     @Test
     void resetPassword2() throws Exception {
-        MvcResult mvcResult = mockMvc.perform(post("/user/findPassword").param("email", "dkclasltmf@naver.com")
+        MvcResult mvcResult = mockMvc.perform(post("/test/user/findPassword").param("email", "dkclasltmf@naver.com")
                 .param("username", "u1").param("name", "n1")).andReturn();
         String result = mvcResult.getResponse().getContentAsString();
         String url = result.replace("localhost:8080", "");

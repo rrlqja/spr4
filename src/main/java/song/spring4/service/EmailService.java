@@ -11,6 +11,8 @@ import song.spring4.entity.Email;
 import song.spring4.exception.notfoundexception.EmailNotFoundException;
 import song.spring4.repository.EmailJpaRepository;
 
+import java.util.Arrays;
+
 @Slf4j
 @Service
 @RequiredArgsConstructor
@@ -21,11 +23,10 @@ public class EmailService {
     @Transactional
     public Long saveEmail(EmailDto emailDto) {
         Email email = new Email();
-        email.setFrom(emailDto.getFrom());
-        email.setTo(emailDto.getTo());
+        email.setFromEmail(emailDto.getFromEmail());
+        email.setToEmail(Arrays.asList(emailDto.getToEmail()));
         email.setSubject(emailDto.getSubject());
         email.setContent(emailDto.getContent());
-        email.setSendDate(emailDto.getSendDate());
 
         Email saveEmail = emailRepository.save(email);
         return saveEmail.getId();
@@ -43,11 +44,10 @@ public class EmailService {
         emailSender.send(message);
 
         EmailDto emailDto = new EmailDto();
-        emailDto.setFrom(message.getFrom());
-        emailDto.setTo(message.getTo());
+        emailDto.setFromEmail(message.getFrom());
+        emailDto.setToEmail(message.getTo());
         emailDto.setSubject(message.getSubject());
         emailDto.setContent(message.getText());
-        emailDto.setSendDate(message.getSentDate());
 
         return emailDto;
     }
@@ -64,8 +64,8 @@ public class EmailService {
         emailSender.send(message);
 
         EmailDto emailDto = new EmailDto();
-        emailDto.setFrom(message.getFrom());
-        emailDto.setTo(message.getTo());
+        emailDto.setFromEmail(message.getFrom());
+        emailDto.setToEmail(message.getTo());
         emailDto.setSubject(message.getSubject());
         emailDto.setContent(message.getText());
 

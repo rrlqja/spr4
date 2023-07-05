@@ -1,7 +1,7 @@
 package song.spring4.controller;
 
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.annotation.Profile;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
@@ -17,11 +17,11 @@ import song.spring4.service.ResetPasswordService;
 import song.spring4.service.UserService;
 import song.spring4.userdetails.UserDetailsImpl;
 
-@Slf4j
 @Controller
-@RequestMapping("/user")
+@Profile("test")
+@RequestMapping("/test/user")
 @RequiredArgsConstructor
-public class UserController {
+public class TestUserController {
 
     private final UserService userService;
     private final EmailService emailService;
@@ -46,13 +46,15 @@ public class UserController {
     }
 
     @ResponseStatus(HttpStatus.CREATED)
+    @ResponseBody
     @PostMapping("/findPassword")
-    public void postFindPassword(@ModelAttribute FindPasswordDto findPasswordDto) {
+    public String postFindPassword(@ModelAttribute FindPasswordDto findPasswordDto) {
         String email = userService.findPassword(findPasswordDto);
         String token = resetPasswordService.createPasswordToken(email);
         EmailDto emailDto = emailService.sendSimpleMessage(email, "reset password",
-                "localhost:8080/user/resetPassword/" + token);
-        emailService.saveEmail(emailDto);
+                "localhost:8080/test/user/resetPassword/" + token);
+        Long emailId = emailService.saveEmail(emailDto);
+        return emailDto.getContent();
     }
 
     @GetMapping("/resetPassword/{token}")
@@ -65,10 +67,11 @@ public class UserController {
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
     @PostMapping("/resetPassword/{token}")
-    public void postResetPassword(@PathVariable(name = "token") String token,
+    public Long postResetPassword(@PathVariable(name = "token") String token,
                                   String newPassword) {
         String email = resetPasswordService.getUserEmail(token);
 
         Long userId = userService.resetPassword(email, newPassword);
+        return userId;
     }
 }

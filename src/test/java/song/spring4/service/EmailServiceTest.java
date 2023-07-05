@@ -16,7 +16,7 @@ class EmailServiceTest {
 
     @Test
     void email1() {
-        Assertions.assertThat(emailService.sendSimpleMessage("dkclasltmf@naver.com", "test sub", "test"))
-                .isEqualTo("dkclasltmf@naver.com");
+        Assertions.assertThat(emailService.sendSimpleMessage("dkclasltmf@naver.com", "test sub", "test").getToEmail().length)
+                .isEqualTo(1);
     }
 }
