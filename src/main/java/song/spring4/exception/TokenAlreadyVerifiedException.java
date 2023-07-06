@@ -1,8 +1,6 @@
-package song.spring4.exception.notfoundexception;
+package song.spring4.exception;
 
-import song.spring4.exception.NotFoundException;
-
-public class TokenAlreadyVerifiedException extends NotFoundException {
+public class TokenAlreadyVerifiedException extends RuntimeException {
     public TokenAlreadyVerifiedException() {
         super("Token Already Verified Exception");
     }

@@ -9,13 +9,14 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import song.spring4.exception.NotFoundException;
+import song.spring4.exception.TokenAlreadyVerifiedException;
 
 @Slf4j
 @ControllerAdvice
 @RequiredArgsConstructor
 public class ControllerExceptionHandler {
 
-    @ExceptionHandler(NotFoundException.class)
+    @ExceptionHandler({NotFoundException.class, TokenAlreadyVerifiedException.class})
     public ResponseEntity<String> notFoundExceptionHandler(Exception e) {
         return ResponseEntity
                 .status(HttpStatus.BAD_REQUEST)

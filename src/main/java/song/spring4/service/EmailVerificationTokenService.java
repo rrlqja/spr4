@@ -5,7 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import song.spring4.entity.EmailVerificationToken;
-import song.spring4.exception.notfoundexception.TokenAlreadyVerifiedException;
+import song.spring4.exception.TokenAlreadyVerifiedException;
 import song.spring4.exception.notfoundexception.TokenNotFoundException;
 import song.spring4.repository.EmailVerificationJpaRepository;
 import song.spring4.repository.UserJpaRepository;
