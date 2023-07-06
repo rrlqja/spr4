@@ -21,7 +21,7 @@ public class UserService {
     private final BCryptPasswordEncoder passwordEncoder;
 
     @Transactional
-    public Long saveUser(SignupDto signupDto) {
+    public Long join(SignupDto signupDto) {
         User user = signupDto.toEntity();
         user.encodePassword(passwordEncoder.encode(user.getPassword()));
 

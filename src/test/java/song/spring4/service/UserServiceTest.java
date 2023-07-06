@@ -2,7 +2,6 @@ package song.spring4.service;
 
 import jakarta.persistence.EntityManager;
 import lombok.extern.slf4j.Slf4j;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -36,7 +35,7 @@ class UserServiceTest {
         signupDto.setUsername("1");
         signupDto.setPassword("1");
 
-        Long id = userService.saveUser(signupDto);
+        Long id = userService.join(signupDto);
     }
 
     @Test
@@ -51,7 +50,7 @@ class UserServiceTest {
         signupDto.setUsername("username");
         signupDto.setPassword("password");
         signupDto.setName("name");
-        Long saveId = userService.saveUser(signupDto);
+        Long saveId = userService.join(signupDto);
 
         Long updateUsernameId = userService.updateUsername(saveId, "new_username");
         Long updatePasswordId = userService.updatePassword(saveId, "new_password");

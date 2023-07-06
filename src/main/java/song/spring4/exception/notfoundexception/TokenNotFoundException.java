@@ -1,6 +1,8 @@
-package song.spring4.exception;
+package song.spring4.exception.notfoundexception;
 
-public class TokenNotFoundException extends RuntimeException {
+import song.spring4.exception.NotFoundException;
+
+public class TokenNotFoundException extends NotFoundException {
     public TokenNotFoundException() {
         super("Token Not Found Exception");
     }

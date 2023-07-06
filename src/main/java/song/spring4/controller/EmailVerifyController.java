@@ -24,12 +24,10 @@ public class EmailVerifyController {
         EmailDto emailDto = emailService.sendSimpleMessage(email, "verify email", "token: " + token);
     }
 
-    @ResponseBody
-    @GetMapping("/verifyEmail/{token}")
-    public String getVerifyEmailToken(@PathVariable(name = "token") String token) {
+    @ResponseStatus(HttpStatus.OK)
+    @PostMapping("/verifyEmail/{token}")
+    public void postVerifyEmailToken(@PathVariable(name = "token") String token) {
         Long tokenId = emailVerificationTokenService.verify(token);
         emailVerificationTokenService.delete(tokenId);
-
-        return "정상적으로 인증되었습니다.";
     }
 }
