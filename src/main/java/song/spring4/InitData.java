@@ -33,10 +33,10 @@ public class InitData {
 
         public void init1() {
             User user = new User();
-            user.setUsername("u1");
-            user.setPassword(passwordEncoder.encode("1"));
-            user.setName("n1");
-            user.setEmail("init@email.com");
+            user.setUsername("a");
+            user.setPassword(passwordEncoder.encode("a"));
+            user.setName("a");
+            user.setEmail("dkclasltmf@naver.com");
             user.setEnabled(true);
             user.setAccountNonExpired(true);
             user.setAccountNonLocked(true);

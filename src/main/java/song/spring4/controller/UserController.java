@@ -7,9 +7,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import song.spring4.dto.EmailDto;
-import song.spring4.dto.FindPasswordDto;
-import song.spring4.dto.UserDto;
+import song.spring4.dto.*;
 import song.spring4.entity.User;
 import song.spring4.mapper.UserMapper;
 import song.spring4.service.EmailService;
@@ -27,6 +25,7 @@ public class UserController {
     private final EmailService emailService;
     private final ResetPasswordService resetPasswordService;
 
+    @ResponseStatus(HttpStatus.OK)
     @ResponseBody
     @GetMapping
     public UserDto getUser(@AuthenticationPrincipal UserDetailsImpl userDetails,
@@ -38,9 +37,37 @@ public class UserController {
         return userDto;
     }
 
+    @GetMapping("/updatePassword")
+    public String getUpdatePassword() {
+
+        return "user/updatePassword";
+    }
+
+    @ResponseStatus(HttpStatus.OK)
+    @ResponseBody
+    @PostMapping("/updatePassword")
+    public void postUpdatePassword(@AuthenticationPrincipal UserDetailsImpl userDetails,
+                                   @RequestParam String newPassword) {
+        Long id = userService.updatePassword(userDetails.getId(), newPassword);
+    }
+
+    @GetMapping("/findUsername")
+    public String getFindUsername(@ModelAttribute FindUsernameDto findUsernameDto) {
+
+        return "user/findUsername";
+    }
+
+    @ResponseStatus(HttpStatus.OK)
+    @ResponseBody
+    @PostMapping("/findUsername")
+    public ResponseUsername postFindUsername(@ModelAttribute FindUsernameDto findUsernameDto) {
+        ResponseUsername responseUsername = userService.findUsername(findUsernameDto);
+
+        return responseUsername;
+    }
+
     @GetMapping("/findPassword")
-    public String getFindPassword(Model model) {
-        model.addAttribute("findPasswordDto", new FindPasswordDto());
+    public String getFindPassword(@ModelAttribute FindPasswordDto findPasswordDto) {
 
         return "user/findPassword";
     }

@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import song.spring4.dto.FindPasswordDto;
 import song.spring4.dto.FindUsernameDto;
+import song.spring4.dto.ResponseUsername;
 import song.spring4.dto.SignupDto;
 import song.spring4.entity.User;
 import song.spring4.exception.notfoundexception.UserNotFoundException;
@@ -67,11 +68,20 @@ public class UserService {
     }
 
     @Transactional
-    public String findUsername(FindUsernameDto findUsernameDto) {
+    public User findUserByUsername(String username) {
+        User findUser = getByUsername(username);
+
+        return findUser;
+    }
+
+    @Transactional
+    public ResponseUsername findUsername(FindUsernameDto findUsernameDto) {
         User finsUser = userRepository.findByNameAndEmail(findUsernameDto.getName(), findUsernameDto.getEmail())
                 .orElseThrow(() -> new UserNotFoundException("사용자를 찾을 수 없습니다."));
 
-        return finsUser.getUsername();
+        ResponseUsername responseUsername = new ResponseUsername();
+        responseUsername.setUsername(finsUser.getUsername());
+        return responseUsername;
     }
 
     @Transactional
@@ -93,11 +103,6 @@ public class UserService {
         return updateUser.getId();
     }
 
-    private User getByEmail(String email) {
-        return userRepository.findByEmail(email).orElseThrow(() ->
-                new UserNotFoundException("사용자를 찾을 수 없습니다."));
-    }
-
     @Transactional
     public void deleteUserById(Long id) {
         userRepository.deleteById(id);
@@ -107,5 +112,15 @@ public class UserService {
         return userRepository.findById(id).orElseThrow(
                 ()-> new UserNotFoundException("사용자를 찾을 수 없습니다.")
         );
+    }
+
+    private User getByUsername(String username) {
+        return userRepository.findByUsername(username).orElseThrow(
+                () -> new UserNotFoundException("사용자를 찾을 수 없습니다."));
+    }
+
+    private User getByEmail(String email) {
+        return userRepository.findByEmail(email).orElseThrow(
+                () -> new UserNotFoundException("사용자를 찾을 수 없습니다."));
     }
 }
