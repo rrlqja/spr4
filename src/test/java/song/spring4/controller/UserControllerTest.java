@@ -1,6 +1,8 @@
 package song.spring4.controller;
 
 import lombok.extern.slf4j.Slf4j;
+import org.assertj.core.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -9,12 +11,15 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
+import song.spring4.entity.User;
 import song.spring4.service.ResetPasswordService;
+import song.spring4.service.UserService;
 import song.spring4.userdetails.UserDetailsServiceImpl;
 
+import static org.assertj.core.api.Assertions.*;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -28,29 +33,62 @@ class UserControllerTest {
     @Autowired
     ResetPasswordService resetPasswordService;
     @Autowired
+    UserService userService;
+    @Autowired
     UserDetailsServiceImpl userDetailsService;
+    @Autowired
+    BCryptPasswordEncoder passwordEncoder;
     @Autowired
     MockMvc mockMvc;
 
-    @Test
-    void getUser() throws Exception {
+    SecurityContext context;
+
+    @BeforeEach
+    void init() {
         UserDetails userDetails = userDetailsService.loadUserByUsername("a");
         UsernamePasswordAuthenticationToken authenticationToken =
                 new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
 
-        SecurityContext securityContext = SecurityContextHolder.getContext();
-        securityContext.setAuthentication(authenticationToken);
+        context = SecurityContextHolder.getContext();
+        context.setAuthentication(authenticationToken);
+    }
 
-        mockMvc.perform(get("/user").with(securityContext(securityContext)))
+    @Test
+    void getUser() throws Exception {
+        mockMvc.perform(get("/user").with(securityContext(context)))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.username").value("a"));
     }
 
     @Test
-    void getFindUsername() throws Exception {
-        mockMvc.perform(get("/user/findUsername"))
-                .andExpect(view().name("user/findUsername"))
+    void postUpdateUsername() throws Exception {
+        mockMvc.perform(post("/user/updateUsername")
+                        .param("newUsername", "newUsername").with(securityContext(context)))
                 .andExpect(status().isOk());
+
+        assertThat(userService.findUserByUsername("newUsername")).isNotNull();
+
+        mockMvc.perform(post("/user/updateUsername")
+                        .param("newUsername", "newUsername").with(securityContext(context)))
+                .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    void postUpdatePassword() throws Exception {
+        mockMvc.perform(post("/user/updatePassword")
+                        .param("newPassword", "newPassword").with(securityContext(context)))
+                .andExpect(status().isOk());
+        User findUser = userService.findUserByUsername("a");
+        assertThat(passwordEncoder.matches("newPassword", findUser.getPassword())).isEqualTo(true);
+    }
+
+    @Test
+    void postUpdateName() throws Exception {
+        mockMvc.perform(post("/user/updateName")
+                        .param("newName", "newName").with(securityContext(context)))
+                .andExpect(status().isOk());
+
+        assertThat(userService.findUserByUsername("a").getName()).isEqualTo("newName");
     }
 
     @Test
@@ -61,12 +99,6 @@ class UserControllerTest {
                 .andExpect(status().isOk());
     }
 
-    @Test
-    void getFindPassword() throws Exception {
-        mockMvc.perform(get("/user/findPassword"))
-                .andExpect(view().name("user/findPassword"))
-                .andExpect(status().isOk());
-    }
 
     @Test
     void postFindPassword() throws Exception {
@@ -75,11 +107,6 @@ class UserControllerTest {
                 .andExpect(status().isCreated());
     }
 
-    @Test
-    void getResetPassword() throws Exception {
-        mockMvc.perform(get("/user/resetPassword/123"))
-                .andExpect(status().isBadRequest());
-    }
 
     @Test
     void postResetPassword() throws Exception {

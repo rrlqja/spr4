@@ -37,6 +37,19 @@ public class UserController {
         return userDto;
     }
 
+    @GetMapping("/updateUsername")
+    public String getUpdateUsername() {
+
+        return "user/updateUsername";
+    }
+
+    @ResponseStatus(HttpStatus.OK)
+    @PostMapping("/updateUsername")
+    public void postUpdateUsername(@AuthenticationPrincipal UserDetailsImpl userDetails,
+                                   @RequestParam String newUsername) {
+        Long id = userService.updateUsername(userDetails.getId(), newUsername);
+    }
+
     @GetMapping("/updatePassword")
     public String getUpdatePassword() {
 
@@ -44,11 +57,39 @@ public class UserController {
     }
 
     @ResponseStatus(HttpStatus.OK)
-    @ResponseBody
     @PostMapping("/updatePassword")
     public void postUpdatePassword(@AuthenticationPrincipal UserDetailsImpl userDetails,
                                    @RequestParam String newPassword) {
         Long id = userService.updatePassword(userDetails.getId(), newPassword);
+    }
+
+    @GetMapping("/updateName")
+    public String getUpdateName() {
+
+        return "user/updateName";
+    }
+
+    @ResponseStatus(HttpStatus.OK)
+    @PostMapping("/updateName")
+    public void postUpdateName(@AuthenticationPrincipal UserDetailsImpl userDetails,
+                               @RequestParam String newName) {
+        Long id = userService.updateName(userDetails.getId(), newName);
+    }
+
+    @GetMapping("/updateEmail")
+    public String getUpdateEmail() {
+        /**
+         * get updateEmail -> get emailVerify -> post emailVerify -> post updateEmail
+         */
+
+        return "user/updateEmail";
+    }
+
+    @ResponseStatus(HttpStatus.OK)
+    @PostMapping("/updateEmail")
+    public void postUpdateEmail(@AuthenticationPrincipal UserDetailsImpl userDetails,
+                                @RequestParam String email) {
+        userService.updateEmail(userDetails.getId(), email);
     }
 
     @GetMapping("/findUsername")
@@ -58,7 +99,6 @@ public class UserController {
     }
 
     @ResponseStatus(HttpStatus.OK)
-    @ResponseBody
     @PostMapping("/findUsername")
     public ResponseUsername postFindUsername(@ModelAttribute FindUsernameDto findUsernameDto) {
         ResponseUsername responseUsername = userService.findUsername(findUsernameDto);

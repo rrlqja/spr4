@@ -10,8 +10,11 @@ import song.spring4.dto.FindUsernameDto;
 import song.spring4.dto.ResponseUsername;
 import song.spring4.dto.SignupDto;
 import song.spring4.entity.User;
+import song.spring4.exception.AlreadyExistsUsernameException;
 import song.spring4.exception.notfoundexception.UserNotFoundException;
 import song.spring4.repository.UserJpaRepository;
+
+import java.util.Optional;
 
 @Slf4j
 @Service
@@ -33,8 +36,26 @@ public class UserService {
     @Transactional
     public Long updateUsername(Long id, String username) {
         User findUser = getById(id);
+        validUsername(username);
 
         findUser.setUsername(username);
+
+        User updateUser = userRepository.save(findUser);
+        return updateUser.getId();
+    }
+
+    private void validUsername(String username) {
+        Optional<User> findUser = userRepository.findByUsername(username);
+        if (findUser.isPresent()) {
+            throw new AlreadyExistsUsernameException("이미 존재하는 Username 입니다.");
+        }
+    }
+
+    @Transactional
+    public Long updatePassword(Long id, String password) {
+        User findUser = getById(id);
+
+        findUser.setPassword(passwordEncoder.encode(password));
 
         User updateUser = userRepository.save(findUser);
         return updateUser.getId();
@@ -51,10 +72,10 @@ public class UserService {
     }
 
     @Transactional
-    public Long updatePassword(Long id, String password) {
+    public Long updateEmail(Long id, String email) {
         User findUser = getById(id);
 
-        findUser.setPassword(passwordEncoder.encode(password));
+        findUser.setEmail(email);
 
         User updateUser = userRepository.save(findUser);
         return updateUser.getId();
