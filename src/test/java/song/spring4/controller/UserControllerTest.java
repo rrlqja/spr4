@@ -1,6 +1,7 @@
 package song.spring4.controller;
 
 import lombok.extern.slf4j.Slf4j;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +14,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.transaction.annotation.Transactional;
 import song.spring4.entity.User;
 import song.spring4.service.ResetPasswordService;
 import song.spring4.service.UserService;
@@ -25,6 +27,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @Slf4j
 @SpringBootTest
+@Transactional
 @AutoConfigureMockMvc
 @ActiveProfiles("test")
 class UserControllerTest {
@@ -50,6 +53,11 @@ class UserControllerTest {
 
         context = SecurityContextHolder.getContext();
         context.setAuthentication(authenticationToken);
+    }
+
+    @AfterEach
+    void clear() {
+        SecurityContextHolder.clearContext();
     }
 
     @Test

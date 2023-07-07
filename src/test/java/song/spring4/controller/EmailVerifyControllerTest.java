@@ -29,16 +29,16 @@ class EmailVerifyControllerTest {
 
     @Test
     void verify1() throws Exception {
-        mockMvc.perform(post("/verifyEmail").param("email", "dkclasltmf22@naver.com"))
+        mockMvc.perform(post("/verifyEmail").param("email", "dkclasltmf@naver.com"))
                 .andExpect(status().isCreated());
 
-        mockMvc.perform(post("/verifyEmail").param("email", "init@email.com"))
+        mockMvc.perform(post("/verifyEmail").param("email", "dkclasltmf22@naver.com"))
                 .andExpect(status().isBadRequest());
     }
 
     @Test
     void verify2() throws Exception {
-        String token = emailVerificationTokenService.createToken("dkclasltmf22@naver.com");
+        String token = emailVerificationTokenService.createToken("dkclasltmf@naver.com");
 
         mockMvc.perform(post("/verifyEmail/{token}", token))
                 .andExpect(status().isOk());

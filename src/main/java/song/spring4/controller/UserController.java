@@ -105,6 +105,7 @@ public class UserController {
     }
 
     @ResponseStatus(HttpStatus.OK)
+    @ResponseBody
     @PostMapping("/findUsername")
     public ResponseUsername postFindUsername(@ModelAttribute FindUsernameDto findUsernameDto) {
         ResponseUsername responseUsername = userService.findUsername(findUsernameDto);
