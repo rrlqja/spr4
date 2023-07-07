@@ -18,6 +18,12 @@ import song.spring4.service.UserService;
 public class HomeController {
     private final UserService userService;
 
+    @GetMapping("/")
+    public String getHome() {
+
+        return "home";
+    }
+
     @GetMapping("/signup")
     public String getSignup(@ModelAttribute SignupDto signupDto) {
 

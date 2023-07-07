@@ -1,0 +1,164 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <title>Home</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="../css/bootstrap.min.css" th:href="@{/css/bootstrap.min.css}" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f5f5f5;
+            margin: 0;
+            padding: 0;
+            padding-top: 50px;
+            padding-bottom: 50px;
+        }
+
+        .container {
+            background-color: white;
+            min-width: 800px;
+            max-width: 800px;
+            margin: 10px auto;
+            position: relative;
+            box-sizing: border-box;
+
+            margin-bottom: 50px;
+        }
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px;
+        }
+
+        .header-right {
+            display: flex;
+            gap: 10px;
+        }
+
+        .boardList {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .board {
+            background-color: #EFEDF1;
+            height: 40px;
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            margin-left: 5px;
+            margin-right: 5px;
+
+            padding: 7px;
+
+            align-items: center;
+        }
+
+        .boardTitle {
+            background-color: white;
+            flex: 7;
+            display: flex;
+            align-items: center;
+            margin-right: 10px;
+            cursor: pointer;
+            padding-left: 10px;
+        }
+
+        .boardWriter {
+            background-color: white;
+            flex: 3;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .footer {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 10px 0;
+            position: relative;
+        }
+        .paging-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: 10px;
+        }
+        .paging-link {
+            color: inherit;
+            text-decoration: none;
+            margin-left: 5px;
+            margin-right: 5px;
+        }
+        .paging-link:hover {
+            text-decoration: underline;
+        }
+        .paging-link.active {
+            font-weight: bold;
+            text-decoration: underline;
+        }
+
+        .write-button-container {
+            position: absolute;
+            right: 0;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="header-container">
+        <a th:href="@{/}">
+            <img th:src="@{/css/icons/home.png}" alt="홈" style="width: 35px; height: 35px;">
+        </a>
+        <div class="header-right">
+            <div sec:authorize="!isAuthenticated()">
+                <a href="/login">
+                    <a th:href="@{/login}" class="btn btn-outline-primary">login</a>
+                </a>
+                <a href="/signup">
+                    <a th:href="@{/signup}" class="btn btn-outline-secondary">sign-up</a>
+                </a>
+            </div>
+            <div sec:authorize="isAuthenticated()">
+                <a sec:authorize="hasRole('ROLE_ADMIN')" href="/templates/admin">
+                    <a th:href="@{/admin}" class="btn btn-outline-primary">admin</a>
+                </a>
+                <a th:href="@{/user}" class="btn btn-outline-primary">
+                    mypage
+                </a>
+                <form id="logout-form" th:action="@{/logout}" method="post" style="display: inline;">
+                    <button type="submit" class="btn btn-outline-secondary">
+                        logout
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+    <hr>
+<!--    <div class="boardList">-->
+<!--        <div class="board" th:each="board : ${boardPage.getContent()}">-->
+<!--            <div class="boardTitle" th:onclick="|location.href='@{/board/{id}(id=${board.id})}'|" th:text="${board.title}"></div>-->
+<!--            <div class="boardWriter" th:text="${board.writer.username}"></div>-->
+<!--        </div>-->
+<!--    </div>-->
+<!--    <hr>-->
+<!--    <div class="footer">-->
+<!--        <div class="paging-container">-->
+<!--            <a th:if="${boardPage.number != 0}" th:href="@{/(page=0)}" class="paging-arrow paging-link">&laquo;</a>-->
+<!--            <a th:if="${boardPage.number != 0}" th:href="@{/(page=${boardPage.number - 1})}" class="paging-arrow paging-link">&lt;</a>-->
+
+<!--            <th:block th:each="i : ${#numbers.sequence((boardPage.number >= 2) ? (boardPage.number - 2) : 0, (boardPage.totalPages > (boardPage.number + 2)) ? (boardPage.number + 2) : (boardPage.totalPages - 1))}">-->
+<!--                <a th:href="@{/(page=${i})}" th:class="${i == boardPage.number} ? 'paging-link active' : 'paging-link'" th:text="${i + 1}"></a>-->
+<!--            </th:block>-->
+
+<!--            <a th:if="${boardPage.number < boardPage.totalPages - 1}" th:href="@{/(page=${boardPage.number + 1})}" class="paging-arrow paging-link">&gt;</a>-->
+<!--            <a th:if="${boardPage.number < boardPage.totalPages - 1}" th:href="@{/(page=${boardPage.totalPages - 1})}" class="paging-arrow paging-link">&raquo;</a>-->
+<!--        </div>-->
+<!--        <div class="write-button-container">-->
+<!--            <a th:href="@{/board/write}" class="btn btn-primary">글쓰기</a>-->
+<!--        </div>-->
+<!--    </div>-->
+</div>
+</body>
+</html>
