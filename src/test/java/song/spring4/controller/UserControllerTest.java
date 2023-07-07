@@ -92,6 +92,13 @@ class UserControllerTest {
     }
 
     @Test
+    void postUpdateEmail() throws Exception {
+        mockMvc.perform(post("/user/updateEmail")
+                        .param("newEmail", "newEmail@email.com"))
+                .andExpect(status().isOk());
+    }
+
+    @Test
     void postFindUsername() throws Exception {
         mockMvc.perform(post("/user/findUsername")
                         .param("name", "a").param("email", "dkclasltmf@naver.com"))

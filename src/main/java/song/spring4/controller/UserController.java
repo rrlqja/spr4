@@ -88,8 +88,8 @@ public class UserController {
     @ResponseStatus(HttpStatus.OK)
     @PostMapping("/updateEmail")
     public void postUpdateEmail(@AuthenticationPrincipal UserDetailsImpl userDetails,
-                                @RequestParam String email) {
-        userService.updateEmail(userDetails.getId(), email);
+                                @RequestParam String newEmail) {
+        userService.updateEmail(userDetails.getId(), newEmail);
     }
 
     @GetMapping("/findUsername")
