@@ -28,7 +28,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 @ActiveProfiles("test")
 class UserControllerTest {
-class UserControllerTest {
 
     @Autowired
     ResetPasswordService resetPasswordService;
