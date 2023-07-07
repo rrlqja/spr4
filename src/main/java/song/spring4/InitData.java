@@ -36,7 +36,7 @@ public class InitData {
             user.setUsername("a");
             user.setPassword(passwordEncoder.encode("a"));
             user.setName("a");
-            user.setEmail("dkclasltmf@naver.com");
+            user.setEmail("dkclasltmf22@naver.com");
             user.setEnabled(true);
             user.setAccountNonExpired(true);
             user.setAccountNonLocked(true);

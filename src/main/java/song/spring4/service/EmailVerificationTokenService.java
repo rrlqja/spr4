@@ -4,7 +4,9 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 import song.spring4.entity.EmailVerificationToken;
+import song.spring4.exception.IllegalRequestArgumentException;
 import song.spring4.exception.TokenAlreadyVerifiedException;
 import song.spring4.exception.notfoundexception.TokenNotFoundException;
 import song.spring4.repository.EmailVerificationJpaRepository;
@@ -22,6 +24,10 @@ public class EmailVerificationTokenService {
 
     @Transactional
     public String createToken(String email) {
+        if (!StringUtils.hasText(email)) {
+            throw new IllegalRequestArgumentException("입력값을 확인해주세요.");
+        }
+
         isAlreadyVerified(email);
 
         Optional<EmailVerificationToken> findToken = emailVerificationRepository.findByEmail(email);
@@ -55,6 +61,10 @@ public class EmailVerificationTokenService {
 
     @Transactional
     public Long verify(String token) {
+        if (!StringUtils.hasText(token)) {
+            throw new IllegalRequestArgumentException("입력값을 확인해주세요.");
+        }
+
         EmailVerificationToken findToken = getByToken(token);
         findToken.setVerified(true);
 

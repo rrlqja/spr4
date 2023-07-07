@@ -92,6 +92,12 @@ public class UserController {
         userService.updateEmail(userDetails.getId(), newEmail);
     }
 
+    @ResponseStatus(HttpStatus.OK)
+    @PostMapping("/validUsername")
+    public void postCheckUsername(@RequestParam String username) {
+        userService.validUsername(username);
+    }
+
     @GetMapping("/findUsername")
     public String getFindUsername(@ModelAttribute FindUsernameDto findUsernameDto) {
 

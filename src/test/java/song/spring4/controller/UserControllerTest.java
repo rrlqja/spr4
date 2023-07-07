@@ -1,7 +1,6 @@
 package song.spring4.controller;
 
 import lombok.extern.slf4j.Slf4j;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +27,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @AutoConfigureMockMvc
 @ActiveProfiles("test")
+class UserControllerTest {
 class UserControllerTest {
 
     @Autowired
@@ -101,7 +101,7 @@ class UserControllerTest {
     @Test
     void postFindUsername() throws Exception {
         mockMvc.perform(post("/user/findUsername")
-                        .param("name", "a").param("email", "dkclasltmf@naver.com"))
+                        .param("name", "a").param("email", "dkclasltmf22@naver.com"))
                 .andExpect(jsonPath("$.username").value("a"))
                 .andExpect(status().isOk());
     }
@@ -109,7 +109,7 @@ class UserControllerTest {
 
     @Test
     void postFindPassword() throws Exception {
-        mockMvc.perform(post("/user/findPassword").param("email", "dkclasltmf@naver.com")
+        mockMvc.perform(post("/user/findPassword").param("email", "dkclasltmf22@naver.com")
                         .param("username", "a").param("name", "a"))
                 .andExpect(status().isCreated());
     }
@@ -117,7 +117,7 @@ class UserControllerTest {
 
     @Test
     void postResetPassword() throws Exception {
-        String token = resetPasswordService.createPasswordToken("dkclasltmf@naver.com");
+        String token = resetPasswordService.createPasswordToken("dkclasltmf22@naver.com");
 
         mockMvc.perform(post("/user/resetPassword/{token}", token)
                         .param("newPassword", "newPassword"))

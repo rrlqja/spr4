@@ -5,12 +5,14 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 import song.spring4.dto.FindPasswordDto;
 import song.spring4.dto.FindUsernameDto;
 import song.spring4.dto.ResponseUsername;
 import song.spring4.dto.SignupDto;
 import song.spring4.entity.User;
 import song.spring4.exception.AlreadyExistsUsernameException;
+import song.spring4.exception.IllegalRequestArgumentException;
 import song.spring4.exception.notfoundexception.UserNotFoundException;
 import song.spring4.repository.UserJpaRepository;
 
@@ -44,7 +46,11 @@ public class UserService {
         return updateUser.getId();
     }
 
-    private void validUsername(String username) {
+    @Transactional
+    public void validUsername(String username) {
+        if (!StringUtils.hasText(username)) {
+            throw new IllegalRequestArgumentException("입력값을 확인해주세요.");
+        }
         Optional<User> findUser = userRepository.findByUsername(username);
         if (findUser.isPresent()) {
             throw new AlreadyExistsUsernameException("이미 존재하는 Username 입니다.");

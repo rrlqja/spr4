@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import song.spring4.exception.AlreadyExistsUsernameException;
+import song.spring4.exception.IllegalRequestArgumentException;
 import song.spring4.exception.NotFoundException;
 import song.spring4.exception.TokenAlreadyVerifiedException;
 
@@ -18,7 +19,7 @@ import song.spring4.exception.TokenAlreadyVerifiedException;
 public class ControllerExceptionHandler {
 
     @ExceptionHandler({NotFoundException.class, TokenAlreadyVerifiedException.class,
-    AlreadyExistsUsernameException.class})
+    AlreadyExistsUsernameException.class, IllegalRequestArgumentException.class})
     public ResponseEntity<String> notFoundExceptionHandler(Exception e) {
         return ResponseEntity
                 .status(HttpStatus.BAD_REQUEST)

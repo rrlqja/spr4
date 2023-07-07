@@ -1,14 +1,217 @@
 <!doctype html>
 <html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
-    <title>Home</title>
+    <title>Signup</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="../css/bootstrap.min.css" th:href="@{/css/bootstrap.min.css}" rel="stylesheet">
     <style>
-
+        body {
+            background-color: #f5f5f5;
+        }
+        .container {
+            background-color: white;
+            min-width: 700px;
+            max-width: 700px;
+            margin: 0 auto;
+            margin-top: 100px;
+            padding: 20px;
+        }
     </style>
 </head>
 <body>
+<div class="container">
+    <form id="signupForm" th:object="${signupDto}" method="post" th:action>
+        <div class="mb-3">
+            <div id="usernameError" style="color: red;"></div>
+            <label for="username">Username</label>
+            <input type="text" th:field="*{username}" class="form-control" id="username" placeholder="Username">
+            <button type="button" class="btn btn-primary" id="validUsername">중복 확인</button>
+            <div id="usernameResult"></div>
+        </div>
+        <div class="mb-3">
+            <div id="nameError" style="color: red;"></div>
+            <label for="name">Name</label>
+            <input type="text" th:field="*{name}" class="form-control" id="name" placeholder="Name">
+        </div>
+        <div class="mb-3">
+            <div id="emailError" style="color: red;"></div>
+            <label for="email">Email</label>
+            <input type="text" th:field="*{email}" class="form-control" id="email" placeholder="Email">
+            <button type="button" class="btn btn-primary" id="verifyEmail">이메일 인증</button>
+            <div id="emailResult"></div>
+        </div>
+        <div class="mb-3">
+            <div id="emailTokenError" style="color: red;"></div>
+            <label for="emailToken">Email Token</label>
+            <input type="text" id="emailToken" class="form-control" name="emailToken">
+            <button type="button" id="verifyEmailToken" class="btn btn-secondary">인증 확인</button>
+            <div id="emailTokenResult"></div>
+        </div>
+        <div class="mb-3">
+            <div id="passwordError" style="color: red;"></div>
+            <label for="password">Password</label>
+            <input type="password" th:field="*{password}" class="form-control" id="password" placeholder="Password">
+        </div>
+        <div class="mb-3">
+            <label for="confirmPassword">Confirm Password</label>
+            <input type="password" class="form-control" id="confirmPassword" placeholder="Confirm Password">
+            <div id="confirmPasswordResult" style="color: red"></div>
+        </div>
+        <button type="submit" class="btn btn-primary">Sign Up</button>
+    </form>
+</div>
 
+<script>
+    let isUsernameValid = false;
+    let isEmailValid = false;
+    let isPasswordValid = false;
+    let isNameInput = false;
+
+    let password = document.getElementById('password');
+    let confirmPassword = document.getElementById('confirmPassword');
+    let confirmPasswordResult = document.getElementById('confirmPasswordResult');
+
+    function validatePassword() {
+        if(password.value !== confirmPassword.value) {
+            confirmPasswordResult.style.color = 'red';
+            confirmPasswordResult.textContent = "비밀번호가 일치하지 않습니다.";
+            isPasswordValid = false;
+        } else {
+            confirmPasswordResult.style.color = 'blue';
+            confirmPasswordResult.textContent = "비밀번호가 일치합니다.";
+            isPasswordValid = true;
+            document.getElementById('passwordError').textContent = "";
+        }
+    }
+
+    password.addEventListener('input', validatePassword);
+    confirmPassword.addEventListener('input', validatePassword);
+
+    document.getElementById('validUsername').addEventListener('click', function() {
+        var username = document.getElementById('username').value;
+
+        fetch('/user/validUsername', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+            },
+            body: 'username=' + encodeURIComponent(username)
+        })
+        .then(function(response) {
+            var usernameResult = document.getElementById('usernameResult');
+            var usernameError = document.getElementById('usernameError');
+            if (response.ok) {
+                usernameResult.style.color = 'blue';
+                usernameResult.textContent = "사용가능한 username입니다.";
+                isUsernameValid = true;
+                usernameError.textContent = "";
+            } else {
+                response.text().then(function(text) {
+                    usernameResult.style.color = 'red';
+                    usernameResult.textContent = text;
+                });
+            }
+        })
+        .catch(function(error) {
+            console.error('Error:', error);
+        });
+    });
+
+    document.getElementById('name').addEventListener('input', function() {
+        let name = document.getElementById('name').value;
+        if(name !== "") {
+            isNameInput = true;
+            document.getElementById('nameError').textContent = "";
+        } else {
+            isNameInput = false;
+        }
+    });
+
+    document.getElementById('verifyEmail').addEventListener('click', function() {
+        var email = document.getElementById('email').value;
+
+        fetch('/verifyEmail', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+            },
+            body: 'email=' + encodeURIComponent(email)
+        })
+        .then(function(response) {
+            var emailResult = document.getElementById('emailResult');
+            if (response.ok) {
+                emailResult.style.color = 'blue';
+                emailResult.textContent = "이메일이 정상 발송되었습니다.";
+            } else {
+                response.text().then(function(text) {
+                    emailResult.style.color = 'red';
+                    emailResult.textContent = text;
+                });
+            }
+        })
+        .catch(function(error) {
+            console.error('Error:', error);
+        });
+    });
+
+    document.getElementById('verifyEmailToken').addEventListener('click', function() {
+        var token = document.getElementById('emailToken').value;
+
+        fetch('/verifyEmail/' + token, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+            }
+        })
+        .then(function(response) {
+            var emailTokenResult = document.getElementById('emailTokenResult');
+            var emailError = document.getElementById('emailError');
+            if (response.status === 200) {
+                emailTokenResult.style.color = 'blue';
+                emailTokenResult.textContent = "인증이 완료되었습니다.";
+                isEmailValid = true;
+                emailError.textContent = "";
+            } else {
+                response.text().then(function(text) {
+                    emailTokenResult.style.color = 'red';
+                    emailTokenResult.textContent = text;
+                });
+            }
+        })
+        .catch(function(error) {
+            console.error('Error:', error);
+        });
+    });
+
+    document.getElementById('username').addEventListener('input', function() {
+        isUsernameValid = false;
+    });
+
+    document.getElementById('email').addEventListener('input', function() {
+        isEmailValid = false;
+    });
+
+    document.getElementById('signupForm').addEventListener('submit', function(e) {
+        if(!isUsernameValid) {
+            e.preventDefault();
+            document.getElementById('usernameError').textContent = "Username을 먼저 검증해주세요.";
+        }
+
+        if(!isNameInput) {
+            e.preventDefault();
+            document.getElementById('nameError').textContent = "Name 필드를 입력해주세요.";
+        }
+
+        if(!isEmailValid) {
+            e.preventDefault();
+            document.getElementById('emailError').textContent = "Email을 먼저 검증해주세요.";
+        }
+
+        if(!isPasswordValid) {
+            e.preventDefault();
+            document.getElementById('passwordError').textContent = "Password가 일치하지 않습니다.";
+        }
+    });
+</script>
 </body>
 </html>
