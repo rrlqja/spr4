@@ -20,7 +20,7 @@
 </head>
 <body>
 <div class="container">
-    <form id="signupForm" th:object="${signupDto}" method="post" th:action>
+    <form id="signupForm" th:object="${signupDto}">
         <div class="mb-3">
             <div id="usernameError" style="color: red;"></div>
             <label for="username">Username</label>
@@ -192,25 +192,50 @@
     });
 
     document.getElementById('signupForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+
         if(!isUsernameValid) {
-            e.preventDefault();
             document.getElementById('usernameError').textContent = "Username을 먼저 검증해주세요.";
+            return;
         }
 
         if(!isNameInput) {
-            e.preventDefault();
             document.getElementById('nameError').textContent = "Name 필드를 입력해주세요.";
+            return;
         }
 
         if(!isEmailValid) {
-            e.preventDefault();
             document.getElementById('emailError').textContent = "Email을 먼저 검증해주세요.";
+            return;
         }
 
         if(!isPasswordValid) {
-            e.preventDefault();
             document.getElementById('passwordError').textContent = "Password가 일치하지 않습니다.";
+            return;
         }
+
+        let formData = new FormData(this);
+
+        fetch('/signup', {
+            method: 'POST',
+            body: formData
+        })
+        .then(function(response) {
+            if(response.ok) {
+                window.location.href = '/login';
+            } else {
+                // 에러 처리
+                response.json().then(function(errors) {
+                    for(let field in errors) {
+                        document.getElementById(field + 'Error').textContent = errors[field];
+                        document.getElementById(field + 'Result').textContent = "";
+                    }
+                });
+            }
+        })
+        .catch(function(error) {
+            console.error('Error:', error);
+        });
     });
 </script>
 </body>

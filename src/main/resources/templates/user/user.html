@@ -1,0 +1,88 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <title>User</title>
+    <link href="../css/bootstrap.min.css" th:href="@{/css/bootstrap.min.css}" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f5f5f5;
+            padding-top: 200px;
+        }
+
+        .form-container {
+            min-width: 400px;
+            max-width: 400px;
+            padding: 15px;
+            margin: 0 auto;
+            background-color: white;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .form-group {
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="form-container">
+    <form id="signupForm" th:object="${userDto}">
+        <div class="form-group">
+            <label for="username">Username</label>
+            <input type="text" class="form-control" id="username" th:field="*{username}" readonly>
+            <a th:href="@{/user/updateUsername}" class="btn btn-primary">수정</a>
+        </div>
+
+        <div class="form-group">
+            <label for="name">Name</label>
+            <input type="text" class="form-control" id="name" th:field="*{name}" readonly>
+            <a th:href="@{/user/updateName}" class="btn btn-primary">수정</a>
+        </div>
+
+        <div class="form-group">
+            <label for="email">Email</label>
+            <input type="text" class="form-control" id="email" th:field="*{email}" readonly>
+            <a th:href="@{/user/updateEmail}" class="btn btn-primary">수정</a>
+        </div>
+
+        <div class="form-group">
+            <label for="password">Password</label><br>
+            <a id="password" class="btn btn-secondary" th:href="@{/user/updatePassword}">비밀번호 수정</a>
+        </div>
+
+        <div class="form-group">
+            <label for="delete">Delete</label><br>
+            <button id="delete" class="btn btn-danger">회원 탈퇴</button>
+        </div>
+    </form>
+</div>
+
+<script>
+    document.getElementById("delete").addEventListener("click", function() {
+        const confirmation = confirm("정말 탈퇴하시겠습니까?");
+
+        if (!confirmation) {
+            return;
+        }
+
+        fetch('/user/deleteUser', {
+            method: 'POST'
+        })
+        .then(response => {
+            if (response.ok) {
+                alert("정상적으로 탈퇴되었습니다.");
+                location.href = '/';
+            } else {
+                response.text().then(text => {
+                    alert(text);
+                    location.href = '/';
+                });
+            }
+        })
+        .catch((error) => {
+            console.error('Error:', error);
+        });
+    });
+</script>
+</body>
+</html>

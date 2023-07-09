@@ -48,4 +48,13 @@ public class ResetPasswordService {
         return findPasswordToken.getEmail();
 
     }
+
+    @Transactional
+    public void deleteToken(String token) {
+        Optional<ResetPasswordToken> findToken = resetPasswordTokenRepository.findByToken(token);
+        if (findToken.isPresent()) {
+            ResetPasswordToken resetPasswordToken = findToken.get();
+            resetPasswordTokenRepository.delete(resetPasswordToken);
+        }
+    }
 }

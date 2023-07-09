@@ -1,0 +1,37 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <title>Update Name</title>
+    <link href="../css/bootstrap.min.css" th:href="@{/css/bootstrap.min.css}" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f5f5f5;
+            padding-top: 200px;
+        }
+
+        .form-container {
+            min-width: 400px;
+            max-width: 400px;
+            padding: 15px;
+            margin: 0 auto;
+            background-color: white;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .form-group {
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="form-container">
+    <form id="updateNameForm" method="post" th:action>
+        <div class="form-group">
+            <label for="name">Name</label>
+            <input type="text" class="form-control" id="name" name="newName" th:value="${name}">
+        </div>
+        <input type="submit" class="btn btn-primary" value="저장">
+        <a th:href="@{/user}" class="btn btn-secondary">취소</a>
+    </form>
+</div>

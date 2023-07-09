@@ -1,9 +1,12 @@
 package song.spring4.controller;
 
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -25,20 +28,20 @@ public class UserController {
     private final EmailService emailService;
     private final ResetPasswordService resetPasswordService;
 
-    @ResponseStatus(HttpStatus.OK)
-    @ResponseBody
     @GetMapping
-    public UserDto getUser(@AuthenticationPrincipal UserDetailsImpl userDetails,
+    public String getUser(@AuthenticationPrincipal UserDetailsImpl userDetails,
                            Model model) {
         User findUser = userService.findUserById(userDetails.getId());
         UserDto userDto = UserMapper.toUserDto(findUser);
 
         model.addAttribute("userDto", userDto);
-        return userDto;
+        return "user/user";
     }
 
     @GetMapping("/updateUsername")
-    public String getUpdateUsername() {
+    public String getUsername(@AuthenticationPrincipal UserDetailsImpl userDetails,
+                              Model model) {
+        model.addAttribute("username", userDetails.getUsername());
 
         return "user/updateUsername";
     }
@@ -51,7 +54,7 @@ public class UserController {
     }
 
     @GetMapping("/updatePassword")
-    public String getUpdatePassword() {
+    public String getPassword() {
 
         return "user/updatePassword";
     }
@@ -64,23 +67,25 @@ public class UserController {
     }
 
     @GetMapping("/updateName")
-    public String getUpdateName() {
+    public String getName(@AuthenticationPrincipal UserDetailsImpl userDetails,
+                          Model model) {
+        model.addAttribute("name", userDetails.getName());
 
         return "user/updateName";
     }
 
-    @ResponseStatus(HttpStatus.OK)
     @PostMapping("/updateName")
-    public void postUpdateName(@AuthenticationPrincipal UserDetailsImpl userDetails,
+    public String postUpdateName(@AuthenticationPrincipal UserDetailsImpl userDetails,
                                @RequestParam String newName) {
         Long id = userService.updateName(userDetails.getId(), newName);
+
+        return "redirect:/user";
     }
 
     @GetMapping("/updateEmail")
-    public String getUpdateEmail() {
-        /**
-         * get updateEmail -> get emailVerify -> post emailVerify -> post updateEmail
-         */
+    public String getEmail(@AuthenticationPrincipal UserDetailsImpl userDetails,
+                           Model model) {
+        model.addAttribute("email", userDetails.getEmail());
 
         return "user/updateEmail";
     }
@@ -143,5 +148,18 @@ public class UserController {
         String email = resetPasswordService.getUserEmail(token);
 
         Long userId = userService.resetPassword(email, newPassword);
+
+        resetPasswordService.deleteToken(token);
+    }
+
+    @ResponseStatus(HttpStatus.OK)
+    @PostMapping("/deleteUser")
+    public void postDeleteUser(@AuthenticationPrincipal UserDetailsImpl userDetails,
+                               HttpServletRequest request) {
+        userService.deleteUserById(userDetails.getId());
+
+        SecurityContextHolder.clearContext();
+        HttpSession session = request.getSession(false);
+        session.invalidate();
     }
 }

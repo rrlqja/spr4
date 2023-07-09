@@ -2,6 +2,9 @@ package song.spring4.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -15,6 +18,7 @@ import song.spring4.exception.AlreadyExistsUsernameException;
 import song.spring4.exception.IllegalRequestArgumentException;
 import song.spring4.exception.notfoundexception.UserNotFoundException;
 import song.spring4.repository.UserJpaRepository;
+import song.spring4.userdetails.UserDetailsImpl;
 
 import java.util.Optional;
 
@@ -43,6 +47,9 @@ public class UserService {
         findUser.setUsername(username);
 
         User updateUser = userRepository.save(findUser);
+
+        updateSecurityContext(updateUser);
+
         return updateUser.getId();
     }
 
@@ -64,6 +71,9 @@ public class UserService {
         findUser.setPassword(passwordEncoder.encode(password));
 
         User updateUser = userRepository.save(findUser);
+
+        updateSecurityContext(updateUser);
+
         return updateUser.getId();
     }
 
@@ -74,6 +84,9 @@ public class UserService {
         findUser.setName(name);
 
         User updateUser = userRepository.save(findUser);
+
+        updateSecurityContext(updateUser);
+
         return updateUser.getId();
     }
 
@@ -84,6 +97,7 @@ public class UserService {
         findUser.setEmail(email);
 
         User updateUser = userRepository.save(findUser);
+
         return updateUser.getId();
     }
 
@@ -149,5 +163,13 @@ public class UserService {
     private User getByEmail(String email) {
         return userRepository.findByEmail(email).orElseThrow(
                 () -> new UserNotFoundException("사용자를 찾을 수 없습니다."));
+    }
+
+    private void updateSecurityContext(User updateUser) {
+        SecurityContext context = SecurityContextHolder.getContext();
+        UserDetailsImpl userDetails = new UserDetailsImpl(updateUser);
+        UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
+                userDetails, null, userDetails.getAuthorities());
+        context.setAuthentication(authenticationToken);
     }
 }

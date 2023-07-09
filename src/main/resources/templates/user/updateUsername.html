@@ -1,0 +1,102 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <title>Update Username</title>
+    <link href="../css/bootstrap.min.css" th:href="@{/css/bootstrap.min.css}" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f5f5f5;
+            padding-top: 200px;
+        }
+
+        .form-container {
+            min-width: 400px;
+            max-width: 400px;
+            padding: 15px;
+            margin: 0 auto;
+            background-color: white;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .form-group {
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="form-container">
+    <form id="updateUsernameForm">
+        <div class="form-group">
+            <label for="username">Username</label>
+            <input type="text" class="form-control" id="username" name="newUsername" th:value="${username}">
+        </div>
+        <div id="validUsername"></div>
+        <input type="button" class="btn btn-secondary" id="checkUsername" value="중복 확인">
+        <input type="submit" class="btn btn-primary" value="저장">
+    </form>
+</div>
+
+<script>
+    let isUsernameValid = false;
+
+    document.getElementById("checkUsername").addEventListener("click", function() {
+        const username = document.getElementById("username").value;
+
+        let formData = new FormData();
+        formData.append('username', username);
+
+        fetch('/user/validUsername', {
+            method: 'POST',
+            body: formData,
+        })
+        .then(response => {
+            if (response.ok) {
+                isUsernameValid = true;
+                document.getElementById('validUsername').textContent = "Username is valid.";
+                document.getElementById('validUsername').style.color = "blue";
+            } else {
+                response.text().then(text => {
+                    document.getElementById('validUsername').textContent = text;
+                    document.getElementById('validUsername').style.color = "red";
+                });
+            }
+        })
+        .catch((error) => {
+            console.error('Error:', error);
+        });
+    });
+
+    document.getElementById("username").addEventListener("input", function() {
+        isUsernameValid = false;
+        document.getElementById('validUsername').textContent = "";
+    });
+
+    document.getElementById("updateUsernameForm").addEventListener("submit", function(e) {
+        if (!isUsernameValid) {
+            e.preventDefault();
+            document.getElementById('validUsername').textContent = "Username must be validated before saving.";
+            document.getElementById('validUsername').style.color = "red";
+        } else {
+            e.preventDefault();
+
+            fetch('/user/updateUsername', {
+                method: 'POST',
+                body: new FormData(this),
+            })
+            .then(response => {
+                if (response.ok) {
+                    window.alert("정상적으로 변경되었습니다.");
+                } else {
+                    response.text().then(text => window.alert(text));
+                }
+                window.location.href = '/user';
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+            });
+        }
+    });
+</script>
+</body>
+</html>

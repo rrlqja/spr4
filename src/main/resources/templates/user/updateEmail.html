@@ -1,0 +1,146 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <title>Update Email</title>
+    <link href="../css/bootstrap.min.css" th:href="@{/css/bootstrap.min.css}" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f5f5f5;
+            padding-top: 200px;
+        }
+
+        .form-container {
+            min-width: 400px;
+            max-width: 400px;
+            padding: 15px;
+            margin: 0 auto;
+            background-color: white;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .form-group {
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="form-container">
+    <form id="updateEmailForm" method="post" th:action>
+        <div class="form-group">
+            <div id="emailError" style="color: red;"></div>
+            <label for="email">Email</label>
+            <input type="text" class="form-control" id="email" name="newEmail" th:value="${email}">
+            <button type="button" class="btn btn-primary" id="verifyEmail">이메일 인증</button>
+            <div id="emailResult"></div>
+        </div>
+
+        <div class="form-group">
+            <div id="tokenError" style="color: red;"></div>
+            <label for="token">Token</label>
+            <input type="text" class="form-control" id="token" name="token">
+            <button type="button" class="btn btn-primary" id="verifyToken">토큰 인증</button>
+            <div id="TokenResult"></div>
+        </div>
+
+        <input type="submit" class="btn btn-primary" value="저장">
+        <a th:href="@{/user}" class="btn btn-secondary">취소</a>
+    </form>
+</div>
+
+<script>
+    let isEmailVerified = false;
+    let currentEmail = document.getElementById("email").value;
+
+    document.getElementById("verifyEmail").addEventListener("click", function() {
+        const email = document.getElementById("email").value;
+
+        let formData = new FormData();
+        formData.append('email', email);
+
+        fetch('/verifyEmail', {
+            method: 'POST',
+            body: formData,
+        })
+        .then(response => {
+            if (response.ok) {
+                currentEmail = email;
+                document.getElementById('emailError').textContent = "";
+                alert("이메일을 정상적으로 전송했습니다.");
+            } else {
+                isEmailVerified = false;
+                response.text().then(text => {
+                    document.getElementById('emailError').textContent = text;
+                });
+            }
+        })
+        .catch((error) => {
+            console.error('Error:', error);
+        });
+    });
+
+    document.getElementById("verifyToken").addEventListener("click", function() {
+        const token = document.getElementById("token").value;
+
+        fetch('/verifyEmail/' + token, {
+            method: 'POST',
+        })
+        .then(response => {
+            if (response.ok) {
+                isEmailVerified = true;
+                document.getElementById('tokenError').textContent = "";
+                alert("정상적으로 인증되었습니다.");
+            } else {
+                isEmailVerified = false;
+                response.text().then(text => {
+                    document.getElementById('tokenError').textContent = text;
+                });
+            }
+        })
+        .catch((error) => {
+            console.error('Error:', error);
+        });
+    });
+
+    document.getElementById("updateEmailForm").addEventListener("submit", function(event) {
+        event.preventDefault();
+
+        const email = document.getElementById("email").value;
+
+
+        if (email !== currentEmail || !isEmailVerified) {
+            document.getElementById('emailError').textContent = "이메일이 검증되지 않았습니다. 이메일을 확인하고 다시 시도해주세요.";
+            return;
+        }
+
+        let formData = new FormData();
+        formData.append('newEmail', email);
+
+        fetch('/user/updateEmail', {
+            method: 'POST',
+            body: formData
+        })
+        .then(response => {
+            if (response.ok) {
+                alert("정상적으로 변경되었습니다.");
+                location.href = '/user';
+            } else {
+                response.text().then(text => {
+                    alert(text);
+                    location.href = '/user';
+                });
+            }
+        })
+        .catch((error) => {
+            console.error('Error:', error);
+        });
+    });
+
+    document.getElementById("email").addEventListener("change", function() {
+        if (document.getElementById("email").value !== currentEmail) {
+            isEmailVerified = false;
+        }
+    });
+</script>
+</body>
+</html>

@@ -1,5 +1,6 @@
 package song.spring4.controller;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -32,7 +33,7 @@ public class HomeController {
 
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping("/signup")
-    public void postSignup(@ModelAttribute SignupDto signupDto) {
+    public void postSignup(@Valid @ModelAttribute SignupDto signupDto) {
         Long id = userService.join(signupDto);
     }
 

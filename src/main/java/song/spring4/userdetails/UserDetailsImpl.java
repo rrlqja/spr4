@@ -13,24 +13,36 @@ public class UserDetailsImpl implements UserDetails {
     private Long id;
     private List<SimpleGrantedAuthority> roleList = new ArrayList<>();
     private String username;
+    private String name;
     private String password;
+    private String email;
     private boolean isAccountNonExpired;
     private boolean isAccountNonLocked;
     private boolean isCredentialsNonExpired;
     private boolean isEnabled;
 
-    public UserDetailsImpl(Long id, String username, String password, boolean isAccountNonExpired, boolean isAccountNonLocked, boolean isCredentialsNonExpired, boolean isEnabled) {
-        this.id = id;
-        this.username = username;
-        this.password = password;
-        this.isAccountNonExpired = isAccountNonExpired;
-        this.isAccountNonLocked = isAccountNonLocked;
-        this.isCredentialsNonExpired = isCredentialsNonExpired;
-        this.isEnabled = isEnabled;
+    public UserDetailsImpl(User user) {
+        this.id = user.getId();
+        this.username = user.getUsername();
+        this.name = user.getName();
+        this.password = user.getPassword();
+        this.email = user.getEmail();
+        this.isAccountNonExpired = user.isAccountNonExpired();
+        this.isAccountNonLocked = user.isAccountNonLocked();
+        this.isCredentialsNonExpired = user.isCredentialsNonExpired();
+        this.isEnabled = user.isEnabled();
     }
 
     public Long getId() {
         return this.id;
+    }
+
+    public String getName() {
+        return this.name;
+    }
+
+    public String getEmail() {
+        return this.email;
     }
 
     @Override
