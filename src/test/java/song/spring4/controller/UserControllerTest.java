@@ -64,7 +64,7 @@ class UserControllerTest {
     void getUser() throws Exception {
         mockMvc.perform(get("/user").with(securityContext(context)))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.username").value("a"));
+                .andExpect(view().name("user/user"));
     }
 
     @Test
@@ -82,7 +82,7 @@ class UserControllerTest {
 
     @Test
     void postUpdatePassword() throws Exception {
-        mockMvc.perform(post("/user/updatePassword")
+        mockMvc.perform(post("/user/updatePassword").param("origPassword", "a")
                         .param("newPassword", "newPassword").with(securityContext(context)))
                 .andExpect(status().isOk());
         User findUser = userService.findUserByUsername("a");
@@ -93,7 +93,7 @@ class UserControllerTest {
     void postUpdateName() throws Exception {
         mockMvc.perform(post("/user/updateName")
                         .param("newName", "newName").with(securityContext(context)))
-                .andExpect(status().isOk());
+                .andExpect(status().is3xxRedirection());
 
         assertThat(userService.findUserByUsername("a").getName()).isEqualTo("newName");
     }
