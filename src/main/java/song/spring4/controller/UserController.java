@@ -62,8 +62,10 @@ public class UserController {
     @ResponseStatus(HttpStatus.OK)
     @PostMapping("/updatePassword")
     public void postUpdatePassword(@AuthenticationPrincipal UserDetailsImpl userDetails,
+                                   @RequestParam String origPassword,
                                    @RequestParam String newPassword) {
-        Long id = userService.updatePassword(userDetails.getId(), newPassword);
+        Long id = userService.updatePassword(userDetails.getId(), origPassword, newPassword);
+
     }
 
     @GetMapping("/updateName")

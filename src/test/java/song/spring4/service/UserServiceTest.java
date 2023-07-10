@@ -53,7 +53,7 @@ class UserServiceTest {
         Long saveId = userService.join(signupDto);
 
         Long updateUsernameId = userService.updateUsername(saveId, "new_username");
-        Long updatePasswordId = userService.updatePassword(saveId, "new_password");
+        Long updatePasswordId = userService.updatePassword(saveId, "password", "new_password");
         Long updateNameId = userService.updateName(saveId, "new_name");
 
         em.flush();

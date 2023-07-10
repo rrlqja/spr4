@@ -65,10 +65,12 @@ public class UserService {
     }
 
     @Transactional
-    public Long updatePassword(Long id, String password) {
+    public Long updatePassword(Long id, String origPassword, String newPassword) {
         User findUser = getById(id);
 
-        findUser.setPassword(passwordEncoder.encode(password));
+        validOrigPassword(origPassword, findUser.getPassword());
+
+        findUser.setPassword(passwordEncoder.encode(newPassword));
 
         User updateUser = userRepository.save(findUser);
 
@@ -163,6 +165,12 @@ public class UserService {
     private User getByEmail(String email) {
         return userRepository.findByEmail(email).orElseThrow(
                 () -> new UserNotFoundException("사용자를 찾을 수 없습니다."));
+    }
+
+    private void validOrigPassword(String origPassword, String currentPassword) {
+        if (!passwordEncoder.matches(origPassword, currentPassword)) {
+            throw new IllegalRequestArgumentException("현재 비밀번호가 일치하지 않습니다.");
+        }
     }
 
     private void updateSecurityContext(User updateUser) {
