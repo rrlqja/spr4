@@ -1,16 +1,20 @@
 package song.spring4.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter @Setter
 public class User extends BaseTimeEntity{
     @Id @GeneratedValue
     private Long id;
+
+    @OneToMany(mappedBy = "writer", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Board> boardList = new ArrayList<>();
 
     private String username;
     private String password;
