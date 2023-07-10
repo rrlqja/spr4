@@ -10,6 +10,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
 import song.spring4.dto.RequestBoardDto;
+import song.spring4.dto.ResponseBoardDto;
 import song.spring4.dto.UpdateBoardDto;
 import song.spring4.entity.Board;
 import song.spring4.exception.notfoundexception.BoardNotFoundException;
@@ -71,8 +72,8 @@ class BoardServiceTest {
     void find2() {
         PageRequest pageRequest = PageRequest.of(0, 10);
 
-        Page<Board> boardPage = boardService.findBoardList(pageRequest);
-        assertThat(boardPage.getTotalPages()).isEqualTo(0);
+        Page<ResponseBoardDto> boardPage = boardService.findBoardList(pageRequest);
+        assertThat(boardPage.getNumber()).isEqualTo(0);
     }
 
     @Test
@@ -82,7 +83,7 @@ class BoardServiceTest {
         requestBoardDto.setContent("content");
         Long id = boardService.saveBoard(1L, requestBoardDto);
 
-        boardService.deleteBoard(id);
+        boardService.deleteBoard(1L, id);
 
         assertThatThrownBy(() -> boardService.findBoardById(id))
                 .isInstanceOf(BoardNotFoundException.class);

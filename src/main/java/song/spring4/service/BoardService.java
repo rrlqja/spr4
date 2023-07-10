@@ -11,12 +11,12 @@ import song.spring4.dto.ResponseBoardDto;
 import song.spring4.dto.UpdateBoardDto;
 import song.spring4.entity.Board;
 import song.spring4.entity.User;
+import song.spring4.exception.IllegalRequestArgumentException;
 import song.spring4.exception.notfoundexception.BoardNotFoundException;
 import song.spring4.exception.notfoundexception.UserNotFoundException;
 import song.spring4.repository.BoardJpaRepository;
 import song.spring4.repository.UserJpaRepository;
 
-import java.util.List;
 import java.util.Optional;
 
 @Slf4j
@@ -48,13 +48,10 @@ public class BoardService {
     }
 
     @Transactional
-    public Page<Board> findBoardList(Pageable pageable) {
+    public Page<ResponseBoardDto> findBoardList(Pageable pageable) {
         Page<Board> boardPage = boardRepository.findAll(pageable);
 
-        List<ResponseBoardDto> list = boardPage.stream().map(board -> new ResponseBoardDto(board))
-                .toList();
-
-        return boardPage;
+        return boardPage.map(ResponseBoardDto::new);
     }
 
     @Transactional
@@ -70,8 +67,13 @@ public class BoardService {
     }
 
     @Transactional
-    public void deleteBoard(Long id) {
-        boardRepository.deleteById(id);
+    public void deleteBoard(Long writerId, Long boardId) {
+        Board findBoard = getBoardById(boardId);
+        if (!findBoard.getWriter().getId().equals(writerId)) {
+            throw new IllegalRequestArgumentException("작성자가 아닙니다.");
+        }
+
+        boardRepository.delete(findBoard);
     }
 
     private User getUserById(Long id) {

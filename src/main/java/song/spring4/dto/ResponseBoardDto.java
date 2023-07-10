@@ -8,12 +8,14 @@ import java.time.LocalDateTime;
 
 @Getter @Setter
 public class ResponseBoardDto {
+    private Long id;
     private String writer;
     private String title;
     private String content;
     private LocalDateTime createTime;
 
     public ResponseBoardDto(Board board) {
+        this.id = board.getId();
         this.writer = board.getWriter().getUsername();
         this.title = board.getTitle();
         this.content = board.getContent();

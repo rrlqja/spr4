@@ -7,7 +7,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
+import song.spring4.entity.Board;
 import song.spring4.entity.User;
+import song.spring4.repository.BoardJpaRepository;
 import song.spring4.repository.UserJpaRepository;
 
 @Slf4j
@@ -27,8 +29,8 @@ public class InitData {
     @RequiredArgsConstructor
     static class InitService{
 
-        private final EntityManager em;
         private final UserJpaRepository userRepository;
+        private final BoardJpaRepository boardRepository;
         private final BCryptPasswordEncoder passwordEncoder;
 
         public void init1() {
@@ -42,7 +44,15 @@ public class InitData {
             user.setAccountNonLocked(true);
             user.setCredentialsNonExpired(true);
 
-            userRepository.save(user);
+            User saveUser = userRepository.save(user);
+
+            for (int i = 0; i < 10; i++) {
+                Board board = new Board();
+                board.setWriter(saveUser);
+                board.setTitle("title" + i);
+                board.setContent("content" + i);
+                boardRepository.save(board);
+            }
         }
     }
 }
