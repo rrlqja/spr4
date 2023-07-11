@@ -1,14 +1,12 @@
 package song.spring4.service;
 
 import lombok.extern.slf4j.Slf4j;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.transaction.annotation.Transactional;
 import song.spring4.dto.RequestBoardDto;
 import song.spring4.dto.ResponseBoardDto;
 import song.spring4.dto.UpdateBoardDto;
@@ -17,11 +15,9 @@ import song.spring4.exception.notfoundexception.BoardNotFoundException;
 import song.spring4.repository.BoardJpaRepository;
 
 import static org.assertj.core.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.*;
 
 @Slf4j
 @SpringBootTest
-@Transactional
 @ActiveProfiles("test")
 class BoardServiceTest {
 
@@ -38,7 +34,7 @@ class BoardServiceTest {
 
         Long id = boardService.saveBoard(1L, requestBoardDto);
 
-        assertThat(boardRepository.findById(id).get().getTitle())
+        assertThat(boardRepository.findEntityGraphById(id).get().getTitle())
                 .isEqualTo(requestBoardDto.getTitle());
     }
 
@@ -49,7 +45,17 @@ class BoardServiceTest {
         requestBoardDto.setContent("content");
         Long id = boardService.saveBoard(1L, requestBoardDto);
 
-        assertThat(boardService.findBoardById(id)).isNotNull();
+        Board findBoard = boardRepository.findEntityGraphById(id).get();
+
+        assertThat(findBoard.getContent()).isEqualTo("content");
+    }
+
+    @Test
+    void find2() {
+        PageRequest pageRequest = PageRequest.of(0, 10);
+
+        Page<ResponseBoardDto> boardPage = boardService.findBoardList(pageRequest);
+        assertThat(boardPage.getNumber()).isEqualTo(0);
     }
 
     @Test
@@ -64,28 +70,15 @@ class BoardServiceTest {
         updateBoardDto.setContent("update content");
         Long updateId = boardService.updateBoard(id, updateBoardDto);
 
-        assertThat(boardRepository.findById(updateId).get().getTitle())
+        assertThat(boardRepository.findEntityGraphById(updateId).get().getTitle())
                 .isEqualTo(updateBoardDto.getTitle());
     }
 
     @Test
-    void find2() {
-        PageRequest pageRequest = PageRequest.of(0, 10);
-
-        Page<ResponseBoardDto> boardPage = boardService.findBoardList(pageRequest);
-        assertThat(boardPage.getNumber()).isEqualTo(0);
-    }
-
-    @Test
     void delete1() {
-        RequestBoardDto requestBoardDto = new RequestBoardDto();
-        requestBoardDto.setTitle("title");
-        requestBoardDto.setContent("content");
-        Long id = boardService.saveBoard(1L, requestBoardDto);
+        boardService.deleteBoard(1L, 1L);
 
-        boardService.deleteBoard(1L, id);
-
-        assertThatThrownBy(() -> boardService.findBoardById(id))
+        assertThatThrownBy(() -> boardService.findBoardById(1L))
                 .isInstanceOf(BoardNotFoundException.class);
     }
 }

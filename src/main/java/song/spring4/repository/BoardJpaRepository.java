@@ -13,7 +13,7 @@ import java.util.Optional;
 public interface BoardJpaRepository extends JpaRepository<Board, Long> {
 
     @EntityGraph(attributePaths = {"writer"})
-    Optional<Board> findById(Long id);
+    Optional<Board> findEntityGraphById(Long id);
 
     @EntityGraph(attributePaths = {"writer"})
     Page<Board> findAll(Pageable pageable);

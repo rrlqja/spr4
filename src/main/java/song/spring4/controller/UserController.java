@@ -12,7 +12,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import song.spring4.dto.*;
 import song.spring4.entity.User;
-import song.spring4.mapper.UserMapper;
 import song.spring4.service.EmailService;
 import song.spring4.service.ResetPasswordService;
 import song.spring4.service.UserService;
@@ -32,7 +31,7 @@ public class UserController {
     public String getUser(@AuthenticationPrincipal UserDetailsImpl userDetails,
                            Model model) {
         User findUser = userService.findUserById(userDetails.getId());
-        UserDto userDto = UserMapper.toUserDto(findUser);
+        UserDto userDto = new UserDto(findUser);
 
         model.addAttribute("userDto", userDto);
         return "user/user";

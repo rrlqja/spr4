@@ -1,0 +1,82 @@
+package song.spring4.service;
+
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import song.spring4.dto.RequestCommentDto;
+import song.spring4.entity.Board;
+import song.spring4.entity.Comment;
+import song.spring4.entity.User;
+import song.spring4.exception.notfoundexception.BoardNotFoundException;
+import song.spring4.exception.notfoundexception.CommentNotFoundException;
+import song.spring4.exception.notfoundexception.UserNotFoundException;
+import song.spring4.repository.BoardJpaRepository;
+import song.spring4.repository.CommentJpaRepository;
+import song.spring4.repository.UserJpaRepository;
+
+import java.util.Optional;
+
+@Slf4j
+@Service
+@RequiredArgsConstructor
+public class CommentService {
+
+    private final CommentJpaRepository commentRepository;
+    private final BoardJpaRepository boardRepository;
+    private final UserJpaRepository userRepository;
+
+    @Transactional
+    public Long saveComment(Long userId,RequestCommentDto requestCommentDto) {
+        User findUser = getUserById(userId);
+        Board findBoard = getBoardById(requestCommentDto.getBoardId());
+        Comment parent = getParent(requestCommentDto.getParentId());
+
+        Comment comment = requestCommentDto.toEntity();
+        comment.setWriter(findUser);
+        comment.setBoard(findBoard);
+        comment.setParent(parent);
+
+        Comment saveComment = commentRepository.save(comment);
+
+        return saveComment.getId();
+    }
+
+    @Transactional
+    public Comment findCommentById(Long id) {
+
+        return getById(id);
+    }
+
+    private User getUserById(Long userId) {
+        Optional<User> findUser = userRepository.findById(userId);
+        if (findUser.isEmpty()) {
+            throw new UserNotFoundException("사용자를 찾을 수 없습니다.");
+        }
+        return findUser.get();
+    }
+
+    private Board getBoardById(Long boardId) {
+        Optional<Board> findBoard = boardRepository.findEntityGraphById(boardId);
+        if (findBoard.isEmpty()) {
+            throw new BoardNotFoundException("게시글을 찾을 수 없습니다.");
+        }
+        return findBoard.get();
+    }
+
+    private Comment getParent(Long parentId) {
+        if (parentId == null) {
+            return null;
+        }
+        return getById(parentId);
+    }
+
+    private Comment getById(Long id) {
+        Optional<Comment> findComment = commentRepository.findEntityGraphById(id);
+        if (findComment.isEmpty()) {
+            throw new CommentNotFoundException("댓글을 찾을 수 없습니다.");
+        }
+        return findComment.get();
+    }
+
+}

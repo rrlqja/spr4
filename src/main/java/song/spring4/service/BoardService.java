@@ -85,7 +85,7 @@ public class BoardService {
     }
 
     private Board getBoardById(Long id) {
-        Optional<Board> findBoard = boardRepository.findById(id);
+        Optional<Board> findBoard = boardRepository.findEntityGraphById(id);
         if (findBoard.isEmpty()) {
             throw new BoardNotFoundException("게시글을 찾을 수 없습니다.");
         }

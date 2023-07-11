@@ -8,8 +8,10 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import song.spring4.entity.Board;
+import song.spring4.entity.Comment;
 import song.spring4.entity.User;
 import song.spring4.repository.BoardJpaRepository;
+import song.spring4.repository.CommentJpaRepository;
 import song.spring4.repository.UserJpaRepository;
 
 @Slf4j
@@ -31,6 +33,7 @@ public class InitData {
 
         private final UserJpaRepository userRepository;
         private final BoardJpaRepository boardRepository;
+        private final CommentJpaRepository commentRepository;
         private final BCryptPasswordEncoder passwordEncoder;
 
         public void init1() {
@@ -51,7 +54,21 @@ public class InitData {
                 board.setWriter(saveUser);
                 board.setTitle("title" + i);
                 board.setContent("content" + i);
-                boardRepository.save(board);
+                Board saveBoard = boardRepository.save(board);
+
+                if (i == 0) {
+                    Comment comment1 = new Comment();
+                    comment1.setBoard(saveBoard);
+                    comment1.setWriter(saveUser);
+                    comment1.setContent("content" + i);
+                    commentRepository.save(comment1);
+
+                    Comment comment2 = new Comment();
+                    comment2.setBoard(saveBoard);
+                    comment2.setWriter(saveUser);
+                    comment2.setContent("content" + (i + 1));
+                    commentRepository.save(comment2);
+                }
             }
         }
     }
