@@ -10,7 +10,6 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import song.spring4.dto.RequestBoardDto;
 import song.spring4.dto.ResponseBoardDto;
 import song.spring4.dto.UpdateBoardDto;
-import song.spring4.entity.Board;
 import song.spring4.service.BoardService;
 import song.spring4.userdetails.UserDetailsImpl;
 

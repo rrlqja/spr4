@@ -12,5 +12,4 @@ public interface CommentJpaRepository extends JpaRepository<Comment, Long> {
 
     @EntityGraph(attributePaths = {"board", "writer"})
     Optional<Comment> findEntityGraphById(Long id);
-
 }

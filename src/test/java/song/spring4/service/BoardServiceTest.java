@@ -7,9 +7,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.test.context.ActiveProfiles;
-import song.spring4.dto.RequestBoardDto;
-import song.spring4.dto.ResponseBoardDto;
-import song.spring4.dto.UpdateBoardDto;
+import song.spring4.dto.*;
 import song.spring4.entity.Board;
 import song.spring4.exception.notfoundexception.BoardNotFoundException;
 import song.spring4.repository.BoardJpaRepository;
@@ -52,9 +50,18 @@ class BoardServiceTest {
 
     @Test
     void find2() {
+        ResponseBoardDto findBoardDto = boardService.findBoardById(1L);
+        assertThat(findBoardDto.getCommentList().size()).isEqualTo(2);
+        for (CommentDto commentDto : findBoardDto.getCommentList()) {
+            log.info("comment writer = {}", commentDto.getWriterUsername());
+        }
+    }
+
+    @Test
+    void find3() {
         PageRequest pageRequest = PageRequest.of(0, 10);
 
-        Page<ResponseBoardDto> boardPage = boardService.findBoardList(pageRequest);
+        Page<BoardListDto> boardPage = boardService.findBoardList(pageRequest);
         assertThat(boardPage.getNumber()).isEqualTo(0);
     }
 

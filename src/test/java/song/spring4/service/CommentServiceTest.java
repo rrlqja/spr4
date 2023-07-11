@@ -1,7 +1,6 @@
 package song.spring4.service;
 
 import lombok.extern.slf4j.Slf4j;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -9,6 +8,10 @@ import org.springframework.test.context.ActiveProfiles;
 import song.spring4.dto.RequestCommentDto;
 import song.spring4.entity.Comment;
 import song.spring4.repository.CommentJpaRepository;
+
+import java.util.List;
+
+import static org.assertj.core.api.Assertions.*;
 
 @Slf4j
 @SpringBootTest
@@ -25,14 +28,23 @@ class CommentServiceTest {
     void save1() {
         RequestCommentDto requestCommentDto = new RequestCommentDto();
         requestCommentDto.setContent("comment1");
-        requestCommentDto.setBoardId(1L);
         requestCommentDto.setParentId(null);
 
-        Long id = commentService.saveComment(1L, requestCommentDto);
+        Long id = commentService.saveComment(1L, 1L, requestCommentDto);
 
         Comment findComment = commentRepository.findEntityGraphById(id).get();
 
-        Assertions.assertThat(findComment.getBoard().getTitle()).isEqualTo("title0");
+        assertThat(findComment.getBoard().getTitle()).isEqualTo("title0");
+    }
+
+    @Test
+    void find1() {
+        assertThat(commentService.findCommentById(1L).getContent()).isEqualTo("content0");
+    }
+
+    @Test
+    void delete1() {
+        commentService.deleteComment(1L);
     }
 
 }

@@ -27,9 +27,9 @@ public class CommentService {
     private final UserJpaRepository userRepository;
 
     @Transactional
-    public Long saveComment(Long userId,RequestCommentDto requestCommentDto) {
+    public Long saveComment(Long userId, Long boardId, RequestCommentDto requestCommentDto) {
         User findUser = getUserById(userId);
-        Board findBoard = getBoardById(requestCommentDto.getBoardId());
+        Board findBoard = getBoardById(boardId);
         Comment parent = getParent(requestCommentDto.getParentId());
 
         Comment comment = requestCommentDto.toEntity();
@@ -45,7 +45,14 @@ public class CommentService {
     @Transactional
     public Comment findCommentById(Long id) {
 
-        return getById(id);
+        return getCommentById(id);
+    }
+
+    @Transactional
+    public void deleteComment(Long id) {
+        Comment findComment = getCommentById(id);
+
+        commentRepository.delete(findComment);
     }
 
     private User getUserById(Long userId) {
@@ -68,10 +75,10 @@ public class CommentService {
         if (parentId == null) {
             return null;
         }
-        return getById(parentId);
+        return getCommentById(parentId);
     }
 
-    private Comment getById(Long id) {
+    private Comment getCommentById(Long id) {
         Optional<Comment> findComment = commentRepository.findEntityGraphById(id);
         if (findComment.isEmpty()) {
             throw new CommentNotFoundException("댓글을 찾을 수 없습니다.");

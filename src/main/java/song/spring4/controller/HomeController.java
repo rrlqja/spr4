@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
+import song.spring4.dto.BoardListDto;
 import song.spring4.dto.LoginDto;
 import song.spring4.dto.ResponseBoardDto;
 import song.spring4.dto.SignupDto;
@@ -29,7 +30,7 @@ public class HomeController {
     @GetMapping("/")
     public String getHome(@PageableDefault(size = 10, page = 0) Pageable pageable,
                           Model model) {
-        Page<ResponseBoardDto> boardPage = boardService.findBoardList(pageable);
+        Page<BoardListDto> boardPage = boardService.findBoardList(pageable);
 
         model.addAttribute("boardPage", boardPage);
 

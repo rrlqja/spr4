@@ -6,17 +6,18 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import song.spring4.dto.RequestBoardDto;
-import song.spring4.dto.ResponseBoardDto;
-import song.spring4.dto.UpdateBoardDto;
+import song.spring4.dto.*;
 import song.spring4.entity.Board;
+import song.spring4.entity.Comment;
 import song.spring4.entity.User;
 import song.spring4.exception.IllegalRequestArgumentException;
 import song.spring4.exception.notfoundexception.BoardNotFoundException;
 import song.spring4.exception.notfoundexception.UserNotFoundException;
 import song.spring4.repository.BoardJpaRepository;
+import song.spring4.repository.CommentJpaRepository;
 import song.spring4.repository.UserJpaRepository;
 
+import java.util.List;
 import java.util.Optional;
 
 @Slf4j
@@ -25,6 +26,7 @@ import java.util.Optional;
 public class BoardService {
     private final BoardJpaRepository boardRepository;
     private final UserJpaRepository userRepository;
+    private final CommentJpaRepository commentRepository;
 
     @Transactional
     public Long saveBoard(Long id, RequestBoardDto requestBoardDto) {
@@ -48,10 +50,10 @@ public class BoardService {
     }
 
     @Transactional
-    public Page<ResponseBoardDto> findBoardList(Pageable pageable) {
+    public Page<BoardListDto> findBoardList(Pageable pageable) {
         Page<Board> boardPage = boardRepository.findAll(pageable);
 
-        return boardPage.map(ResponseBoardDto::new);
+        return boardPage.map(BoardListDto::new);
     }
 
     @Transactional
@@ -91,5 +93,4 @@ public class BoardService {
         }
         return findBoard.get();
     }
-
 }
