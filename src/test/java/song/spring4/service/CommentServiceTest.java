@@ -27,10 +27,11 @@ class CommentServiceTest {
     @Test
     void save1() {
         RequestCommentDto requestCommentDto = new RequestCommentDto();
-        requestCommentDto.setContent("comment1");
         requestCommentDto.setParentId(null);
+        requestCommentDto.setBoardId(1L);
+        requestCommentDto.setContent("comment1");
 
-        Long id = commentService.saveComment(1L, 1L, requestCommentDto);
+        Long id = commentService.saveComment(1L, requestCommentDto);
 
         Comment findComment = commentRepository.findEntityGraphById(id).get();
 

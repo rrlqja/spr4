@@ -4,10 +4,12 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import song.spring4.dto.EditCommentDto;
 import song.spring4.dto.RequestCommentDto;
 import song.spring4.entity.Board;
 import song.spring4.entity.Comment;
 import song.spring4.entity.User;
+import song.spring4.exception.IllegalRequestArgumentException;
 import song.spring4.exception.notfoundexception.BoardNotFoundException;
 import song.spring4.exception.notfoundexception.CommentNotFoundException;
 import song.spring4.exception.notfoundexception.UserNotFoundException;
@@ -27,9 +29,9 @@ public class CommentService {
     private final UserJpaRepository userRepository;
 
     @Transactional
-    public Long saveComment(Long userId, Long boardId, RequestCommentDto requestCommentDto) {
+    public Long saveComment(Long userId, RequestCommentDto requestCommentDto) {
         User findUser = getUserById(userId);
-        Board findBoard = getBoardById(boardId);
+        Board findBoard = getBoardById(requestCommentDto.getBoardId());
         Comment parent = getParent(requestCommentDto.getParentId());
 
         Comment comment = requestCommentDto.toEntity();
@@ -46,6 +48,19 @@ public class CommentService {
     public Comment findCommentById(Long id) {
 
         return getCommentById(id);
+    }
+
+    @Transactional
+    public Long editComment(Long userId, EditCommentDto editCommentDto) {
+        Comment findComment = getCommentById(editCommentDto.getId());
+        if (!userId.equals(findComment.getWriter().getId())) {
+            throw new IllegalRequestArgumentException("잘못된 요청입니다.");
+        }
+        findComment.setContent(editCommentDto.getContent());
+
+        Comment editComment = commentRepository.save(findComment);
+
+        return editComment.getBoard().getId();
     }
 
     @Transactional

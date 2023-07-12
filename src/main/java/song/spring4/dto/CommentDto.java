@@ -21,7 +21,9 @@ public class CommentDto {
         this.id = comment.getId();
         this.content = comment.getContent();
         this.parentId = comment.getParent() != null ? comment.getParent().getId() : null;
-        this.writerUsername = comment.getWriter().getUsername();
+        this.boardId = comment.getBoard().getId();
+        this.writerId = comment.getWriter() != null ? comment.getWriter().getId() : null;
+        this.writerUsername = comment.getWriter() != null ? comment.getWriter().getUsername() : null;
         this.childList = comment.getChildList().stream().map(CommentDto::new).toList();
     }
 }

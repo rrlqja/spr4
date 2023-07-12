@@ -7,6 +7,7 @@ import song.spring4.entity.Comment;
 @Getter @Setter
 public class RequestCommentDto {
     private Long parentId;
+    private Long boardId;
     private String content;
 
     public Comment toEntity() {

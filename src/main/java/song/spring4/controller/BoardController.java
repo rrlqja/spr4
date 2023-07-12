@@ -8,6 +8,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import song.spring4.dto.RequestBoardDto;
+import song.spring4.dto.RequestCommentDto;
 import song.spring4.dto.ResponseBoardDto;
 import song.spring4.dto.EditBoardDto;
 import song.spring4.service.BoardService;
@@ -42,7 +43,10 @@ public class BoardController {
                            Model model) {
         ResponseBoardDto responseBoardDto = boardService.findBoardById(id);
 
+        RequestCommentDto requestCommentDto = new RequestCommentDto();
+
         model.addAttribute("responseBoardDto", responseBoardDto);
+        model.addAttribute("requestCommentDto", requestCommentDto);
 
         return "/board/board";
     }
