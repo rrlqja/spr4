@@ -2,14 +2,14 @@ package song.spring4.controller;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatus;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import song.spring4.dto.RequestBoardDto;
 import song.spring4.dto.ResponseBoardDto;
-import song.spring4.dto.UpdateBoardDto;
+import song.spring4.dto.EditBoardDto;
 import song.spring4.service.BoardService;
 import song.spring4.userdetails.UserDetailsImpl;
 
@@ -24,40 +24,46 @@ public class BoardController {
     @GetMapping("/save")
     public String getSaveBoard(@ModelAttribute RequestBoardDto requestBoardDto) {
 
-        return "/board/save";
+        return "/board/saveBoard";
     }
 
-    @ResponseStatus(HttpStatus.CREATED)
     @PostMapping("/save")
-    public Long postSaveBoard(@AuthenticationPrincipal UserDetailsImpl userDetails,
-                                RequestBoardDto requestBoardDto) {
+    public String postSaveBoard(@AuthenticationPrincipal UserDetailsImpl userDetails,
+                                RequestBoardDto requestBoardDto,
+                                RedirectAttributes redirectAttributes) {
         Long id = boardService.saveBoard(userDetails.getId(), requestBoardDto);
 
-        return id;
+        redirectAttributes.addAttribute("id", id);
+        return "redirect:/board/{id}";
     }
 
-    @ResponseBody
     @GetMapping("{id}")
-    public ResponseBoardDto getBoard(@PathVariable(name = "id") Long id) {
+    public String getBoard(@PathVariable(name = "id") Long id,
+                           Model model) {
         ResponseBoardDto responseBoardDto = boardService.findBoardById(id);
 
-        return responseBoardDto;
+        model.addAttribute("responseBoardDto", responseBoardDto);
+
+        return "/board/board";
     }
 
-    @GetMapping("{id}/update")
-    public String getUpdateBoard(@PathVariable(name = "id") Long id,
-                                 @ModelAttribute UpdateBoardDto updateBoardDto) {
+    @GetMapping("{id}/edit")
+    public String getEditBoard(@PathVariable(name = "id") Long id,
+                               Model model) {
+        ResponseBoardDto responseBoardDto = boardService.findBoardById(id);
 
-        return "board/updateBoard";
+        model.addAttribute("editBoardDto", responseBoardDto);
+
+        return "/board/editBoard";
     }
 
-    @PostMapping("{id}/update")
-    public String postUpdateBoard(@PathVariable(name = "id") Long id,
-                                  @ModelAttribute UpdateBoardDto updateBoardDto,
-                                  RedirectAttributes redirectAttributes) {
-        Long updateId = boardService.updateBoard(id, updateBoardDto);
+    @PostMapping("{id}/edit")
+    public String postEditBoard(@PathVariable(name = "id") Long id,
+                                @ModelAttribute EditBoardDto editBoardDto,
+                                RedirectAttributes redirectAttributes) {
+        Long boardId = boardService.editBoard(id, editBoardDto);
 
-        redirectAttributes.addAttribute("id", updateId);
+        redirectAttributes.addAttribute("id", boardId);
 
         return "redirect:/board/{id}";
     }

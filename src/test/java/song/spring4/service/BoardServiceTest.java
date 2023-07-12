@@ -59,6 +59,20 @@ class BoardServiceTest {
 
     @Test
     void find3() {
+        ResponseBoardDto findBoardDto = boardService.findBoardById(1L);
+        log.info("title = {}", findBoardDto.getTitle());
+        log.info("content = {}", findBoardDto.getContent());
+        log.info("writer = {}", findBoardDto.getWriter());
+
+        for (CommentDto commentDto : findBoardDto.getCommentList()) {
+            log.info("comment = {}", commentDto.getContent());
+            log.info("comment writer = {}", commentDto.getWriterUsername());
+            log.info("child size = {}", commentDto.getChildList().size());
+        }
+    }
+
+    @Test
+    void find4() {
         PageRequest pageRequest = PageRequest.of(0, 10);
 
         Page<BoardListDto> boardPage = boardService.findBoardList(pageRequest);
@@ -72,13 +86,13 @@ class BoardServiceTest {
         requestBoardDto.setContent("content");
         Long id = boardService.saveBoard(1L, requestBoardDto);
 
-        UpdateBoardDto updateBoardDto = new UpdateBoardDto();
-        updateBoardDto.setTitle("update title");
-        updateBoardDto.setContent("update content");
-        Long updateId = boardService.updateBoard(id, updateBoardDto);
+        EditBoardDto editBoardDto = new EditBoardDto();
+        editBoardDto.setTitle("update title");
+        editBoardDto.setContent("update content");
+        Long updateId = boardService.editBoard(id, editBoardDto);
 
         assertThat(boardRepository.findEntityGraphById(updateId).get().getTitle())
-                .isEqualTo(updateBoardDto.getTitle());
+                .isEqualTo(editBoardDto.getTitle());
     }
 
     @Test

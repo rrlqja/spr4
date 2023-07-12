@@ -4,7 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Getter @Setter
-public class UpdateBoardDto {
+public class EditBoardDto {
     private String title;
     private String content;
 }

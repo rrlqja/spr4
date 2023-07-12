@@ -49,10 +49,13 @@ public class CommentService {
     }
 
     @Transactional
-    public void deleteComment(Long id) {
+    public Long deleteComment(Long id) {
         Comment findComment = getCommentById(id);
 
-        commentRepository.delete(findComment);
+        findComment.setWriter(null);
+        findComment.setContent("삭제된 댓글 입니다.");
+        Comment saveComment = commentRepository.save(findComment);
+        return saveComment.getId();
     }
 
     private User getUserById(Long userId) {

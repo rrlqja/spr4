@@ -8,16 +8,13 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import song.spring4.dto.*;
 import song.spring4.entity.Board;
-import song.spring4.entity.Comment;
 import song.spring4.entity.User;
 import song.spring4.exception.IllegalRequestArgumentException;
 import song.spring4.exception.notfoundexception.BoardNotFoundException;
 import song.spring4.exception.notfoundexception.UserNotFoundException;
 import song.spring4.repository.BoardJpaRepository;
-import song.spring4.repository.CommentJpaRepository;
 import song.spring4.repository.UserJpaRepository;
 
-import java.util.List;
 import java.util.Optional;
 
 @Slf4j
@@ -26,7 +23,6 @@ import java.util.Optional;
 public class BoardService {
     private final BoardJpaRepository boardRepository;
     private final UserJpaRepository userRepository;
-    private final CommentJpaRepository commentRepository;
 
     @Transactional
     public Long saveBoard(Long id, RequestBoardDto requestBoardDto) {
@@ -57,11 +53,11 @@ public class BoardService {
     }
 
     @Transactional
-    public Long updateBoard(Long id, UpdateBoardDto updateBoardDto) {
+    public Long editBoard(Long id, EditBoardDto editBoardDto) {
         Board findBoard = getBoardById(id);
 
-        findBoard.setTitle(updateBoardDto.getTitle());
-        findBoard.setContent(updateBoardDto.getContent());
+        findBoard.setTitle(editBoardDto.getTitle());
+        findBoard.setContent(editBoardDto.getContent());
 
         Board saveBoard = boardRepository.save(findBoard);
 

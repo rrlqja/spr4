@@ -44,7 +44,8 @@ class CommentServiceTest {
 
     @Test
     void delete1() {
-        commentService.deleteComment(1L);
+        Long id = commentService.deleteComment(1L);
+        assertThat(commentRepository.findById(id).get().getWriter()).isNull();
     }
 
 }

@@ -19,6 +19,7 @@
             max-width: 800px;
             min-height: 930px;
             margin: 0 auto;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
 
         .header-container {
@@ -154,8 +155,8 @@
             <a th:if="${boardPage.number < boardPage.totalPages - 1}" th:href="@{/(page=${boardPage.number + 1})}" class="paging-arrow paging-link">&gt;</a>
             <a th:if="${boardPage.number < boardPage.totalPages - 1}" th:href="@{/(page=${boardPage.totalPages - 1})}" class="paging-arrow paging-link">&raquo;</a>
         </div>
-        <div class="write-button-container">
-            <a th:href="@{/board/write}" class="btn btn-primary">글쓰기</a>
+        <div class="write-button-container" sec:authorize="isAuthenticated()">
+            <a th:href="@{/board/save}" class="btn btn-primary">글쓰기</a>
         </div>
     </div>
 </div>

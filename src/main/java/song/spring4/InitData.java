@@ -60,16 +60,26 @@ public class InitData {
                     Comment comment1 = new Comment();
                     comment1.setBoard(saveBoard);
                     comment1.setWriter(saveUser);
-                    comment1.setContent("content" + i);
-                    commentRepository.save(comment1);
+                    comment1.setContent("comment" + i);
+                    Comment saveComment1 = commentRepository.save(comment1);
+
+                    for (int j = 0; j < 3; j++) {
+                        Comment reply = new Comment();
+                        reply.setBoard(saveBoard);
+                        reply.setWriter(saveUser);
+                        reply.setParent(saveComment1);
+                        reply.setContent("reply" + j);
+                        commentRepository.save(reply);
+                    }
 
                     Comment comment2 = new Comment();
                     comment2.setBoard(saveBoard);
                     comment2.setWriter(saveUser);
-                    comment2.setContent("content" + (i + 1));
+                    comment2.setContent("comment" + (i + 1));
                     commentRepository.save(comment2);
                 }
             }
+
         }
     }
 }

@@ -1,0 +1,66 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <title>Board</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="../css/bootstrap.min.css" th:href="@{/css/bootstrap.min.css}" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f5f5f5;
+        }
+        .container {
+            background-color: white;
+            min-width: 700px;
+            max-width: 700px;
+            margin: 0 auto;
+            margin-top: 100px;
+            padding: 20px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="mb-3">
+        <label for="title">Title</label>
+        <input type="text" th:value="${responseBoardDto.title}" class="form-control" id="title" readonly>
+    </div>
+    <div class="mb-3">
+        <div id="contentError" style="color: red;"></div>
+        <label for="content">Content</label>
+        <textarea type="text" th:text="${responseBoardDto.content}" class="form-control" id="content" style="min-height: 300px; resize: none" readonly></textarea>
+    </div>
+    <div th:if="${#authentication.name == responseBoardDto.writer}">
+        <a type="button" class="btn btn-primary" th:href="@{/board/{id}/edit(id=${responseBoardDto.id})}">수정</a>
+        <button type="button" class="btn btn-primary" th:onclick="'deleteBoard(' + ${responseBoardDto.id} + ');'">삭제</button>
+    </div>
+    <div class="mb-3" th:each="comment : ${responseBoardDto.commentList}" th:if="${comment.parentId == null}">
+        <label for="comment" th:text="${comment.writerUsername}">writer</label>
+        <input type="text" th:value="${comment.content}" class="form-control" id="comment" readonly>
+        <div class="mb-3" th:each="reply : ${comment.childList}" style="margin-left: 20px;">
+            <label for="reply" th:text="${reply.writerUsername}">writer</label>
+            <input type="text" th:value="${reply.content}" class="form-control" id="reply" readonly>
+        </div>
+    </div>
+</div>
+
+<script>
+    function deleteBoard(id) {
+        if(confirm('게시글을 삭제하겠습니까?')) {
+            fetch('/board/' + id + '/delete', {
+                method: 'POST'
+            }).then((response) => {
+                if(response.ok) {
+                    alert('정상적으로 삭제되었습니다.');
+                } else {
+                    response.text().then((message) => {
+                        alert(message);
+                    });
+                }
+                window.location.href = '/';
+            });
+        }
+    }
+</script>
+</body>
+</html>
