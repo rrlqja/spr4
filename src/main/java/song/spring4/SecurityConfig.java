@@ -13,6 +13,8 @@ import org.springframework.security.web.SecurityFilterChain;
 import song.spring4.authentication.LoginFailureHandler;
 import song.spring4.authentication.LoginSuccessHandler;
 
+import static org.springframework.security.web.util.matcher.RegexRequestMatcher.*;
+
 @Slf4j
 @Configuration
 @EnableWebSecurity
@@ -32,7 +34,11 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .csrf(AbstractHttpConfigurer::disable)
-                .authorizeHttpRequests(authorize -> authorize.anyRequest().permitAll())
+                .authorizeHttpRequests(authorize -> authorize
+                        .requestMatchers("/", "/login", "logout", "/signup", "/css/**", "/*.ico", "/*.js","/error").permitAll()
+                        .requestMatchers(regexMatcher("^/board/[0-9]$")).permitAll()
+                        .requestMatchers("/board/**").authenticated()
+                        .anyRequest().permitAll())
                 .formLogin(formLogin -> formLogin
                         .loginPage("/login")
                         .defaultSuccessUrl("/")
