@@ -9,8 +9,6 @@ import song.spring4.dto.RequestCommentDto;
 import song.spring4.entity.Comment;
 import song.spring4.repository.CommentJpaRepository;
 
-import java.util.List;
-
 import static org.assertj.core.api.Assertions.*;
 
 @Slf4j

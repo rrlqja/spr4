@@ -63,6 +63,7 @@ public class InitData {
             userB.setCredentialsNonExpired(true);
             User saveUserB = userRepository.save(userB);
 
+            userRoleService.grantRole(saveUserA.getId(), RoleName.ROLE_USER);
             userRoleService.grantRole(saveUserA.getId(), RoleName.ROLE_ADMIN);
 
             for (int i = 0; i < 10; i++) {

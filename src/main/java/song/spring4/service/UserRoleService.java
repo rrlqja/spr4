@@ -25,6 +25,12 @@ public class UserRoleService {
 
     @Transactional
     public void grantRole(Long userId, RoleName roleName) {
+        Optional<UserRole> findUserRole = userRoleRepository.findByUserAndRoleName(userId, roleName);
+        if (findUserRole.isPresent()) {
+            log.info("이미 부여된 권한입니다. id = {} role = {}", userId, roleName);
+            return;
+        }
+
         User findUser = getUserById(userId);
         Role role = roleService.findOrCreate(roleName);
 
