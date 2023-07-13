@@ -11,6 +11,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import song.spring4.dto.EditCommentDto;
 import song.spring4.dto.RequestCommentDto;
 import song.spring4.entity.Comment;
+import song.spring4.exception.IllegalRequestArgumentException;
 import song.spring4.service.CommentService;
 import song.spring4.userdetails.UserDetailsImpl;
 
@@ -33,9 +34,12 @@ public class CommentController {
     }
 
     @GetMapping("/{id}/edit")
-    public String getEditComment(@PathVariable(name = "id") Long id,
+    public String getEditComment(@AuthenticationPrincipal UserDetailsImpl userDetails,
+                                 @PathVariable(name = "id") Long id,
                                  Model model) {
         Comment findComment = commentService.findCommentById(id);
+
+        validUser(userDetails.getId(), findComment.getWriter().getId());
 
         EditCommentDto editCommentDto = new EditCommentDto();
         editCommentDto.setId(findComment.getId());
@@ -62,5 +66,11 @@ public class CommentController {
     @PostMapping("/{id}/delete")
     public void delete(@PathVariable(name = "id") Long id) {
         Long deleteId = commentService.deleteComment(id);
+    }
+
+    private void validUser(Long userId, Long boardWriterId) {
+        if (!userId.equals(boardWriterId)) {
+            throw new IllegalRequestArgumentException("권한이 없습니다.");
+        }
     }
 }

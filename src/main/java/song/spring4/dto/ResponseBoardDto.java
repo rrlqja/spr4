@@ -11,6 +11,7 @@ import java.util.List;
 @Getter @Setter
 public class ResponseBoardDto {
     private Long id;
+    private Long writerId;
     private String writer;
     private String title;
     private String content;
@@ -20,6 +21,7 @@ public class ResponseBoardDto {
 
     public ResponseBoardDto(Board board) {
         this.id = board.getId();
+        this.writerId = board.getWriter().getId();
         this.writer = board.getWriter().getUsername();
         this.title = board.getTitle();
         this.content = board.getContent();

@@ -69,14 +69,6 @@ public class BoardService {
         boardRepository.deleteById(boardId);
     }
 
-    @Transactional
-    public void validWriter(Long writerId, Long boardId) {
-        Board findBoard = getBoardById(boardId);
-        if (!writerId.equals(findBoard.getWriter().getId())) {
-            throw new IllegalRequestArgumentException("권한이 없습니다.");
-        }
-    }
-
     private User getUserById(Long id) {
         Optional<User> findUser = userRepository.findById(id);
         if (findUser.isEmpty()) {

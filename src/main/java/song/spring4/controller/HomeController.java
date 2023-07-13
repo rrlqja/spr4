@@ -17,7 +17,9 @@ import song.spring4.dto.BoardListDto;
 import song.spring4.dto.LoginDto;
 import song.spring4.dto.ResponseBoardDto;
 import song.spring4.dto.SignupDto;
+import song.spring4.entity.role.RoleName;
 import song.spring4.service.BoardService;
+import song.spring4.service.UserRoleService;
 import song.spring4.service.UserService;
 
 @Slf4j
@@ -26,6 +28,7 @@ import song.spring4.service.UserService;
 public class HomeController {
     private final UserService userService;
     private final BoardService boardService;
+    private final UserRoleService userRoleService;
 
     @GetMapping("/")
     public String getHome(@PageableDefault(size = 10, page = 0) Pageable pageable,
@@ -47,6 +50,7 @@ public class HomeController {
     @PostMapping("/signup")
     public void postSignup(@Valid @ModelAttribute SignupDto signupDto) {
         Long id = userService.join(signupDto);
+        userRoleService.grantRole(id, RoleName.ROLE_USER);
     }
 
 

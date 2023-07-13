@@ -29,7 +29,7 @@ public class UserController {
 
     @GetMapping
     public String getUser(@AuthenticationPrincipal UserDetailsImpl userDetails,
-                           Model model) {
+                          Model model) {
         User findUser = userService.findUserById(userDetails.getId());
         UserDto userDto = new UserDto(findUser);
 
@@ -77,7 +77,7 @@ public class UserController {
 
     @PostMapping("/updateName")
     public String postUpdateName(@AuthenticationPrincipal UserDetailsImpl userDetails,
-                               @RequestParam String newName) {
+                                 @RequestParam String newName) {
         Long id = userService.updateName(userDetails.getId(), newName);
 
         return "redirect:/user";

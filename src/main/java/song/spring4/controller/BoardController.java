@@ -11,6 +11,7 @@ import song.spring4.dto.RequestBoardDto;
 import song.spring4.dto.RequestCommentDto;
 import song.spring4.dto.ResponseBoardDto;
 import song.spring4.dto.EditBoardDto;
+import song.spring4.exception.IllegalRequestArgumentException;
 import song.spring4.service.BoardService;
 import song.spring4.userdetails.UserDetailsImpl;
 
@@ -55,9 +56,9 @@ public class BoardController {
     public String getEditBoard(@PathVariable(name = "id") Long id,
                                @AuthenticationPrincipal UserDetailsImpl userDetails,
                                Model model) {
-        boardService.validWriter(userDetails.getId(), id);
-
         ResponseBoardDto responseBoardDto = boardService.findBoardById(id);
+
+        validUser(userDetails.getId(), responseBoardDto.getWriterId());
 
         EditBoardDto editBoardDto = new EditBoardDto();
         editBoardDto.setId(responseBoardDto.getId());
@@ -74,8 +75,6 @@ public class BoardController {
                                 @AuthenticationPrincipal UserDetailsImpl userDetails,
                                 @ModelAttribute EditBoardDto editBoardDto,
                                 RedirectAttributes redirectAttributes) {
-        boardService.validWriter(userDetails.getId(), id);
-
         Long boardId = boardService.editBoard(id, editBoardDto);
 
         redirectAttributes.addAttribute("id", boardId);
@@ -84,12 +83,15 @@ public class BoardController {
     }
 
     @PostMapping("{id}/delete")
-    public String deleteBoard(@AuthenticationPrincipal UserDetailsImpl userDetails,
-                              @PathVariable(name = "id") Long id) {
-        boardService.validWriter(userDetails.getId(), id);
-
+    public String deleteBoard(@PathVariable(name = "id") Long id) {
         boardService.deleteBoard(id);
 
         return "redirect:/";
+    }
+
+    private void validUser(Long userId, Long boardWriterId) {
+        if (!userId.equals(boardWriterId)) {
+            throw new IllegalRequestArgumentException("권한이 없습니다.");
+        }
     }
 }

@@ -20,6 +20,9 @@ public class User extends BaseTimeEntity{
     @OneToMany(mappedBy = "writer", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Board> boardList = new ArrayList<>();
 
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<UserRole> roleList = new ArrayList<>();
+
     private String username;
     private String password;
     private String name;

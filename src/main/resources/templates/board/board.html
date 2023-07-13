@@ -51,9 +51,9 @@
         <label for="content">Content</label>
         <textarea type="text" th:text="${responseBoardDto.content}" class="form-control" id="content" style="min-height: 300px; resize: none" readonly></textarea>
     </div>
-    <div th:if="${#authentication.name == responseBoardDto.writer}">
-        <a type="button" class="btn btn-primary" th:href="@{/board/{id}/edit(id=${responseBoardDto.id})}">수정</a>
-        <button type="button" class="btn btn-primary" th:onclick="'deleteBoard(' + ${responseBoardDto.id} + ');'">삭제</button>
+    <div th:if="${#authentication.name != 'anonymousUser'}">
+        <a type="button" class="btn btn-primary" th:if="${#authentication.name == responseBoardDto.writer}" th:href="@{/board/{id}/edit(id=${responseBoardDto.id})}">수정</a>
+        <button type="button" class="btn btn-primary" th:if="${#authentication.name == responseBoardDto.writer or #authorization.expression('hasAuthority(''ROLE_ADMIN'')')}" th:onclick="'deleteBoard(' + ${responseBoardDto.id} + ');'">삭제</button>
     </div>
     <div class="comment mb-3" th:each="comment : ${responseBoardDto.commentList}" th:if="${comment.parentId == null}">
         <div class="comment-header">
@@ -62,14 +62,14 @@
                 <span th:unless="${comment.writerUsername != null}">삭제된 댓글</span>
             </label>
 
-            <div class="comment-box">
-                <div class="comment-edit" th:if="${#authentication.name != 'anonymousUser' and comment.writerUsername == #authentication.principal.username}">
+            <div class="comment-box" th:if="${#authentication.name != 'anonymousUser'} and ${comment.writerUsername != null}">
+                <div class="comment-edit" th:if="${comment.writerUsername == #authentication.principal.username}">
                     <a th:href="@{/comment/{id}/edit(id=${comment.id})}">수정</a>
                 </div>
-                <div class="comment-delete" th:if="${#authentication.name != 'anonymousUser' and comment.writerUsername == #authentication.principal.username}" th:onclick="'confirmDelete(' + ${comment.id} + ');'">
+                <div class="comment-delete" th:if="${comment.writerUsername == #authentication.principal.username or #authorization.expression('hasAuthority(''ROLE_ADMIN'')')}" th:onclick="'confirmDelete(' + ${comment.id} + ');'">
                     삭제
                 </div>
-                <div class="reply-btn" id="reply-btn" th:if="${#authentication.name != 'anonymousUser' and comment.writerUsername == #authentication.principal.username}">
+                <div class="reply-btn" id="reply-btn">
                     대댓글
                 </div>
             </div>
@@ -94,12 +94,11 @@
                     <span th:unless="${reply.writerUsername != null}">삭제된 댓글</span>
                 </label>
 
-
-                <div class="comment-box">
-                    <div class="comment-edit" th:if="${#authentication.name != 'anonymousUser' and reply.writerUsername == #authentication.principal.username}">
+                <div class="comment-box" th:if="${#authentication.name != 'anonymousUser'} and ${reply.writerUsername != null}">
+                    <div class="comment-edit" th:if="${reply.writerUsername == #authentication.principal.username}">
                         <a th:href="@{/comment/{id}/edit(id=${reply.id})}">수정</a>
                     </div>
-                    <div class="comment-delete" id="comment-delete" th:if="${#authentication.name != 'anonymousUser' and reply.writerUsername == #authentication.principal.username}" th:onclick="'confirmDelete(' + ${reply.id} + ');'">
+                    <div class="comment-delete" th:if="${reply.writerUsername == #authentication.principal.username or #authorization.expression('hasAuthority(''ROLE_ADMIN'')')}" th:onclick="'confirmDelete(' + ${reply.id} + ');'">
                         삭제
                     </div>
                 </div>
