@@ -48,7 +48,6 @@
         <input type="text" th:value="${responseBoardDto.title}" class="form-control" id="title" readonly>
     </div>
     <div class="mb-3">
-        <div id="contentError" style="color: red;"></div>
         <label for="content">Content</label>
         <textarea type="text" th:text="${responseBoardDto.content}" class="form-control" id="content" style="min-height: 300px; resize: none" readonly></textarea>
     </div>
@@ -58,7 +57,6 @@
     </div>
     <div class="comment mb-3" th:each="comment : ${responseBoardDto.commentList}" th:if="${comment.parentId == null}">
         <div class="comment-header">
-<!--            <label for="comment" th:text="${comment.writerUsername}">writer</label>-->
             <label for="comment">
                 <span th:if="${comment.writerUsername != null}" th:text="${comment.writerUsername}">writer</span>
                 <span th:unless="${comment.writerUsername != null}">삭제된 댓글</span>
@@ -91,7 +89,6 @@
 
         <div class="mb-3" th:each="reply : ${comment.childList}" style="margin-left: 20px;">
             <div class="comment-header">
-<!--                <label for="reply" th:text="${reply.writerUsername}">writer</label>-->
                 <label for="reply">
                     <span th:if="${reply.writerUsername != null}" th:text="${reply.writerUsername}">writer</span>
                     <span th:unless="${reply.writerUsername != null}">삭제된 댓글</span>

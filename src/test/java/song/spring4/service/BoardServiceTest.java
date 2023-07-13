@@ -51,7 +51,7 @@ class BoardServiceTest {
     @Test
     void find2() {
         ResponseBoardDto findBoardDto = boardService.findBoardById(1L);
-        assertThat(findBoardDto.getCommentList().size()).isEqualTo(2);
+        assertThat(findBoardDto.getCommentList().size()).isEqualTo(5);
         for (CommentDto commentDto : findBoardDto.getCommentList()) {
             log.info("comment writer = {}", commentDto.getWriterUsername());
         }
@@ -97,7 +97,7 @@ class BoardServiceTest {
 
     @Test
     void delete1() {
-        boardService.deleteBoard(1L, 1L);
+        boardService.deleteBoard( 1L);
 
         assertThatThrownBy(() -> boardService.findBoardById(1L))
                 .isInstanceOf(BoardNotFoundException.class);

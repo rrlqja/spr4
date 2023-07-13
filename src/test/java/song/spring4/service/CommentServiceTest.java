@@ -40,7 +40,7 @@ class CommentServiceTest {
 
     @Test
     void find1() {
-        assertThat(commentService.findCommentById(1L).getContent()).isEqualTo("content0");
+        assertThat(commentService.findCommentById(1L).getContent()).isEqualTo("comment0");
     }
 
     @Test

@@ -12,6 +12,7 @@ import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
@@ -27,7 +28,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @Slf4j
 @SpringBootTest
-@Transactional
 @AutoConfigureMockMvc
 @ActiveProfiles("test")
 class UserControllerTest {
@@ -68,6 +68,8 @@ class UserControllerTest {
     }
 
     @Test
+    @Transactional
+    @Rollback(value = true)
     void postUpdateUsername() throws Exception {
         mockMvc.perform(post("/user/updateUsername")
                         .param("newUsername", "newUsername").with(securityContext(context)))
@@ -81,6 +83,8 @@ class UserControllerTest {
     }
 
     @Test
+    @Transactional
+    @Rollback(value = true)
     void postUpdatePassword() throws Exception {
         mockMvc.perform(post("/user/updatePassword").param("origPassword", "a")
                         .param("newPassword", "newPassword").with(securityContext(context)))
@@ -90,6 +94,8 @@ class UserControllerTest {
     }
 
     @Test
+    @Transactional
+    @Rollback(value = true)
     void postUpdateName() throws Exception {
         mockMvc.perform(post("/user/updateName")
                         .param("newName", "newName").with(securityContext(context)))
@@ -99,6 +105,8 @@ class UserControllerTest {
     }
 
     @Test
+    @Transactional
+    @Rollback(value = true)
     void postUpdateEmail() throws Exception {
         mockMvc.perform(post("/user/updateEmail")
                         .param("newEmail", "newEmail@email.com"))
@@ -123,6 +131,8 @@ class UserControllerTest {
 
 
     @Test
+    @Transactional
+    @Rollback(value = true)
     void postResetPassword() throws Exception {
         String token = resetPasswordService.createPasswordToken("dkclasltmf22@naver.com");
 

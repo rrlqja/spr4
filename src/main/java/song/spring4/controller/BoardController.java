@@ -53,18 +53,29 @@ public class BoardController {
 
     @GetMapping("{id}/edit")
     public String getEditBoard(@PathVariable(name = "id") Long id,
+                               @AuthenticationPrincipal UserDetailsImpl userDetails,
                                Model model) {
+        boardService.validWriter(userDetails.getId(), id);
+
         ResponseBoardDto responseBoardDto = boardService.findBoardById(id);
 
-        model.addAttribute("editBoardDto", responseBoardDto);
+        EditBoardDto editBoardDto = new EditBoardDto();
+        editBoardDto.setId(responseBoardDto.getId());
+        editBoardDto.setTitle(responseBoardDto.getTitle());
+        editBoardDto.setContent(responseBoardDto.getContent());
+
+        model.addAttribute("editBoardDto", editBoardDto);
 
         return "/board/editBoard";
     }
 
     @PostMapping("{id}/edit")
     public String postEditBoard(@PathVariable(name = "id") Long id,
+                                @AuthenticationPrincipal UserDetailsImpl userDetails,
                                 @ModelAttribute EditBoardDto editBoardDto,
                                 RedirectAttributes redirectAttributes) {
+        boardService.validWriter(userDetails.getId(), id);
+
         Long boardId = boardService.editBoard(id, editBoardDto);
 
         redirectAttributes.addAttribute("id", boardId);
@@ -75,7 +86,9 @@ public class BoardController {
     @PostMapping("{id}/delete")
     public String deleteBoard(@AuthenticationPrincipal UserDetailsImpl userDetails,
                               @PathVariable(name = "id") Long id) {
-        boardService.deleteBoard(userDetails.getId(), id);
+        boardService.validWriter(userDetails.getId(), id);
+
+        boardService.deleteBoard(id);
 
         return "redirect:/";
     }

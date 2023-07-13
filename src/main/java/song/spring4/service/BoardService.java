@@ -65,13 +65,16 @@ public class BoardService {
     }
 
     @Transactional
-    public void deleteBoard(Long writerId, Long boardId) {
-        Board findBoard = getBoardById(boardId);
-        if (!findBoard.getWriter().getId().equals(writerId)) {
-            throw new IllegalRequestArgumentException("작성자가 아닙니다.");
-        }
+    public void deleteBoard(Long boardId) {
+        boardRepository.deleteById(boardId);
+    }
 
-        boardRepository.delete(findBoard);
+    @Transactional
+    public void validWriter(Long writerId, Long boardId) {
+        Board findBoard = getBoardById(boardId);
+        if (!writerId.equals(findBoard.getWriter().getId())) {
+            throw new IllegalRequestArgumentException("권한이 없습니다.");
+        }
     }
 
     private User getUserById(Long id) {

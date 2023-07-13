@@ -15,8 +15,10 @@ import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.transaction.annotation.Transactional;
 import song.spring4.entity.Board;
 import song.spring4.exception.notfoundexception.BoardNotFoundException;
 import song.spring4.repository.BoardJpaRepository;
@@ -65,8 +67,8 @@ class BoardControllerTest {
     @Test
     void getBoard1() throws Exception {
         mockMvc.perform(get("/board/{id}", 1L))
-                .andExpect(model().attribute("boardDto", hasProperty("title", is("title0"))))
-                .andExpect(model().attribute("boardDto", hasProperty("commentList", hasSize(2))));
+                .andExpect(model().attribute("responseBoardDto", hasProperty("title", is("title0"))))
+                .andExpect(model().attribute("responseBoardDto", hasProperty("commentList", hasSize(5))));
 
     }
 
@@ -83,9 +85,11 @@ class BoardControllerTest {
     }
 
     @Test
+    @Transactional
+    @Rollback(value = true)
     void postEditBoard1() throws Exception {
-        mockMvc.perform(post("/board/{id}/edit", 1L).param("title", "testEditTitle")
-                        .param("content", "testEditContent"))
+        mockMvc.perform(post("/board/{id}/edit", 1L).with(securityContext(context))
+                        .param("title", "testEditTitle").param("content", "testEditContent"))
                 .andExpect(redirectedUrlPattern("/board/*"));
 
         Board findBoard = boardRepository.findById(1L).get();
@@ -93,6 +97,8 @@ class BoardControllerTest {
     }
 
     @Test
+    @Transactional
+    @Rollback(value = true)
     void postDeleteBoard1() throws Exception {
         mockMvc.perform(post("/board/{id}/delete", 1L).with(securityContext(context)))
                 .andExpect(redirectedUrl("/"));

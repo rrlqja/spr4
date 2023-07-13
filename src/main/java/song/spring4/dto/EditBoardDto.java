@@ -5,6 +5,7 @@ import lombok.Setter;
 
 @Getter @Setter
 public class EditBoardDto {
+    private Long id;
     private String title;
     private String content;
 }
