@@ -38,6 +38,7 @@ public class SecurityConfig {
                         .requestMatchers("/", "/login", "logout", "/signup", "/css/**", "/*.ico", "/*.js","/error").permitAll()
                         .requestMatchers(regexMatcher("^/board/[0-9]$")).permitAll()
                         .requestMatchers("/board/**").authenticated()
+                        .requestMatchers("/comment/**").authenticated()
                         .anyRequest().permitAll())
                 .formLogin(formLogin -> formLogin
                         .loginPage("/login")
