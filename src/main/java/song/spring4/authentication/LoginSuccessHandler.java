@@ -15,8 +15,6 @@ import java.io.IOException;
 public class LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
-        log.info("Login Success\nUsername = {}, Password = {}", request.getParameter("username"), request.getParameter("password"));
-
-        super.onAuthenticationSuccess(request, response, authentication);
+        log.info("[Login Success] Username = {}, Password = {}", request.getParameter("username"), request.getParameter("password"));
     }
 }

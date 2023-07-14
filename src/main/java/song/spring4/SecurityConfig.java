@@ -43,7 +43,6 @@ public class SecurityConfig {
                         .anyRequest().permitAll())
                 .formLogin(formLogin -> formLogin
                         .loginPage("/login")
-                        .defaultSuccessUrl("/")
                         .usernameParameter("username")
                         .passwordParameter("password")
                         .successHandler(loginSuccessHandler)
