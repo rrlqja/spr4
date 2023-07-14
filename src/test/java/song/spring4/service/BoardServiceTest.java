@@ -6,11 +6,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ActiveProfiles;
+import org.springframework.transaction.annotation.Transactional;
 import song.spring4.dto.*;
 import song.spring4.entity.Board;
+import song.spring4.entity.LogEntity;
 import song.spring4.exception.notfoundexception.BoardNotFoundException;
 import song.spring4.repository.BoardJpaRepository;
+import song.spring4.repository.LogEntityJpaRepository;
+
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.*;
 
@@ -19,6 +25,8 @@ import static org.assertj.core.api.Assertions.*;
 @ActiveProfiles("test")
 class BoardServiceTest {
 
+    @Autowired
+    LogEntityJpaRepository logEntityRepository;
     @Autowired
     BoardService boardService;
     @Autowired
@@ -80,6 +88,8 @@ class BoardServiceTest {
     }
 
     @Test
+    @Transactional
+    @Rollback(value = true)
     void update1() {
         RequestBoardDto requestBoardDto = new RequestBoardDto();
         requestBoardDto.setTitle("title");
@@ -96,6 +106,8 @@ class BoardServiceTest {
     }
 
     @Test
+    @Transactional
+    @Rollback(value = true)
     void delete1() {
         boardService.deleteBoard( 1L);
 

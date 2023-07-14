@@ -9,7 +9,6 @@ import org.springframework.transaction.annotation.Transactional;
 import song.spring4.dto.*;
 import song.spring4.entity.Board;
 import song.spring4.entity.User;
-import song.spring4.exception.IllegalRequestArgumentException;
 import song.spring4.exception.notfoundexception.BoardNotFoundException;
 import song.spring4.exception.notfoundexception.UserNotFoundException;
 import song.spring4.repository.BoardJpaRepository;
