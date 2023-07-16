@@ -47,6 +47,16 @@
         <label for="title">Title</label>
         <input type="text" th:value="${responseBoardDto.title}" class="form-control" id="title" readonly>
     </div>
+    <div class="form-inline d-flex justify-content-between">
+        <div class="views">
+            <label for="views">views</label>
+            <p th:text="${responseBoardDto.views}" id="views"></p>
+        </div>
+        <div class="createDate">
+            <label for="createDate">createDate</label>
+            <p th:text="${#temporals.format(responseBoardDto.createDate, 'yyyy-MM-dd HH:mm')}" id="createDate"></p>
+        </div>
+    </div>
     <div class="mb-3">
         <label for="content">Content</label>
         <textarea type="text" th:text="${responseBoardDto.content}" class="form-control" id="content" style="min-height: 300px; resize: none" readonly></textarea>
@@ -55,6 +65,7 @@
         <a type="button" class="btn btn-primary" th:if="${#authentication.name == responseBoardDto.writer}" th:href="@{/board/{id}/edit(id=${responseBoardDto.id})}">수정</a>
         <button type="button" class="btn btn-primary" th:if="${#authentication.name == responseBoardDto.writer or #authorization.expression('hasAuthority(''ROLE_ADMIN'')')}" th:onclick="'deleteBoard(' + ${responseBoardDto.id} + ');'">삭제</button>
     </div>
+    <label for="comment">Comment</label>
     <div class="comment mb-3" th:each="comment : ${responseBoardDto.commentList}" th:if="${comment.parentId == null}">
         <div class="comment-header">
             <label for="comment">

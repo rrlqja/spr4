@@ -27,6 +27,7 @@ public class Board extends BaseTimeEntity{
 
     private String title;
     private String content;
+    private Long views;
 
     public void setWriter(User writer) {
         this.writer = writer;

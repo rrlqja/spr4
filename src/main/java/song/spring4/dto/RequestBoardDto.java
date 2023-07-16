@@ -13,6 +13,7 @@ public class RequestBoardDto {
         Board board = new Board();
         board.setTitle(this.title);
         board.setContent(this.content);
+        board.setViews(0L);
         return board;
     }
 }

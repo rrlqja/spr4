@@ -1,5 +1,6 @@
 package song.spring4.service;
 
+import jakarta.persistence.EntityManager;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,7 +12,6 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
 import song.spring4.dto.*;
 import song.spring4.entity.Board;
-import song.spring4.entity.LogEntity;
 import song.spring4.exception.notfoundexception.BoardNotFoundException;
 import song.spring4.repository.BoardJpaRepository;
 import song.spring4.repository.LogEntityJpaRepository;
@@ -31,6 +31,8 @@ class BoardServiceTest {
     BoardService boardService;
     @Autowired
     BoardJpaRepository boardRepository;
+    @Autowired
+    EntityManager em;
 
     @Test
     void save1() {
@@ -117,6 +119,19 @@ class BoardServiceTest {
 
         assertThat(boardRepository.findEntityGraphById(updateId).get().getTitle())
                 .isEqualTo(editBoardDto.getTitle());
+    }
+
+    @Test
+    void update2() {
+        Integer result = boardService.bulkUpdateBoardTitle("title","update");
+
+        List<Board> boardList = boardRepository.findAll();
+
+        assertThat(result).isEqualTo(boardList.size());
+
+        for (Board board : boardList) {
+            System.out.println("board.getTitle() = " + board.getTitle());
+        }
     }
 
     @Test

@@ -66,11 +66,12 @@ public class InitData {
             userRoleService.grantRole(saveUserA.getId(), RoleName.ROLE_USER);
             userRoleService.grantRole(saveUserA.getId(), RoleName.ROLE_ADMIN);
 
-            for (int i = 0; i < 10; i++) {
+            for (int i = 0; i < 30; i++) {
                 Board board = new Board();
                 board.setWriter(saveUserA);
                 board.setTitle("title" + i);
                 board.setContent("content" + i);
+                board.setViews(0L);
                 Board saveBoard = boardRepository.save(board);
 
                 if (i == 0) {

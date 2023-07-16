@@ -70,6 +70,11 @@
             justify-content: center;
         }
 
+        .searchBoard {
+            display: flex;
+            justify-content: center;
+        }
+
         .footer {
             display: flex;
             justify-content: center;
@@ -143,17 +148,30 @@
     </div>
     <hr>
 
+    <div class="searchBoard">
+        <form class="form-inline d-flex justify-content-center" id="searchBoardForm" method="get" th:action >
+            <select class="my-0" name="searchType">
+                <option value="title">제목</option>
+                <option value="writer">작성자</option>
+                <option value="content">내용</option>
+            </select>
+            <input class="form-control" type="text" id="searchValue" name="searchValue" th:value="${searchValue}">
+            <input type="submit" value="검색" class="btn btn-primary">
+        </form>
+    </div>
+    <hr>
+
     <div class="footer">
         <div class="paging-container">
-            <a th:if="${boardPage.number != 0}" th:href="@{/(page=0)}" class="paging-arrow paging-link">&laquo;</a>
-            <a th:if="${boardPage.number != 0}" th:href="@{/(page=${boardPage.number - 1})}" class="paging-arrow paging-link">&lt;</a>
+            <a th:if="${boardPage.number != 0}" th:href="@{/(page=0, searchType = ${searchType}, searchValue = ${searchValue})}" class="paging-arrow paging-link">&laquo;</a>
+            <a th:if="${boardPage.number != 0}" th:href="@{/(page=${boardPage.number - 1}, searchType = ${searchType}, searchValue = ${searchValue})}" class="paging-arrow paging-link">&lt;</a>
 
             <th:block th:each="i : ${#numbers.sequence((boardPage.number >= 2) ? (boardPage.number - 2) : 0, (boardPage.totalPages > (boardPage.number + 2)) ? (boardPage.number + 2) : (boardPage.totalPages - 1))}">
-                <a th:href="@{/(page=${i})}" th:class="${i == boardPage.number} ? 'paging-link active' : 'paging-link'" th:text="${i + 1}"></a>
+                <a th:href="@{/(page=${i}, searchType = ${searchType}, searchValue = ${searchValue})}" th:class="${i == boardPage.number} ? 'paging-link active' : 'paging-link'" th:text="${i + 1}"></a>
             </th:block>
 
-            <a th:if="${boardPage.number < boardPage.totalPages - 1}" th:href="@{/(page=${boardPage.number + 1})}" class="paging-arrow paging-link">&gt;</a>
-            <a th:if="${boardPage.number < boardPage.totalPages - 1}" th:href="@{/(page=${boardPage.totalPages - 1})}" class="paging-arrow paging-link">&raquo;</a>
+            <a th:if="${boardPage.number < boardPage.totalPages - 1}" th:href="@{/(page=${boardPage.number + 1}, searchType = ${searchType}, searchValue = ${searchValue})}" class="paging-arrow paging-link">&gt;</a>
+            <a th:if="${boardPage.number < boardPage.totalPages - 1}" th:href="@{/(page=${boardPage.totalPages - 1}, searchType = ${searchType}, searchValue = ${searchValue})}" class="paging-arrow paging-link">&raquo;</a>
         </div>
         <div class="write-button-container" sec:authorize="isAuthenticated()">
             <a th:href="@{/board/save}" class="btn btn-primary">글쓰기</a>

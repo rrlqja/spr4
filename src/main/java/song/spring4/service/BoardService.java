@@ -24,8 +24,8 @@ public class BoardService {
     private final UserJpaRepository userRepository;
 
     @Transactional
-    public Long saveBoard(Long id, RequestBoardDto requestBoardDto) {
-        User user = getUserById(id);
+    public Long saveBoard(Long userId, RequestBoardDto requestBoardDto) {
+        User user = getUserById(userId);
 
         Board board = requestBoardDto.toEntity();
         board.setWriter(user);
@@ -36,8 +36,9 @@ public class BoardService {
     }
 
     @Transactional
-    public ResponseBoardDto findBoardById(Long id) {
-        Board findBoard = getBoardById(id);
+    public ResponseBoardDto findBoardById(Long boardId) {
+        Board findBoard = getBoardById(boardId);
+        findBoard.setViews((findBoard.getViews() + 1));
 
         ResponseBoardDto responseBoardDto = new ResponseBoardDto(findBoard);
 
@@ -52,13 +53,6 @@ public class BoardService {
     }
 
     @Transactional
-    public Page<BoardListDto> findBoardListByTitle(String title, Pageable pageable) {
-        Page<Board> boardPage = boardRepository.findAllByTitleLike(title, pageable);
-
-        return boardPage.map(BoardListDto::new);
-    }
-
-    @Transactional
     public Page<BoardListDto> findBoardListByUsername(String username, Pageable pageable) {
         Page<Board> boardPage = boardRepository.findAllByUsernameLike(username, pageable);
 
@@ -66,15 +60,41 @@ public class BoardService {
     }
 
     @Transactional
-    public Long editBoard(Long id, EditBoardDto editBoardDto) {
-        Board findBoard = getBoardById(id);
+    public Page<BoardListDto> findBoardListByTitle(String title, Pageable pageable) {
+        Page<Board> boardPage = boardRepository.findAllByTitleLike(title, pageable);
+
+        return boardPage.map(BoardListDto::new);
+    }
+
+    public Page<BoardListDto> findBoardByContent(String content, Pageable pageable) {
+        Page<Board> boardPage = boardRepository.findAllByContentLike(content, pageable);
+
+        return boardPage.map(BoardListDto::new);
+    }
+
+    @Transactional
+    public Long editBoard(Long boardId, EditBoardDto editBoardDto) {
+        Board findBoard = getBoardById(boardId);
 
         findBoard.setTitle(editBoardDto.getTitle());
         findBoard.setContent(editBoardDto.getContent());
 
-        Board saveBoard = boardRepository.save(findBoard);
+        return findBoard.getId();
+    }
 
-        return saveBoard.getId();
+    @Transactional
+    public Long updateBoardTitle(Long boardId, String title) {
+        Board findBoard = getBoardById(boardId);
+        findBoard.setTitle(title);
+
+        return findBoard.getId();
+    }
+
+    @Transactional
+    public Integer bulkUpdateBoardTitle(String title, String updateTitle) {
+        Integer result = boardRepository.updateBoardTitle(title, updateTitle);
+
+        return result;
     }
 
     @Transactional
@@ -82,16 +102,16 @@ public class BoardService {
         boardRepository.deleteById(boardId);
     }
 
-    private User getUserById(Long id) {
-        Optional<User> findUser = userRepository.findById(id);
+    private User getUserById(Long userId) {
+        Optional<User> findUser = userRepository.findById(userId);
         if (findUser.isEmpty()) {
             throw new UserNotFoundException("사용자를 찾을 수 없습니다.");
         }
         return findUser.get();
     }
 
-    private Board getBoardById(Long id) {
-        Optional<Board> findBoard = boardRepository.findEntityGraphById(id);
+    private Board getBoardById(Long boardId) {
+        Optional<Board> findBoard = boardRepository.findEntityGraphById(boardId);
         if (findBoard.isEmpty()) {
             throw new BoardNotFoundException("게시글을 찾을 수 없습니다.");
         }

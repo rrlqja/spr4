@@ -66,6 +66,11 @@ class UserServiceTest {
     }
 
     @Test
+    void update2() {
+        Long id = userService.updateUsername(1L, "updateUsername");
+    }
+
+    @Test
     void delete1() {
         userService.deleteUserById(1L);
 

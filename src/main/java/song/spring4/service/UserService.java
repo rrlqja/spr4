@@ -40,17 +40,15 @@ public class UserService {
     }
 
     @Transactional
-    public Long updateUsername(Long id, String username) {
-        User findUser = getById(id);
+    public Long updateUsername(Long userId, String username) {
+        User findUser = getById(userId);
         validUsername(username);
 
         findUser.setUsername(username);
 
-        User updateUser = userRepository.save(findUser);
+        updateSecurityContext(findUser);
 
-        updateSecurityContext(updateUser);
-
-        return updateUser.getId();
+        return findUser.getId();
     }
 
     @Transactional
@@ -65,47 +63,43 @@ public class UserService {
     }
 
     @Transactional
-    public Long updatePassword(Long id, String origPassword, String newPassword) {
-        User findUser = getById(id);
+    public Long updatePassword(Long userId, String origPassword, String newPassword) {
+        User findUser = getById(userId);
 
         validOrigPassword(origPassword, findUser.getPassword());
 
         findUser.setPassword(passwordEncoder.encode(newPassword));
 
-        User updateUser = userRepository.save(findUser);
+        updateSecurityContext(findUser);
 
-        updateSecurityContext(updateUser);
-
-        return updateUser.getId();
+        return findUser.getId();
     }
 
     @Transactional
-    public Long updateName(Long id, String name) {
-        User findUser = getById(id);
+    public Long updateName(Long userId, String name) {
+        User findUser = getById(userId);
 
         findUser.setName(name);
 
-        User updateUser = userRepository.save(findUser);
+        updateSecurityContext(findUser);
 
-        updateSecurityContext(updateUser);
-
-        return updateUser.getId();
+        return findUser.getId();
     }
 
     @Transactional
-    public Long updateEmail(Long id, String email) {
-        User findUser = getById(id);
+    public Long updateEmail(Long userId, String email) {
+        User findUser = getById(userId);
 
         findUser.setEmail(email);
 
-        User updateUser = userRepository.save(findUser);
+        updateSecurityContext(findUser);
 
-        return updateUser.getId();
+        return findUser.getId();
     }
 
     @Transactional
-    public User findUserById(Long id) {
-        User findUser = getById(id);
+    public User findUserById(Long userId) {
+        User findUser = getById(userId);
 
         return findUser;
     }
@@ -147,12 +141,12 @@ public class UserService {
     }
 
     @Transactional
-    public void deleteUserById(Long id) {
-        userRepository.deleteById(id);
+    public void deleteUserById(Long userId) {
+        userRepository.deleteById(userId);
     }
 
-    private User getById(Long id) {
-        return userRepository.findById(id).orElseThrow(
+    private User getById(Long userId) {
+        return userRepository.findById(userId).orElseThrow(
                 ()-> new UserNotFoundException("사용자를 찾을 수 없습니다.")
         );
     }

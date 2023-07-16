@@ -36,7 +36,7 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers("/", "/login", "logout", "/signup", "/css/**", "/*.ico", "/*.js", "/error").permitAll()
-                        .requestMatchers(regexMatcher("^/board/[0-9]$")).permitAll()
+                        .requestMatchers(regexMatcher("^/board/[0-9]+$")).permitAll()
                         .requestMatchers("/board/**").authenticated()
                         .requestMatchers("/comment/**").authenticated()
                         .requestMatchers("/admin/**").hasAuthority(RoleName.ROLE_ADMIN.name())

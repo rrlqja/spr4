@@ -15,7 +15,8 @@ public class ResponseBoardDto {
     private String writer;
     private String title;
     private String content;
-    private LocalDateTime createTime;
+    private Long views;
+    private LocalDateTime createDate;
 
     private List<CommentDto> commentList = new ArrayList<>();
 
@@ -25,7 +26,8 @@ public class ResponseBoardDto {
         this.writer = board.getWriter().getUsername();
         this.title = board.getTitle();
         this.content = board.getContent();
-        this.createTime = board.getCreateDate();
+        this.views = board.getViews();
+        this.createDate = board.getCreateDate();
         this.commentList = board.getCommentList().stream().map(CommentDto::new).toList();
     }
 }

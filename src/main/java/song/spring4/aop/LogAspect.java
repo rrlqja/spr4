@@ -40,8 +40,8 @@ public class LogAspect {
                 stopWatch.stop();
 
                 resultTime = stopWatch.getLastTaskTimeMillis();
-                logEntityService.save(joinPoint.getSignature().getDeclaringTypeName(), joinPoint.getSignature().getName(),
-                        LocalDateTime.now(), resultTime);
+//                logEntityService.save(joinPoint.getSignature().getDeclaringTypeName(), joinPoint.getSignature().getName(),
+//                        LocalDateTime.now(), resultTime);
             }
 
             log.info("[Logging] result time = {}",resultTime);
