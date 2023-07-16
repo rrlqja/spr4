@@ -52,6 +52,20 @@ public class BoardService {
     }
 
     @Transactional
+    public Page<BoardListDto> findBoardListByTitle(String title, Pageable pageable) {
+        Page<Board> boardPage = boardRepository.findAllByTitleLike(title, pageable);
+
+        return boardPage.map(BoardListDto::new);
+    }
+
+    @Transactional
+    public Page<BoardListDto> findBoardListByUsername(String username, Pageable pageable) {
+        Page<Board> boardPage = boardRepository.findAllByUsernameLike(username, pageable);
+
+        return boardPage.map(BoardListDto::new);
+    }
+
+    @Transactional
     public Long editBoard(Long id, EditBoardDto editBoardDto) {
         Board findBoard = getBoardById(id);
 

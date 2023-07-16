@@ -88,6 +88,20 @@ class BoardServiceTest {
     }
 
     @Test
+    void find5() {
+        PageRequest pageRequest = PageRequest.of(0, 10);
+        Page<BoardListDto> boardPage = boardService.findBoardListByTitle("le", pageRequest);
+        assertThat(boardPage.getTotalElements()).isEqualTo(10);
+    }
+
+    @Test
+    void find6() {
+        PageRequest pageRequest = PageRequest.of(0, 10);
+        Page<BoardListDto> boardPage = boardService.findBoardListByUsername("a", pageRequest);
+        assertThat(boardPage.getTotalElements()).isEqualTo(10);
+    }
+
+    @Test
     @Transactional
     @Rollback(value = true)
     void update1() {
