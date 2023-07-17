@@ -21,7 +21,7 @@
 </head>
 <body>
 <div class="container">
-    <form id="saveBoardForm" th:object="${requestBoardDto}" method="post">
+    <form id="saveBoardForm" th:object="${requestBoardDto}" method="post" enctype="multipart/form-data">
         <div class="mb-3">
             <div id="titleError" style="color: red;"></div>
             <label for="title">Title</label>
@@ -31,6 +31,10 @@
             <div id="contentError" style="color: red;"></div>
             <label for="content">Content</label>
             <textarea type="text" th:field="*{content}" class="form-control" id="content" style="min-height: 300px; resize: none"></textarea>
+        </div>
+        <div class="mb-3">
+            <label for="files">Files</label>
+            <input type="file" multiple="multiple" name="files" id="files">
         </div>
         <button type="submit" class="btn btn-primary">저장</button>
         <a th:href="@{/}" class="btn btn-secondary">취소</a>

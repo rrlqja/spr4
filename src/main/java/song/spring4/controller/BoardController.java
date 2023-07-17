@@ -7,13 +7,15 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import song.spring4.dto.RequestBoardDto;
-import song.spring4.dto.RequestCommentDto;
-import song.spring4.dto.ResponseBoardDto;
-import song.spring4.dto.EditBoardDto;
+import song.spring4.dto.*;
 import song.spring4.exception.IllegalRequestArgumentException;
 import song.spring4.service.BoardService;
+import song.spring4.service.FileEntityService;
+import song.spring4.service.UploadService;
 import song.spring4.userdetails.UserDetailsImpl;
+
+import java.io.IOException;
+import java.util.List;
 
 @Slf4j
 @Controller
@@ -22,6 +24,8 @@ import song.spring4.userdetails.UserDetailsImpl;
 public class BoardController {
 
     private final BoardService boardService;
+    private final UploadService uploadService;
+    private final FileEntityService fileEntityService;
 
     @GetMapping("/save")
     public String getSaveBoard(@ModelAttribute RequestBoardDto requestBoardDto) {
@@ -32,10 +36,12 @@ public class BoardController {
     @PostMapping("/save")
     public String postSaveBoard(@AuthenticationPrincipal UserDetailsImpl userDetails,
                                 RequestBoardDto requestBoardDto,
-                                RedirectAttributes redirectAttributes) {
-        Long id = boardService.saveBoard(userDetails.getId(), requestBoardDto);
+                                RedirectAttributes redirectAttributes) throws IOException {
+        Long boardId = boardService.saveBoard(userDetails.getId(), requestBoardDto);
+        List<UploadFileDto> uploadFileList = uploadService.upload(requestBoardDto.getFiles());
+        fileEntityService.saveFileEntity(uploadFileList, boardId);
 
-        redirectAttributes.addAttribute("id", id);
+        redirectAttributes.addAttribute("id", boardId);
         return "redirect:/board/{id}";
     }
 

@@ -20,21 +20,15 @@ import java.util.List;
 @RequiredArgsConstructor
 public class AdminController {
 
-//    @ResponseBody
-//    @GetMapping
-//    public List<SimpleGrantedAuthority> getAdmin(@AuthenticationPrincipal UserDetailsImpl userDetails) {
-//
-//        List<SimpleGrantedAuthority> authorities = userDetails.getAuthorities().stream().map(
-//                role -> new SimpleGrantedAuthority(role.getAuthority().toString())
-//        ).toList();
-//
-//        return authorities;
-//    }
-
     @ResponseBody
     @GetMapping
-    public void getAdmin() {
-        log.info("getAdmin");
+    public List<SimpleGrantedAuthority> getAdmin(@AuthenticationPrincipal UserDetailsImpl userDetails) {
 
+        List<SimpleGrantedAuthority> authorities = userDetails.getAuthorities().stream().map(
+                role -> new SimpleGrantedAuthority(role.getAuthority().toString())
+        ).toList();
+
+        return authorities;
     }
+
 }

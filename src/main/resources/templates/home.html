@@ -30,6 +30,27 @@
             align-items: center;
         }
 
+        .boardInfo {
+            background-color: #666;
+            color: white;
+            height: 750px;
+            display: flex;
+            flex-direction: space-between;
+            margin-left: 5px;
+            margin-right: 5px;
+            padding: 7px;
+        }
+
+        .boardId, .boardWriter {
+            flex: 3;
+        }
+        .boardTitle {
+            flex: 6;
+        }
+        .boardCreateDate {
+            flex: 2;
+        }
+
         .boardList {
             height: 750px;
             min-height: 750px;
@@ -52,9 +73,16 @@
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
 
+        .boardId {
+            height: 80%;
+            flex 3;
+            display: flex;
+            align-items: center;
+        }
+
         .boardTitle {
             height: 80%;
-            flex: 7;
+            flex: 6;
             display: flex;
             align-items: center;
             margin-right: 10px;
@@ -68,6 +96,13 @@
             display: flex;
             align-items: center;
             justify-content: center;
+        }
+
+        .boardCreateDate {
+            height: 80%;
+            flex: 2;
+            display: flex;
+            align-items: center;
         }
 
         .searchBoard {
@@ -141,9 +176,17 @@
     <hr>
 
     <div class="boardList">
+        <div class="boardInfo">
+            <div class="boardId">ID</div>
+            <div class="boardTitle">Title</div>
+            <div class="boardWriter">Writer</div>
+            <div class="boardCreateDate">Create Date</div>
+        </div>
         <div class="board" th:each="board : ${boardPage.getContent()}">
+            <div class="boardId" th:text="${board.id}"></div>
             <div class="boardTitle" th:onclick="|location.href='@{/board/{id}(id=${board.id})}'|" th:text="${board.title}"></div>
             <div class="boardWriter" th:text="${board.writer}"></div>
+            <div class="boardCreateDate" th:text="${#temporals.format(board.createDate, 'yyyy-MM-dd HH:mm')}"></div>
         </div>
     </div>
     <hr>
