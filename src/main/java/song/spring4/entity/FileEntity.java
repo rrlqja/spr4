@@ -12,9 +12,6 @@ public class FileEntity {
     @Id @GeneratedValue
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    private Board board;
-
     private String uploadFileName;
     private String saveFileName;
 

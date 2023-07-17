@@ -18,7 +18,6 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class UploadService {
 
-
     @Value("${upload.path}")
     private String uploadPath;
 
@@ -28,8 +27,10 @@ public class UploadService {
         }
         List<UploadFileDto> uploadFileList = new ArrayList<>();
         for (MultipartFile file : multipartFileList) {
-            UploadFileDto uploadFile = upload(file);
-            uploadFileList.add(uploadFile);
+            if (!file.isEmpty()) {
+                UploadFileDto uploadFile = upload(file);
+                uploadFileList.add(uploadFile);
+            }
         }
 
         return uploadFileList;
@@ -47,14 +48,14 @@ public class UploadService {
         return new UploadFileDto(originalFilename, saveFileName);
     }
 
-    private String getFullPath(String saveFileName) {
+    public String getFullPath(String saveFileName) {
         return uploadPath + saveFileName;
     }
 
     private String createSaveFileName(String originalFilename) {
         String ext = getExt(originalFilename);
         String uuid = UUID.randomUUID().toString().substring(0, 10);
-        return originalFilename + uuid + "." + ext;
+        return originalFilename.substring(0, originalFilename.lastIndexOf(".")) + uuid + "." + ext;
     }
 
     private String getExt(String originalFilename) {

@@ -59,7 +59,7 @@
     </div>
     <div class="mb-3">
         <label for="content">Content</label>
-        <textarea type="text" th:text="${responseBoardDto.content}" class="form-control" id="content" style="min-height: 300px; resize: none" readonly></textarea>
+        <div type="text" th:utext="${responseBoardDto.content}" class="form-control" id="content" style="min-height: 300px" readonly></div>
     </div>
     <div th:if="${#authentication.name != 'anonymousUser'}">
         <a type="button" class="btn btn-primary" th:if="${#authentication.name == responseBoardDto.writer}" th:href="@{/board/{id}/edit(id=${responseBoardDto.id})}">수정</a>

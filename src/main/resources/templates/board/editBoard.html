@@ -3,7 +3,9 @@
 <head>
     <title>Edit Board</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="../css/bootstrap.min.css" th:href="@{/css/bootstrap.min.css}" rel="stylesheet">
+    <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet">
+
+    <script th:src="@{/ckeditor/ckeditor.js}"></script>
     <style>
         body {
             background-color: #f5f5f5;
@@ -28,7 +30,8 @@
         </div>
         <div class="mb-3">
             <label for="content">Content</label>
-            <textarea type="text" th:field="*{content}" class="form-control" id="content" style="min-height: 300px; resize: none"></textarea>
+            <textarea id="content" th:field="*{content}">
+            </textarea>
         </div>
         <button type="submit" class="btn btn-primary">저장</button>
         <a th:href="@{/board/{id}(id=${editBoardDto.id})}" class="btn btn-secondary">취소</a>
@@ -36,6 +39,11 @@
 </div>
 
 <script>
+    CKEDITOR.replace('content', {
+        filebrowserUploadUrl: "/file/uploadFile?responseType=json",
+        height: 300,
+        resize_enabled: false
+    });
 </script>
 </body>
 </html>
