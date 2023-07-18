@@ -29,6 +29,8 @@ public class Board extends BaseTimeEntity{
     private List<FileEntity> fileEntityList = new ArrayList<>();
 
     private String title;
+
+    @Column(columnDefinition = "TEXT")
     private String content;
     private Long views;
 

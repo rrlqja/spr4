@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import song.spring4.dto.UploadFileDto;
 import song.spring4.service.FileEntityService;
-import song.spring4.service.UploadService;
+import song.spring4.service.FileService;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
@@ -19,13 +19,14 @@ import java.net.MalformedURLException;
 @RequestMapping("/file")
 @RequiredArgsConstructor
 public class FileController {
-    private final UploadService uploadService;
+    private final FileService fileService;
     private final FileEntityService fileEntityService;
 
     @ResponseBody
     @PostMapping("/uploadFile")
     public UploadFileDto postUpload(@RequestParam MultipartFile upload) throws IOException {
-        UploadFileDto uploadFileDto = uploadService.upload(upload);
+        System.out.println("upload.getName() = " + upload.getOriginalFilename());
+        UploadFileDto uploadFileDto = fileService.upload(upload);
         fileEntityService.saveFileEntity(uploadFileDto);
 
         return uploadFileDto;
@@ -34,6 +35,6 @@ public class FileController {
     @ResponseBody
     @GetMapping("/downloadFile/{fileName}")
     public Resource getDownload(@PathVariable(value = "fileName") String saveFileName) throws MalformedURLException {
-        return new UrlResource("file:" + uploadService.getFullPath(saveFileName));
+        return new UrlResource("file:" + fileService.getFullPath(saveFileName));
     }
 }

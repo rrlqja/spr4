@@ -13,6 +13,7 @@ import java.util.Optional;
 @Repository
 public interface FileEntityJpaRepository extends JpaRepository<FileEntity, Long> {
 
+    @EntityGraph(attributePaths = {"board"})
     @Query("select f from FileEntity f where f.saveFileName = :saveFileName")
     Optional<FileEntity> findBySaveFileName(@Param(value = "saveFileName") String saveFileName);
 

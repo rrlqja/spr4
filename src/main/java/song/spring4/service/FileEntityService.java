@@ -46,10 +46,8 @@ public class FileEntityService {
     }
 
     @Transactional
-    public String findBySaveFileName(String saveFileName) {
-        FileEntity fileEntity = getFileEntityBySaveFileName(saveFileName);
-
-        return fileEntity.getSaveFileName();
+    public List<FileEntity> findByBoardId(Long boardId) {
+        return fileEntityRepository.findByBoardId(boardId);
     }
 
     @Transactional
@@ -59,6 +57,13 @@ public class FileEntityService {
         FileEntity findFileEntity = getFileEntityBySaveFileName(saveFileName);
 
         findFileEntity.setBoard(findBoard);
+    }
+
+    @Transactional
+    public void removeFileEntityBySaveFileName(String saveFileName) {
+        FileEntity findFileEntity = getFileEntityBySaveFileName(saveFileName);
+
+        fileEntityRepository.delete(findFileEntity);
     }
 
     private FileEntity getFileEntityBySaveFileName(String saveFileName) {
@@ -75,9 +80,5 @@ public class FileEntityService {
             throw new BoardNotFoundException("게시글을 찾을 수 없습니다.");
         }
         return findBoard.get();
-    }
-
-    public List<FileEntity> findByBoardId(Long boardId) {
-        return fileEntityRepository.findByBoardId(boardId);
     }
 }

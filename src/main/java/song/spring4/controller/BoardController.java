@@ -16,6 +16,7 @@ import song.spring4.entity.FileEntity;
 import song.spring4.exception.IllegalRequestArgumentException;
 import song.spring4.service.BoardService;
 import song.spring4.service.FileEntityService;
+import song.spring4.service.FileService;
 import song.spring4.userdetails.UserDetailsImpl;
 
 import java.util.List;
@@ -28,6 +29,7 @@ public class BoardController {
 
     private final BoardService boardService;
     private final FileEntityService fileEntityService;
+    private final FileService fileService;
 
     @GetMapping("/save")
     public String getSaveBoard(@ModelAttribute RequestBoardDto requestBoardDto) {
@@ -48,10 +50,11 @@ public class BoardController {
         for (Element element : img) {
             String imgUrl = element.attr("src");
 
-            String saveFileName = imgUrl.substring(0, img.lastIndexOf("/") + 1);
-            fileEntityService.findByBoardId()
-        }
+            String saveFileName = imgUrl.substring(imgUrl.lastIndexOf("/") + 1);
+            System.out.println("saveFileName = " + saveFileName);
 
+            fileEntityService.associateBoardAndFile(saveFileName, boardId);
+        }
 
         redirectAttributes.addAttribute("id", boardId);
         return "redirect:/board/{id}";
@@ -94,14 +97,44 @@ public class BoardController {
                                 @ModelAttribute EditBoardDto editBoardDto,
                                 RedirectAttributes redirectAttributes) {
         Long boardId = boardService.editBoard(id, editBoardDto);
-        List<FileEntity> fileEntityList = fileEntityService.findByBoardId(boardId);
 
         Document doc = Jsoup.parse(editBoardDto.getContent());
         Elements img = doc.select("img");
 
-        List<String> editImgList = img.stream().map(element -> element.attr("src"))
+//        get Edit ImgList
+        List<String> editImgList = img.stream()
+                .map(element -> element.attr("src"))
                 .map(this::extractFileNameFromUrl)
                 .toList();
+//        System.out.println("editImgList = " + editImgList);
+
+//        get Board ImgList
+        List<FileEntity> fileEntityList = fileEntityService.findByBoardId(boardId);
+        List<String> boardFileList = fileEntityList.stream()
+                .map(FileEntity::getSaveFileName)
+                .toList();
+//        System.out.println("boardFileList = " + boardFileList);
+
+//        get new ImgList from EditBoardDto
+        List<String> addFileNameList = editImgList.stream()
+                .filter(fileName -> !boardFileList.contains(fileName))
+                .toList();
+//        System.out.println("addFileNameList = " + addFileNameList);
+
+//        get removeImgList from Board
+        List<String> removeFileList = boardFileList.stream()
+                .filter(fileName -> !editImgList.contains(fileName))
+                .toList();
+//        System.out.println("removeFileList = " + removeFileList);
+
+        for (String fileName : addFileNameList) {
+            fileEntityService.associateBoardAndFile(fileName, boardId);
+        }
+
+        for (String fileName : removeFileList) {
+            fileEntityService.removeFileEntityBySaveFileName(fileName);
+            fileService.delete(fileName);
+        }
 
         redirectAttributes.addAttribute("id", boardId);
 
@@ -122,6 +155,6 @@ public class BoardController {
     }
 
     private String extractFileNameFromUrl(String url) {
-        return url.substring(0, url.lastIndexOf("/"));
+        return url.substring(url.lastIndexOf("/") + 1);
     }
 }

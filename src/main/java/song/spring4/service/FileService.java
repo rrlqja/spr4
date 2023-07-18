@@ -16,7 +16,7 @@ import java.util.UUID;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class UploadService {
+public class FileService {
 
     @Value("${upload.path}")
     private String uploadPath;
@@ -46,6 +46,14 @@ public class UploadService {
         multipartFile.transferTo(new File(getFullPath(saveFileName)));
 
         return new UploadFileDto(originalFilename, saveFileName);
+    }
+
+    public void delete(String saveFileName) {
+        File file = new File(getFullPath(saveFileName));
+
+        if (file.exists()) {
+            file.delete();
+        }
     }
 
     public String getFullPath(String saveFileName) {

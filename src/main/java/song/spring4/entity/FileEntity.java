@@ -23,4 +23,9 @@ public class FileEntity {
         this.uploadFileName = uploadFileName;
         this.saveFileName = saveFileName;
     }
+
+    public void setBoard(Board board) {
+        this.board = board;
+        board.getFileEntityList().add(this);
+    }
 }

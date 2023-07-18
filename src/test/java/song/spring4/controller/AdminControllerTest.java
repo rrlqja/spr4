@@ -1,7 +1,6 @@
 package song.spring4.controller;
 
 import lombok.extern.slf4j.Slf4j;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,15 +12,14 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
-import song.spring4.entity.role.RoleName;
+import song.spring4.entity.User;
+import song.spring4.repository.UserJpaRepository;
+import song.spring4.userdetails.UserDetailsServiceImpl;
 
-import static org.junit.jupiter.api.Assertions.*;
-import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -32,19 +30,19 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class AdminControllerTest {
 
     @Autowired
-    UserDetailsService userDetailsService;
+    UserDetailsServiceImpl userDetailsService;
     @Autowired
     MockMvc mockMvc;
 
     @Test
-    @WithMockUser(authorities = {"ROLE_ADMIN"})
+    @WithUserDetails(value = "a")
     void getMapping1() throws Exception {
         mockMvc.perform(get("/admin"))
                 .andExpect(status().isOk());
     }
 
     @Test
-    @WithMockUser(authorities = {"ROLE_USER"})
+    @WithMockUser
     void getMapping2() throws Exception {
         mockMvc.perform(get("/admin"))
                 .andExpect(status().isForbidden());
