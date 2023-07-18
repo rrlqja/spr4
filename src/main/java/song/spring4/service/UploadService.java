@@ -54,7 +54,7 @@ public class UploadService {
 
     private String createSaveFileName(String originalFilename) {
         String ext = getExt(originalFilename);
-        String uuid = UUID.randomUUID().toString().substring(0, 10);
+        String uuid = UUID.randomUUID().toString().substring(0, 8);
         return originalFilename.substring(0, originalFilename.lastIndexOf(".")) + uuid + "." + ext;
     }
 

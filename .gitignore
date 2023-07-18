@@ -41,5 +41,3 @@ src/main/resources/*.yml
 !src/main/resources/application.yml
 #src/main/resources/errors.properties
 #src/main/generated/
-#src/main/resources/static/css/
-src/main/resources/static/js/

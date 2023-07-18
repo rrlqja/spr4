@@ -25,6 +25,9 @@ public class Board extends BaseTimeEntity{
     @OneToMany(mappedBy = "board",fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Comment> commentList = new ArrayList<>();
 
+    @OneToMany(mappedBy = "board", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<FileEntity> fileEntityList = new ArrayList<>();
+
     private String title;
     private String content;
     private Long views;

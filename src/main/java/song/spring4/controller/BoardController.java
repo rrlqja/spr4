@@ -2,15 +2,23 @@ package song.spring4.controller;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import song.spring4.dto.*;
+import song.spring4.entity.FileEntity;
 import song.spring4.exception.IllegalRequestArgumentException;
 import song.spring4.service.BoardService;
+import song.spring4.service.FileEntityService;
 import song.spring4.userdetails.UserDetailsImpl;
+
+import java.util.List;
 
 @Slf4j
 @Controller
@@ -19,6 +27,7 @@ import song.spring4.userdetails.UserDetailsImpl;
 public class BoardController {
 
     private final BoardService boardService;
+    private final FileEntityService fileEntityService;
 
     @GetMapping("/save")
     public String getSaveBoard(@ModelAttribute RequestBoardDto requestBoardDto) {
@@ -31,6 +40,18 @@ public class BoardController {
                                 RequestBoardDto requestBoardDto,
                                 RedirectAttributes redirectAttributes) {
         Long boardId = boardService.saveBoard(userDetails.getId(), requestBoardDto);
+
+        String content = requestBoardDto.getContent();
+        Document doc = Jsoup.parse(content);
+        Elements img = doc.select("img");
+
+        for (Element element : img) {
+            String imgUrl = element.attr("src");
+
+            String saveFileName = imgUrl.substring(0, img.lastIndexOf("/") + 1);
+            fileEntityService.findByBoardId()
+        }
+
 
         redirectAttributes.addAttribute("id", boardId);
         return "redirect:/board/{id}";
@@ -73,6 +94,14 @@ public class BoardController {
                                 @ModelAttribute EditBoardDto editBoardDto,
                                 RedirectAttributes redirectAttributes) {
         Long boardId = boardService.editBoard(id, editBoardDto);
+        List<FileEntity> fileEntityList = fileEntityService.findByBoardId(boardId);
+
+        Document doc = Jsoup.parse(editBoardDto.getContent());
+        Elements img = doc.select("img");
+
+        List<String> editImgList = img.stream().map(element -> element.attr("src"))
+                .map(this::extractFileNameFromUrl)
+                .toList();
 
         redirectAttributes.addAttribute("id", boardId);
 
@@ -90,5 +119,9 @@ public class BoardController {
         if (!userId.equals(boardWriterId)) {
             throw new IllegalRequestArgumentException("권한이 없습니다.");
         }
+    }
+
+    private String extractFileNameFromUrl(String url) {
+        return url.substring(0, url.lastIndexOf("/"));
     }
 }
