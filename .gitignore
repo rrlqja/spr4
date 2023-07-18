@@ -43,5 +43,3 @@ src/main/resources/*.yml
 #src/main/generated/
 #src/main/resources/static/css/
 src/main/resources/static/js/
-#*.css
-*.js
