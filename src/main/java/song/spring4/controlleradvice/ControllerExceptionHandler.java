@@ -9,10 +9,7 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import song.spring4.exception.AlreadyExistsUsernameException;
-import song.spring4.exception.IllegalRequestArgumentException;
-import song.spring4.exception.NotFoundException;
-import song.spring4.exception.TokenAlreadyVerifiedException;
+import song.spring4.exception.*;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -23,7 +20,8 @@ import java.util.Map;
 public class ControllerExceptionHandler {
 
     @ExceptionHandler({NotFoundException.class, TokenAlreadyVerifiedException.class,
-    AlreadyExistsUsernameException.class, IllegalRequestArgumentException.class})
+    AlreadyExistsUsernameException.class, IllegalRequestArgumentException.class,
+    FileEntityNotFoundException.class})
     public ResponseEntity<String> notFoundExceptionHandler(Exception e) {
         return ResponseEntity
                 .status(HttpStatus.BAD_REQUEST)
