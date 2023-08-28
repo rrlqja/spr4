@@ -24,11 +24,11 @@ class UserRoleServiceTest {
     void save1() {
         userRoleService.grantRole(1L, RoleName.ROLE_ADMIN);
 
-        assertThat(userRoleRepository.findByUserAndRoleName(1L, RoleName.ROLE_ADMIN).isPresent()).isTrue();
+        assertThat(userRoleRepository.findByUserIdAndRoleName(1L, RoleName.ROLE_ADMIN).isPresent()).isTrue();
 
         userRoleService.revokeRole(1L, RoleName.ROLE_ADMIN);
 
-        assertThat(userRoleRepository.findByUserAndRoleName(1L, RoleName.ROLE_ADMIN).isEmpty()).isTrue();
+        assertThat(userRoleRepository.findByUserIdAndRoleName(1L, RoleName.ROLE_ADMIN).isEmpty()).isTrue();
     }
 
 }

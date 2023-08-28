@@ -26,11 +26,11 @@
 <body>
 
 <div class="form-container">
-    <form id="updateEmailForm" method="post" th:action>
+    <form id="updateEmailForm" method="post" th:action th:object="${updateEmailDto}">
         <div class="form-group">
             <div id="emailError" style="color: red;"></div>
             <label for="email">Email</label>
-            <input type="text" class="form-control" id="email" name="newEmail" th:value="${email}">
+            <input type="text" class="form-control" id="email" name="newEmail" th:field="*{email}">
             <button type="button" class="btn btn-primary" id="verifyEmail">이메일 인증</button>
             <div id="emailResult"></div>
         </div>
@@ -114,7 +114,7 @@
         }
 
         let formData = new FormData();
-        formData.append('newEmail', email);
+        formData.append('email', email);
 
         fetch('/user/updateEmail', {
             method: 'POST',

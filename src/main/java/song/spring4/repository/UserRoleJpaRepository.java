@@ -13,7 +13,7 @@ import java.util.Optional;
 public interface UserRoleJpaRepository extends JpaRepository<UserRole, Long> {
 
     @Query("select ur from UserRole ur where ur.user.id = :userId and ur.role.roleName = :roleName")
-    Optional<UserRole> findByUserAndRoleName(@Param(value = "userId") Long userId,
-                                             @Param(value = "roleName") RoleName roleName);
+    Optional<UserRole> findByUserIdAndRoleName(@Param(value = "userId") Long userId,
+                                               @Param(value = "roleName") RoleName roleName);
 
 }

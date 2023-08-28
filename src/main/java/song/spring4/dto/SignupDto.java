@@ -17,15 +17,15 @@ public class SignupDto {
     private String email;
 
     public User toEntity() {
-        User user = new User();
-        user.setUsername(this.username);
-        user.setPassword(this.password);
-        user.setName(this.name);
-        user.setEmail(this.email);
-        user.setAccountNonExpired(true);
-        user.setAccountNonLocked(true);
-        user.setCredentialsNonExpired(true);
-        user.setEnabled(true);
-        return user;
+        return User.builder()
+                .username(this.username)
+                .password(this.password)
+                .name(this.name)
+                .email(this.email)
+                .isAccountNonExpired(true)
+                .isAccountNonLocked(true)
+                .isCredentialsNonExpired(true)
+                .isEnabled(true)
+                .build();
     }
 }

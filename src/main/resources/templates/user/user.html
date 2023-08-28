@@ -26,7 +26,7 @@
 <body>
 
 <div class="form-container">
-    <form id="signupForm" th:object="${userDto}">
+    <form th:object="${userDto}">
         <div class="form-group">
             <label for="username">Username</label>
             <input type="text" class="form-control" id="username" th:field="*{username}" readonly>

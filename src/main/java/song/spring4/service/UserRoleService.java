@@ -25,7 +25,7 @@ public class UserRoleService {
 
     @Transactional
     public void grantRole(Long userId, RoleName roleName) {
-        Optional<UserRole> findUserRole = userRoleRepository.findByUserAndRoleName(userId, roleName);
+        Optional<UserRole> findUserRole = userRoleRepository.findByUserIdAndRoleName(userId, roleName);
         if (findUserRole.isPresent()) {
             log.info("이미 부여된 권한입니다. id = {} role = {}", userId, roleName);
             return;
@@ -34,17 +34,19 @@ public class UserRoleService {
         User findUser = getUserById(userId);
         Role role = roleService.findOrCreate(roleName);
 
-        UserRole userRole = new UserRole();
-        userRole.setRole(role);
-        userRole.setUser(findUser);
+        UserRole userRole = new UserRole(role);
+        findUser.addUserRole(userRole);
 
         UserRole saveUserRole = userRoleRepository.save(userRole);
     }
 
     @Transactional
     public void revokeRole(Long userId, RoleName roleName) {
-        Optional<UserRole> findUserRole = userRoleRepository.findByUserAndRoleName(userId, roleName);
-        findUserRole.ifPresent(userRoleRepository::delete);
+        Optional<UserRole> findUserRole = userRoleRepository.findByUserIdAndRoleName(userId, roleName);
+        findUserRole.ifPresent(userRole -> {
+            userRoleRepository.delete(userRole);
+            userRole.getUser().getRoleList().remove(userRole);
+        });
     }
 
     private User getUserById(Long userId) {

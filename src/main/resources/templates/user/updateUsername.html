@@ -26,10 +26,10 @@
 <body>
 
 <div class="form-container">
-    <form id="updateUsernameForm">
+    <form id="updateUsernameForm" th:object="${updateUsernameDto}">
         <div class="form-group">
             <label for="username">Username</label>
-            <input type="text" class="form-control" id="username" name="newUsername" th:value="${username}">
+            <input type="text" class="form-control" id="username" name="newUsername" th:field="*{username}">
         </div>
         <div id="validUsername"></div>
         <input type="button" class="btn btn-secondary" id="checkUsername" value="중복 확인">

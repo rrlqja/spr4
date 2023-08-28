@@ -26,10 +26,10 @@
 <body>
 
 <div class="form-container">
-    <form id="updateNameForm" method="post" th:action>
+    <form id="updateNameForm" method="post" th:action th:object="${updateNameDto}">
         <div class="form-group">
             <label for="name">Name</label>
-            <input type="text" class="form-control" id="name" name="newName" th:value="${name}">
+            <input type="text" class="form-control" id="name" name="newName" th:field="*{name}">
         </div>
         <input type="submit" class="btn btn-primary" value="저장">
         <a th:href="@{/user}" class="btn btn-secondary">취소</a>

@@ -42,25 +42,27 @@ public class InitData {
         private final BCryptPasswordEncoder passwordEncoder;
 
         public void init1() {
-            User userA = new User();
-            userA.setUsername("a");
-            userA.setPassword(passwordEncoder.encode("a"));
-            userA.setName("a");
-            userA.setEmail("dkclasltmf22@naver.com");
-            userA.setEnabled(true);
-            userA.setAccountNonExpired(true);
-            userA.setAccountNonLocked(true);
-            userA.setCredentialsNonExpired(true);
+            User userA = User.builder()
+                    .username("a")
+                    .password(passwordEncoder.encode("a"))
+                    .name("a")
+                    .email("dkclasltmf22@naver.com")
+                    .isAccountNonExpired(true)
+                    .isAccountNonLocked(true)
+                    .isCredentialsNonExpired(true)
+                    .isEnabled(true)
+                    .build();
             User saveUserA = userRepository.save(userA);
 
-            User userB = new User();
-            userB.setUsername("b");
-            userB.setPassword(passwordEncoder.encode("b"));
-            userB.setName("b");
-            userB.setEnabled(true);
-            userB.setAccountNonExpired(true);
-            userB.setAccountNonLocked(true);
-            userB.setCredentialsNonExpired(true);
+            User userB = User.builder()
+                    .username("b")
+                    .password(passwordEncoder.encode("a"))
+                    .name("b")
+                    .isAccountNonExpired(true)
+                    .isAccountNonLocked(true)
+                    .isCredentialsNonExpired(true)
+                    .isEnabled(true)
+                    .build();
             User saveUserB = userRepository.save(userB);
 
             userRoleService.grantRole(saveUserA.getId(), RoleName.ROLE_USER);
