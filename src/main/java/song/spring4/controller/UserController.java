@@ -136,7 +136,6 @@ public class UserController {
         String token = resetPasswordService.createPasswordToken(email);
         EmailDto emailDto = emailService.sendSimpleMessage(email, "reset password",
                 "localhost:8080/user/resetPassword/" + token);
-        emailService.saveEmail(emailDto);
     }
 
     @GetMapping("/resetPassword/{token}")
