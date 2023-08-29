@@ -33,12 +33,12 @@ class CommentServiceTest {
 
         Comment findComment = commentRepository.findEntityGraphById(id).get();
 
-        assertThat(findComment.getBoard().getTitle()).isEqualTo("title0");
+        assertThat(findComment.getBoard().getTitle()).isEqualTo("title1");
     }
 
     @Test
     void find1() {
-        assertThat(commentService.findCommentById(1L).getContent()).isEqualTo("comment0");
+        assertThat(commentService.findCommentById(1L).getContent()).isEqualTo("comment1");
     }
 
     @Test

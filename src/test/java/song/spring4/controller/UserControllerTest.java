@@ -72,13 +72,13 @@ class UserControllerTest {
     @Rollback(value = true)
     void postUpdateUsername() throws Exception {
         mockMvc.perform(post("/user/updateUsername")
-                        .param("newUsername", "newUsername").with(securityContext(context)))
+                        .param("username", "username").with(securityContext(context)))
                 .andExpect(status().isOk());
 
-        assertThat(userService.findUserByUsername("newUsername")).isNotNull();
+        assertThat(userService.findUserByUsername("username")).isNotNull();
 
         mockMvc.perform(post("/user/updateUsername")
-                        .param("newUsername", "newUsername").with(securityContext(context)))
+                        .param("username", "username").with(securityContext(context)))
                 .andExpect(status().isBadRequest());
     }
 
@@ -86,11 +86,11 @@ class UserControllerTest {
     @Transactional
     @Rollback(value = true)
     void postUpdatePassword() throws Exception {
-        mockMvc.perform(post("/user/updatePassword").param("origPassword", "a")
-                        .param("newPassword", "newPassword").with(securityContext(context)))
+        mockMvc.perform(post("/user/updatePassword").param("originalPassword", "a")
+                        .param("newPassword", "new password").with(securityContext(context)))
                 .andExpect(status().isOk());
         User findUser = userService.findUserByUsername("a");
-        assertThat(passwordEncoder.matches("newPassword", findUser.getPassword())).isEqualTo(true);
+        assertThat(passwordEncoder.matches("new password", findUser.getPassword())).isEqualTo(true);
     }
 
     @Test
@@ -98,10 +98,10 @@ class UserControllerTest {
     @Rollback(value = true)
     void postUpdateName() throws Exception {
         mockMvc.perform(post("/user/updateName")
-                        .param("newName", "newName").with(securityContext(context)))
+                        .param("name", "name").with(securityContext(context)))
                 .andExpect(status().is3xxRedirection());
 
-        assertThat(userService.findUserByUsername("a").getName()).isEqualTo("newName");
+        assertThat(userService.findUserByUsername("a").getName()).isEqualTo("name");
     }
 
     @Test
@@ -109,7 +109,7 @@ class UserControllerTest {
     @Rollback(value = true)
     void postUpdateEmail() throws Exception {
         mockMvc.perform(post("/user/updateEmail")
-                        .param("newEmail", "newEmail@email.com"))
+                        .param("email", "newEmail@email.com"))
                 .andExpect(status().isOk());
     }
 

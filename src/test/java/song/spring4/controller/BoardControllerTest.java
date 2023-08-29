@@ -64,8 +64,8 @@ class BoardControllerTest {
     @Test
     void getBoard1() throws Exception {
         mockMvc.perform(get("/board/{id}", 1L))
-                .andExpect(model().attribute("responseBoardDto", hasProperty("title", is("title0"))))
-                .andExpect(model().attribute("responseBoardDto", hasProperty("commentList", hasSize(5))));
+                .andExpect(model().attribute("boardDto", hasProperty("title", is("title1"))))
+                .andExpect(model().attribute("boardDto", hasProperty("commentList", hasSize(5))));
 
     }
 

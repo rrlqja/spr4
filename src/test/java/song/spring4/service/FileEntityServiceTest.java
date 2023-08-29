@@ -1,11 +1,11 @@
 package song.spring4.service;
 
 import lombok.extern.slf4j.Slf4j;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
+import org.springframework.transaction.annotation.Transactional;
 import song.spring4.dto.UploadFileDto;
 import song.spring4.entity.Board;
 import song.spring4.entity.FileEntity;
@@ -31,6 +31,7 @@ class FileEntityServiceTest {
     BoardJpaRepository boardRepository;
 
     @Test
+    @Transactional
     void save1() {
         UploadFileDto uploadFileDto = new UploadFileDto("a", "b");
         fileEntityService.saveFileEntity(uploadFileDto);
@@ -40,6 +41,7 @@ class FileEntityServiceTest {
     }
 
     @Test
+    @Transactional
     void save2() {
         UploadFileDto uploadFileDto1 = new UploadFileDto("o1", "s1");
         UploadFileDto uploadFileDto2 = new UploadFileDto("o2", "s2");
@@ -59,9 +61,11 @@ class FileEntityServiceTest {
     }
 
     @Test
+    @Transactional
     void t1() {
-        Board board = new Board();
-        board.setTitle("noFile");
+        Board board = Board.builder()
+                .title("noFile")
+                .build();
         Board saveBoard = boardRepository.save(board);
 
         FileEntity fileEntity = new FileEntity();

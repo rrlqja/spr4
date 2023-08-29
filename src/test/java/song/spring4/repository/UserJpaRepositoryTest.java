@@ -19,8 +19,9 @@ class UserJpaRepositoryTest {
 
     @Test
     void save1() {
-        User user = new User();
-        user.setUsername("u1");
+        User user = User.builder()
+                .username("u1")
+                .build();
 
         userRepository.save(user);
     }

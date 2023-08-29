@@ -25,7 +25,7 @@ class BoardJpaRepositoryTest {
     @Transactional
     void update1() {
         Board findBoard = boardRepository.findById(1L).get();
-        findBoard.setTitle("updateTitle"); // select
+        findBoard.updateBoard("updateTitle", "updateContent"); // select
 
 //        boardRepository.save(findBoard); // select -> update
         em.flush(); // update

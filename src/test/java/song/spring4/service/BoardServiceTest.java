@@ -10,7 +10,9 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
+import song.spring4.dto.boarddto.BoardDto;
 import song.spring4.dto.boarddto.BoardListDto;
+import song.spring4.dto.boarddto.SaveBoardDto;
 import song.spring4.dto.commentdto.CommentDto;
 import song.spring4.dto.boarddto.EditBoardDto;
 import song.spring4.entity.Board;
@@ -38,22 +40,22 @@ class BoardServiceTest {
 
     @Test
     void save1() {
-        RequestBoardDto requestBoardDto = new RequestBoardDto();
-        requestBoardDto.setTitle("title");
-        requestBoardDto.setContent("content");
+        SaveBoardDto saveBoardDto = new SaveBoardDto();
+        saveBoardDto.setTitle("title");
+        saveBoardDto.setContent("content");
 
-        Long id = boardService.saveBoard(1L, requestBoardDto);
+        Long id = boardService.saveBoard(1L, saveBoardDto);
 
         assertThat(boardRepository.findEntityGraphById(id).get().getTitle())
-                .isEqualTo(requestBoardDto.getTitle());
+                .isEqualTo(saveBoardDto.getTitle());
     }
 
     @Test
     void find1() {
-        RequestBoardDto requestBoardDto = new RequestBoardDto();
-        requestBoardDto.setTitle("title");
-        requestBoardDto.setContent("content");
-        Long id = boardService.saveBoard(1L, requestBoardDto);
+        SaveBoardDto saveBoardDto = new SaveBoardDto();
+        saveBoardDto.setTitle("title");
+        saveBoardDto.setContent("content");
+        Long id = boardService.saveBoard(1L, saveBoardDto);
 
         Board findBoard = boardRepository.findEntityGraphById(id).get();
 
@@ -62,7 +64,7 @@ class BoardServiceTest {
 
     @Test
     void find2() {
-        ResponseBoardDto findBoardDto = boardService.findBoardById(1L);
+        BoardDto findBoardDto = boardService.findBoardById(1L);
         assertThat(findBoardDto.getCommentList().size()).isEqualTo(5);
         for (CommentDto commentDto : findBoardDto.getCommentList()) {
             log.info("comment writer = {}", commentDto.getWriter());
@@ -71,7 +73,7 @@ class BoardServiceTest {
 
     @Test
     void find3() {
-        ResponseBoardDto findBoardDto = boardService.findBoardById(1L);
+        BoardDto findBoardDto = boardService.findBoardById(1L);
         log.info("title = {}", findBoardDto.getTitle());
         log.info("content = {}", findBoardDto.getContent());
         log.info("writer = {}", findBoardDto.getWriter());
@@ -109,10 +111,10 @@ class BoardServiceTest {
     @Transactional
     @Rollback(value = true)
     void update1() {
-        RequestBoardDto requestBoardDto = new RequestBoardDto();
-        requestBoardDto.setTitle("title");
-        requestBoardDto.setContent("content");
-        Long id = boardService.saveBoard(1L, requestBoardDto);
+        SaveBoardDto saveBoardDto = new SaveBoardDto();
+        saveBoardDto.setTitle("title");
+        saveBoardDto.setContent("content");
+        Long id = boardService.saveBoard(1L, saveBoardDto);
 
         EditBoardDto editBoardDto = new EditBoardDto();
         editBoardDto.setTitle("update title");
@@ -121,19 +123,6 @@ class BoardServiceTest {
 
         assertThat(boardRepository.findEntityGraphById(updateId).get().getTitle())
                 .isEqualTo(editBoardDto.getTitle());
-    }
-
-    @Test
-    void update2() {
-        Integer result = boardService.bulkUpdateBoardTitle("title","update");
-
-        List<Board> boardList = boardRepository.findAll();
-
-        assertThat(result).isEqualTo(boardList.size());
-
-        for (Board board : boardList) {
-            System.out.println("board.getTitle() = " + board.getTitle());
-        }
     }
 
     @Test
