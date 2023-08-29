@@ -13,7 +13,7 @@ import song.spring4.dto.RequestCommentDto;
 import song.spring4.entity.Comment;
 import song.spring4.exception.IllegalRequestArgumentException;
 import song.spring4.service.CommentService;
-import song.spring4.userdetails.UserDetailsImpl;
+import song.spring4.security.userdetails.UserDetailsImpl;
 
 @Slf4j
 @Controller

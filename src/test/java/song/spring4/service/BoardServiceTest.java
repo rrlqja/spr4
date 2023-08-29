@@ -18,9 +18,6 @@ import song.spring4.dto.boarddto.EditBoardDto;
 import song.spring4.entity.Board;
 import song.spring4.exception.notfoundexception.BoardNotFoundException;
 import song.spring4.repository.BoardJpaRepository;
-import song.spring4.repository.LogEntityJpaRepository;
-
-import java.util.List;
 
 import static org.assertj.core.api.Assertions.*;
 

@@ -15,7 +15,7 @@ import song.spring4.exception.AlreadyExistsUsernameException;
 import song.spring4.exception.IllegalRequestArgumentException;
 import song.spring4.exception.notfoundexception.UserNotFoundException;
 import song.spring4.repository.UserJpaRepository;
-import song.spring4.userdetails.UserDetailsImpl;
+import song.spring4.security.userdetails.UserDetailsImpl;
 
 import java.util.Optional;
 

@@ -1,4 +1,4 @@
-package song.spring4.userdetails;
+package song.spring4.security.userdetails;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

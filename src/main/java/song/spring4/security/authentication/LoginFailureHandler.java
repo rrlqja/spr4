@@ -1,4 +1,4 @@
-package song.spring4.authentication;
+package song.spring4.security.authentication;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

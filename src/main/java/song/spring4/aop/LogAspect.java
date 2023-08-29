@@ -8,9 +8,6 @@ import org.aspectj.lang.annotation.Aspect;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StopWatch;
-import song.spring4.service.LogEntityService;
-
-import java.time.LocalDateTime;
 
 @Slf4j
 public class LogAspect {
@@ -21,9 +18,7 @@ public class LogAspect {
     @RequiredArgsConstructor
     public static class log {
 
-        private final LogEntityService logEntityService;
-
-        @Around("song.spring4.aop.Pointcuts.servicePointcut() && !execution(* song.spring4.service.LogEntityService.*(..))")
+        @Around("song.spring4.aop.Pointcuts.servicePointcut()")
         public Object serviceLog(ProceedingJoinPoint joinPoint) throws Throwable {
             log.info("[Logging] {} ({})", joinPoint.getSignature().getDeclaringTypeName(), joinPoint.getSignature().getName());
 
@@ -40,8 +35,6 @@ public class LogAspect {
                 stopWatch.stop();
 
                 resultTime = stopWatch.getLastTaskTimeMillis();
-//                logEntityService.save(joinPoint.getSignature().getDeclaringTypeName(), joinPoint.getSignature().getName(),
-//                        LocalDateTime.now(), resultTime);
             }
 
             log.info("[Logging] result time = {}",resultTime);

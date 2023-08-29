@@ -1,4 +1,4 @@
-package song.spring4.userdetails;
+package song.spring4.security.userdetails;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;

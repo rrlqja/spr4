@@ -19,7 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 import song.spring4.entity.User;
 import song.spring4.service.ResetPasswordService;
 import song.spring4.service.UserService;
-import song.spring4.userdetails.UserDetailsServiceImpl;
+import song.spring4.security.userdetails.UserDetailsServiceImpl;
 
 import static org.assertj.core.api.Assertions.*;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.*;

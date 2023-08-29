@@ -20,7 +20,7 @@ import song.spring4.exception.IllegalRequestArgumentException;
 import song.spring4.service.BoardService;
 import song.spring4.service.FileEntityService;
 import song.spring4.service.FileService;
-import song.spring4.userdetails.UserDetailsImpl;
+import song.spring4.security.userdetails.UserDetailsImpl;
 
 import java.util.List;
 

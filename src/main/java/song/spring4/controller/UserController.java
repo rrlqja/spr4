@@ -17,7 +17,7 @@ import song.spring4.entity.User;
 import song.spring4.service.EmailService;
 import song.spring4.service.ResetPasswordService;
 import song.spring4.service.UserService;
-import song.spring4.userdetails.UserDetailsImpl;
+import song.spring4.security.userdetails.UserDetailsImpl;
 
 @Slf4j
 @Controller
