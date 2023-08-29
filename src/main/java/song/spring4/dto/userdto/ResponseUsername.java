@@ -1,4 +1,4 @@
-package song.spring4.dto;
+package song.spring4.dto.userdto;
 
 import lombok.Getter;
 import lombok.Setter;

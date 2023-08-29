@@ -11,7 +11,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import song.spring4.dto.*;
+import song.spring4.dto.boarddto.BoardDto;
+import song.spring4.dto.boarddto.SaveBoardDto;
+import song.spring4.dto.boarddto.EditBoardDto;
+import song.spring4.dto.commentdto.SaveCommentDto;
 import song.spring4.entity.FileEntity;
 import song.spring4.exception.IllegalRequestArgumentException;
 import song.spring4.service.BoardService;
@@ -32,18 +35,19 @@ public class BoardController {
     private final FileService fileService;
 
     @GetMapping("/save")
-    public String getSaveBoard(@ModelAttribute RequestBoardDto requestBoardDto) {
+    public String getSaveBoard(@ModelAttribute SaveBoardDto saveBoardDto) {
 
         return "/board/saveBoard";
     }
 
     @PostMapping("/save")
     public String postSaveBoard(@AuthenticationPrincipal UserDetailsImpl userDetails,
-                                RequestBoardDto requestBoardDto,
+                                @ModelAttribute SaveBoardDto saveBoardDto,
                                 RedirectAttributes redirectAttributes) {
-        Long boardId = boardService.saveBoard(userDetails.getId(), requestBoardDto);
+        Long boardId = boardService.saveBoard(userDetails.getId(), saveBoardDto);
 
-        String content = requestBoardDto.getContent();
+        BoardDto boardDto = boardService.findBoardById(boardId);
+        String content = boardDto.getContent();
         Document doc = Jsoup.parse(content);
         Elements img = doc.select("img");
 
@@ -60,38 +64,32 @@ public class BoardController {
         return "redirect:/board/{id}";
     }
 
-    @GetMapping("{id}")
+    @GetMapping("/{id}")
     public String getBoard(@PathVariable(name = "id") Long id,
+                           @ModelAttribute SaveCommentDto saveCommentDto,
                            Model model) {
-        ResponseBoardDto responseBoardDto = boardService.findBoardById(id);
-
-        RequestCommentDto requestCommentDto = new RequestCommentDto();
-
-        model.addAttribute("responseBoardDto", responseBoardDto);
-        model.addAttribute("requestCommentDto", requestCommentDto);
+        BoardDto boardDto = boardService.findBoardById(id);
+        model.addAttribute("boardDto", boardDto);
 
         return "/board/board";
     }
 
-    @GetMapping("{id}/edit")
+    @GetMapping("/{id}/edit")
     public String getEditBoard(@PathVariable(name = "id") Long id,
                                @AuthenticationPrincipal UserDetailsImpl userDetails,
-                               Model model) {
-        ResponseBoardDto responseBoardDto = boardService.findBoardById(id);
+                               @ModelAttribute EditBoardDto editBoardDto) {
+        BoardDto boardDto = boardService.findBoardById(id);
 
-        validUser(userDetails.getId(), responseBoardDto.getWriterId());
+        validUser(userDetails.getId(), boardDto.getWriterId());
 
-        EditBoardDto editBoardDto = new EditBoardDto();
-        editBoardDto.setId(responseBoardDto.getId());
-        editBoardDto.setTitle(responseBoardDto.getTitle());
-        editBoardDto.setContent(responseBoardDto.getContent());
-
-        model.addAttribute("editBoardDto", editBoardDto);
+        editBoardDto.setId(boardDto.getId());
+        editBoardDto.setTitle(boardDto.getTitle());
+        editBoardDto.setContent(boardDto.getContent());
 
         return "/board/editBoard";
     }
 
-    @PostMapping("{id}/edit")
+    @PostMapping("/{id}/edit")
     public String postEditBoard(@PathVariable(name = "id") Long id,
                                 @AuthenticationPrincipal UserDetailsImpl userDetails,
                                 @ModelAttribute EditBoardDto editBoardDto,
@@ -106,26 +104,22 @@ public class BoardController {
                 .map(element -> element.attr("src"))
                 .map(this::extractFileNameFromUrl)
                 .toList();
-//        System.out.println("editImgList = " + editImgList);
 
 //        get Board ImgList
         List<FileEntity> fileEntityList = fileEntityService.findByBoardId(boardId);
         List<String> boardFileList = fileEntityList.stream()
                 .map(FileEntity::getSaveFileName)
                 .toList();
-//        System.out.println("boardFileList = " + boardFileList);
 
 //        get new ImgList from EditBoardDto
         List<String> addFileNameList = editImgList.stream()
                 .filter(fileName -> !boardFileList.contains(fileName))
                 .toList();
-//        System.out.println("addFileNameList = " + addFileNameList);
 
 //        get removeImgList from Board
         List<String> removeFileList = boardFileList.stream()
                 .filter(fileName -> !editImgList.contains(fileName))
                 .toList();
-//        System.out.println("removeFileList = " + removeFileList);
 
         for (String fileName : addFileNameList) {
             fileEntityService.associateBoardAndFile(fileName, boardId);
@@ -141,7 +135,7 @@ public class BoardController {
         return "redirect:/board/{id}";
     }
 
-    @PostMapping("{id}/delete")
+    @PostMapping("/{id}/delete")
     public String deleteBoard(@PathVariable(name = "id") Long id) {
         boardService.deleteBoard(id);
 

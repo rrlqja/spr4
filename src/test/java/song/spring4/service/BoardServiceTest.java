@@ -10,7 +10,9 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
-import song.spring4.dto.*;
+import song.spring4.dto.boarddto.BoardListDto;
+import song.spring4.dto.commentdto.CommentDto;
+import song.spring4.dto.boarddto.EditBoardDto;
 import song.spring4.entity.Board;
 import song.spring4.exception.notfoundexception.BoardNotFoundException;
 import song.spring4.repository.BoardJpaRepository;
@@ -63,7 +65,7 @@ class BoardServiceTest {
         ResponseBoardDto findBoardDto = boardService.findBoardById(1L);
         assertThat(findBoardDto.getCommentList().size()).isEqualTo(5);
         for (CommentDto commentDto : findBoardDto.getCommentList()) {
-            log.info("comment writer = {}", commentDto.getWriterUsername());
+            log.info("comment writer = {}", commentDto.getWriter());
         }
     }
 
@@ -76,7 +78,7 @@ class BoardServiceTest {
 
         for (CommentDto commentDto : findBoardDto.getCommentList()) {
             log.info("comment = {}", commentDto.getContent());
-            log.info("comment writer = {}", commentDto.getWriterUsername());
+            log.info("comment writer = {}", commentDto.getWriter());
             log.info("child size = {}", commentDto.getChildList().size());
         }
     }

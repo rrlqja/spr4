@@ -1,18 +1,14 @@
 package song.spring4.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Getter @Setter
+@Getter
 @NoArgsConstructor
-@AllArgsConstructor
 public class Board extends BaseTimeEntity{
 
     @Id @GeneratedValue
@@ -34,9 +30,26 @@ public class Board extends BaseTimeEntity{
     private String content;
     private Long views;
 
+    @Builder
+    public Board(User writer, String title, String content) {
+        this.writer = writer;
+        this.title = title;
+        this.content = content;
+        this.views = 0L;
+    }
+
     public void setWriter(User writer) {
         this.writer = writer;
         writer.getBoardList().add(this);
+    }
+
+    public void updateBoard(String title, String content) {
+        this.title = title;
+        this.content = content;
+    }
+
+    public void increaseViews() {
+        this.views++;
     }
 
 }

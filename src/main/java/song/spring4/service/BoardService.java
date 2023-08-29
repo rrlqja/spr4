@@ -6,7 +6,10 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import song.spring4.dto.*;
+import song.spring4.dto.boarddto.BoardDto;
+import song.spring4.dto.boarddto.SaveBoardDto;
+import song.spring4.dto.boarddto.BoardListDto;
+import song.spring4.dto.boarddto.EditBoardDto;
 import song.spring4.entity.Board;
 import song.spring4.entity.User;
 import song.spring4.exception.notfoundexception.BoardNotFoundException;
@@ -24,10 +27,10 @@ public class BoardService {
     private final UserJpaRepository userRepository;
 
     @Transactional
-    public Long saveBoard(Long userId, RequestBoardDto requestBoardDto) {
+    public Long saveBoard(Long userId, SaveBoardDto saveBoardDto) {
         User user = getUserById(userId);
 
-        Board board = requestBoardDto.toEntity();
+        Board board = saveBoardDto.toEntity();
         board.setWriter(user);
 
         Board saveBoard = boardRepository.save(board);
@@ -36,13 +39,15 @@ public class BoardService {
     }
 
     @Transactional
-    public ResponseBoardDto findBoardById(Long boardId) {
+    public BoardDto findBoardById(Long boardId) {
         Board findBoard = getBoardById(boardId);
-        findBoard.setViews((findBoard.getViews() + 1));
+        findBoard.increaseViews();
 
-        ResponseBoardDto responseBoardDto = new ResponseBoardDto(findBoard);
+        Board saveBoard = boardRepository.save(findBoard);
 
-        return responseBoardDto;
+        BoardDto boardDto = new BoardDto(saveBoard);
+
+        return boardDto;
     }
 
     @Transactional
@@ -76,30 +81,17 @@ public class BoardService {
     public Long editBoard(Long boardId, EditBoardDto editBoardDto) {
         Board findBoard = getBoardById(boardId);
 
-        findBoard.setTitle(editBoardDto.getTitle());
-        findBoard.setContent(editBoardDto.getContent());
+        findBoard.updateBoard(editBoardDto.getTitle(), editBoardDto.getContent());
 
-        return findBoard.getId();
-    }
+        Board saveBoard = boardRepository.save(findBoard);
 
-    @Transactional
-    public Long updateBoardTitle(Long boardId, String title) {
-        Board findBoard = getBoardById(boardId);
-        findBoard.setTitle(title);
-
-        return findBoard.getId();
-    }
-
-    @Transactional
-    public Integer bulkUpdateBoardTitle(String title, String updateTitle) {
-        Integer result = boardRepository.updateBoardTitle(title, updateTitle);
-
-        return result;
+        return saveBoard.getId();
     }
 
     @Transactional
     public void deleteBoard(Long boardId) {
-        boardRepository.deleteById(boardId);
+        boardRepository.findById(boardId).ifPresent(board ->
+                boardRepository.delete(board));
     }
 
     private User getUserById(Long userId) {

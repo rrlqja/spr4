@@ -1,4 +1,4 @@
-package song.spring4.dto;
+package song.spring4.dto.commentdto;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -14,7 +14,7 @@ public class CommentDto {
     private Long parentId;
     private Long boardId;
     private Long writerId;
-    private String writerUsername;
+    private String writer;
     private List<CommentDto> childList = new ArrayList<>();
 
     public CommentDto(Comment comment) {
@@ -23,7 +23,7 @@ public class CommentDto {
         this.parentId = comment.getParent() != null ? comment.getParent().getId() : null;
         this.boardId = comment.getBoard().getId();
         this.writerId = comment.getWriter() != null ? comment.getWriter().getId() : null;
-        this.writerUsername = comment.getWriter() != null ? comment.getWriter().getUsername() : null;
+        this.writer = comment.getWriter() != null ? comment.getWriter().getUsername() : null;
         this.childList = comment.getChildList().stream().map(CommentDto::new).toList();
     }
 }

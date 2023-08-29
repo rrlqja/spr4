@@ -1,7 +1,8 @@
-package song.spring4.dto;
+package song.spring4.dto.boarddto;
 
 import lombok.Getter;
 import lombok.Setter;
+import song.spring4.dto.commentdto.CommentDto;
 import song.spring4.entity.Board;
 
 import java.time.LocalDateTime;
@@ -9,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Getter @Setter
-public class ResponseBoardDto {
+public class BoardDto {
     private Long id;
     private Long writerId;
     private String writer;
@@ -17,10 +18,9 @@ public class ResponseBoardDto {
     private String content;
     private Long views;
     private LocalDateTime createDate;
-
     private List<CommentDto> commentList = new ArrayList<>();
 
-    public ResponseBoardDto(Board board) {
+    public BoardDto(Board board) {
         this.id = board.getId();
         this.writerId = board.getWriter().getId();
         this.writer = board.getWriter().getUsername();

@@ -69,18 +69,18 @@ public class InitData {
             userRoleService.grantRole(saveUserA.getId(), RoleName.ROLE_ADMIN);
 
             for (int i = 0; i < 30; i++) {
-                Board board = new Board();
-                board.setWriter(saveUserA);
-                board.setTitle("title" + i);
-                board.setContent("content" + i);
-                board.setViews(0L);
+                Board board = Board.builder()
+                        .title("title" + (i + 1))
+                        .content("content" + (i + 1))
+                        .build();
+                board.setWriter(userA);
                 Board saveBoard = boardRepository.save(board);
 
                 if (i == 0) {
                     Comment comment1 = new Comment();
                     comment1.setBoard(saveBoard);
                     comment1.setWriter(saveUserA);
-                    comment1.setContent("comment" + i);
+                    comment1.setContent("comment" + (i + 1));
                     Comment saveComment1 = commentRepository.save(comment1);
 
                     for (int j = 0; j < 3; j++) {
@@ -88,7 +88,7 @@ public class InitData {
                         reply.setBoard(saveBoard);
                         reply.setWriter(saveUserA);
                         reply.setParent(saveComment1);
-                        reply.setContent("reply" + j);
+                        reply.setContent("reply" + (j + 1));
                         commentRepository.save(reply);
                     }
 
