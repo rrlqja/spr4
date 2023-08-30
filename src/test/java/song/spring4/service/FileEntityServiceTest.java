@@ -72,7 +72,7 @@ class FileEntityServiceTest {
         fileEntity.setSaveFileName("noBoard");
         FileEntity saveFileEntity = fileEntityRepository.save(fileEntity);
 
-        fileEntityService.associateBoardAndFile(saveFileEntity.getSaveFileName(), saveBoard.getId());
+        fileEntityService.attachFileEntityToBoard(saveFileEntity.getSaveFileName(), saveBoard.getId());
 
         FileEntity resultEntity = fileEntityRepository.findBySaveFileName(fileEntity.getSaveFileName()).get();
 

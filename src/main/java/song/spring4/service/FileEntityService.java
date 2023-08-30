@@ -51,7 +51,7 @@ public class FileEntityService {
     }
 
     @Transactional
-    public void associateBoardAndFile(String saveFileName, Long boardId) {
+    public void attachFileEntityToBoard(String saveFileName, Long boardId) {
         Board findBoard = getBoardById(boardId);
 
         FileEntity findFileEntity = getFileEntityBySaveFileName(saveFileName);
@@ -60,7 +60,7 @@ public class FileEntityService {
     }
 
     @Transactional
-    public void removeFileEntityBySaveFileName(String saveFileName) {
+    public void detachFileEntityBySaveFileName(String saveFileName) {
         FileEntity findFileEntity = getFileEntityBySaveFileName(saveFileName);
 
         fileEntityRepository.delete(findFileEntity);

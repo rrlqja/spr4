@@ -57,7 +57,7 @@ public class BoardController {
             String saveFileName = imgUrl.substring(imgUrl.lastIndexOf("/") + 1);
             System.out.println("saveFileName = " + saveFileName);
 
-            fileEntityService.associateBoardAndFile(saveFileName, boardId);
+            fileEntityService.attachFileEntityToBoard(saveFileName, boardId);
         }
 
         redirectAttributes.addAttribute("id", boardId);
@@ -122,11 +122,11 @@ public class BoardController {
                 .toList();
 
         for (String fileName : addFileNameList) {
-            fileEntityService.associateBoardAndFile(fileName, boardId);
+            fileEntityService.attachFileEntityToBoard(fileName, boardId);
         }
 
         for (String fileName : removeFileList) {
-            fileEntityService.removeFileEntityBySaveFileName(fileName);
+            fileEntityService.detachFileEntityBySaveFileName(fileName);
             fileService.delete(fileName);
         }
 

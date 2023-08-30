@@ -1,21 +1,20 @@
 package song.spring4;
 
 import jakarta.annotation.PostConstruct;
-import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
+import song.spring4.dto.UploadFileDto;
 import song.spring4.entity.Board;
 import song.spring4.entity.Comment;
-import song.spring4.entity.Role;
 import song.spring4.entity.User;
 import song.spring4.entity.role.RoleName;
 import song.spring4.repository.BoardJpaRepository;
 import song.spring4.repository.CommentJpaRepository;
 import song.spring4.repository.UserJpaRepository;
-import song.spring4.service.RoleService;
+import song.spring4.service.FileEntityService;
 import song.spring4.service.UserRoleService;
 
 @Slf4j
@@ -36,6 +35,7 @@ public class InitData {
     static class InitService{
 
         private final UserRoleService userRoleService;
+        private final FileEntityService fileEntityService;
         private final UserJpaRepository userRepository;
         private final BoardJpaRepository boardRepository;
         private final CommentJpaRepository commentRepository;
@@ -75,6 +75,12 @@ public class InitData {
                         .build();
                 board.setWriter(userA);
                 Board saveBoard = boardRepository.save(board);
+                if (i == 29) {
+                    UploadFileDto uploadFileDto = new UploadFileDto("spring.png", "spring.png");
+                    fileEntityService.saveFileEntity(uploadFileDto);
+                    board.updateBoard("title", "<p>board</p><br> <img src=/file/downloadFile/spring.png>");
+                    fileEntityService.attachFileEntityToBoard(uploadFileDto.getFileName(), saveBoard.getId());
+                }
 
                 if (i == 0) {
                     Comment comment1 = new Comment();

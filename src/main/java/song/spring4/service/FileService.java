@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import song.spring4.dto.UploadFileDto;
+import song.spring4.exception.notfoundexception.FileNotFoundException;
 
 import java.io.File;
 import java.io.IOException;
@@ -69,5 +70,13 @@ public class FileService {
     private String getExt(String originalFilename) {
         int p = originalFilename.lastIndexOf(".");
         return originalFilename.substring(p + 1);
+    }
+
+    public void isExists(String saveFileName) {
+        File file = new File(getFullPath(saveFileName));
+
+        if (!file.exists()) {
+            throw new FileNotFoundException("파일을 찾을 수 없습니다.");
+        }
     }
 }

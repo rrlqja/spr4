@@ -4,6 +4,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -34,7 +36,23 @@ public class FileController {
 
     @ResponseBody
     @GetMapping("/downloadFile/{fileName}")
-    public Resource getDownload(@PathVariable(value = "fileName") String saveFileName) throws MalformedURLException {
-        return new UrlResource("file:" + fileService.getFullPath(saveFileName));
+    public ResponseEntity<Resource> getDownload(@PathVariable(value = "fileName") String saveFileName) throws MalformedURLException {
+        fileService.isExists(saveFileName);
+
+        UrlResource resource = new UrlResource("file:" + fileService.getFullPath(saveFileName));
+        String contentType = getContentType(saveFileName);
+
+        return ResponseEntity.ok()
+                .contentType(MediaType.parseMediaType(contentType))
+                .body(resource);
+    }
+
+    private String getContentType(String fileName) {
+        if (fileName.endsWith(".jpg") || fileName.endsWith(".jpeg")) {
+            return "image/jpeg";
+        } else if (fileName.endsWith(".png")) {
+            return "image/png";
+        }
+        return "application/octet-stream";
     }
 }
