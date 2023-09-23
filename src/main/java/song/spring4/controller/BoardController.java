@@ -37,7 +37,7 @@ public class BoardController {
     @GetMapping("/save")
     public String getSaveBoard(@ModelAttribute SaveBoardDto saveBoardDto) {
 
-        return "/board/saveBoard";
+        return "board/saveBoard";
     }
 
     @PostMapping("/save")
@@ -71,7 +71,7 @@ public class BoardController {
         BoardDto boardDto = boardService.findBoardById(id);
         model.addAttribute("boardDto", boardDto);
 
-        return "/board/board";
+        return "board/board";
     }
 
     @GetMapping("/{id}/edit")
@@ -86,7 +86,7 @@ public class BoardController {
         editBoardDto.setTitle(boardDto.getTitle());
         editBoardDto.setContent(boardDto.getContent());
 
-        return "/board/editBoard";
+        return "board/editBoard";
     }
 
     @PostMapping("/{id}/edit")
