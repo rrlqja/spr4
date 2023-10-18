@@ -26,7 +26,7 @@
             height: 10%;
             padding: 10px;
             display: flex;
-            justify-content: space-between;
+            justify-content: flex-end;
             align-items: center;
         }
 
@@ -140,10 +140,7 @@
 <body>
 <div class="container">
     <div class="header-container">
-        <a th:href="@{/}">
-            <img th:src="@{/css/icons/home.png}" alt="홈" style="width: 35px; height: 35px;">
-        </a>
-        <div class="header-right">
+        <div class="header">
             <div sec:authorize="!isAuthenticated()">
                 <a href="/login">
                     <a th:href="@{/login}" class="btn btn-outline-primary">login</a>
