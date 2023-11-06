@@ -143,6 +143,7 @@
         <div class="header">
             <div sec:authorize="!isAuthenticated()">
                 <a href="/login">
+                    <a href="/oauth2/authorization/naver">Naver</a>
                     <a th:href="@{/login}" class="btn btn-outline-primary">login</a>
                 </a>
                 <a href="/signup">
