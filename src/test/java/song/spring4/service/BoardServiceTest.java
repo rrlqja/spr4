@@ -62,7 +62,7 @@ class BoardServiceTest {
         BoardDto findBoardDto = boardService.findBoardById(1L);
         assertThat(findBoardDto.getCommentList().size()).isEqualTo(5);
         for (CommentDto commentDto : findBoardDto.getCommentList()) {
-            log.info("comment writer = {}", commentDto.getWriter());
+            log.info("comment writer = {}", commentDto.getWriterUsername());
         }
     }
 
@@ -71,11 +71,11 @@ class BoardServiceTest {
         BoardDto findBoardDto = boardService.findBoardById(1L);
         log.info("title = {}", findBoardDto.getTitle());
         log.info("content = {}", findBoardDto.getContent());
-        log.info("writer = {}", findBoardDto.getWriter());
+        log.info("writer = {}", findBoardDto.getWriterUsername());
 
         for (CommentDto commentDto : findBoardDto.getCommentList()) {
             log.info("comment = {}", commentDto.getContent());
-            log.info("comment writer = {}", commentDto.getWriter());
+            log.info("comment writer = {}", commentDto.getWriterUsername());
             log.info("child size = {}", commentDto.getChildList().size());
         }
     }

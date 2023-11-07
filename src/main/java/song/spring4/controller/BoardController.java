@@ -17,6 +17,7 @@ import song.spring4.dto.boarddto.EditBoardDto;
 import song.spring4.dto.commentdto.SaveCommentDto;
 import song.spring4.entity.FileEntity;
 import song.spring4.exception.IllegalRequestArgumentException;
+import song.spring4.security.user.UserPrincipal;
 import song.spring4.service.BoardService;
 import song.spring4.service.FileEntityService;
 import song.spring4.service.FileService;
@@ -41,10 +42,10 @@ public class BoardController {
     }
 
     @PostMapping("/save")
-    public String postSaveBoard(@AuthenticationPrincipal UserDetailsImpl userDetails,
+    public String postSaveBoard(@AuthenticationPrincipal UserPrincipal userPrincipal,
                                 @ModelAttribute SaveBoardDto saveBoardDto,
                                 RedirectAttributes redirectAttributes) {
-        Long boardId = boardService.saveBoard(userDetails.getId(), saveBoardDto);
+        Long boardId = boardService.saveBoard(userPrincipal.getId(), saveBoardDto);
 
         BoardDto boardDto = boardService.findBoardById(boardId);
         String content = boardDto.getContent();
@@ -76,11 +77,11 @@ public class BoardController {
 
     @GetMapping("/{id}/edit")
     public String getEditBoard(@PathVariable(name = "id") Long id,
-                               @AuthenticationPrincipal UserDetailsImpl userDetails,
+                               @AuthenticationPrincipal UserPrincipal userPrincipal,
                                @ModelAttribute EditBoardDto editBoardDto) {
         BoardDto boardDto = boardService.findBoardById(id);
 
-        validUser(userDetails.getId(), boardDto.getWriterId());
+        validUser(userPrincipal.getId(), boardDto.getWriterId());
 
         editBoardDto.setId(boardDto.getId());
         editBoardDto.setTitle(boardDto.getTitle());
@@ -91,7 +92,7 @@ public class BoardController {
 
     @PostMapping("/{id}/edit")
     public String postEditBoard(@PathVariable(name = "id") Long id,
-                                @AuthenticationPrincipal UserDetailsImpl userDetails,
+                                @AuthenticationPrincipal UserPrincipal userPrincipal,
                                 @ModelAttribute EditBoardDto editBoardDto,
                                 RedirectAttributes redirectAttributes) {
         Long boardId = boardService.editBoard(id, editBoardDto);
