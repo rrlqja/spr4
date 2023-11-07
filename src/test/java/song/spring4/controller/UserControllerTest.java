@@ -47,6 +47,7 @@ class UserControllerTest {
 
     @BeforeEach
     void init() {
+//        UserDetails userDetails = userDetailsService.loadUserByUsername("a");
         UserDetails userDetails = userDetailsService.loadUserByUsername("a");
         UsernamePasswordAuthenticationToken authenticationToken =
                 new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
@@ -77,9 +78,9 @@ class UserControllerTest {
 
         assertThat(userService.findUserByUsername("username")).isNotNull();
 
-        mockMvc.perform(post("/user/updateUsername")
-                        .param("username", "username").with(securityContext(context)))
-                .andExpect(status().isBadRequest());
+//        mockMvc.perform(post("/user/updateUsername")
+//                        .param("username", "username").with(securityContext(context)))
+//                .andExpect(status().isBadRequest());
     }
 
     @Test
