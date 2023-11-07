@@ -12,6 +12,7 @@ import song.spring4.dto.EditCommentDto;
 import song.spring4.dto.RequestCommentDto;
 import song.spring4.entity.Comment;
 import song.spring4.exception.IllegalRequestArgumentException;
+import song.spring4.security.user.UserPrincipal;
 import song.spring4.service.CommentService;
 import song.spring4.security.userdetails.UserDetailsImpl;
 
@@ -23,10 +24,10 @@ public class CommentController {
     private final CommentService commentService;
 
     @PostMapping("/save")
-    public String save(@AuthenticationPrincipal UserDetailsImpl userDetails,
+    public String save(@AuthenticationPrincipal UserPrincipal userPrincipal,
                        @ModelAttribute RequestCommentDto requestCommentDto,
                        RedirectAttributes redirectAttributes) {
-        Long saveId = commentService.saveComment(userDetails.getId(), requestCommentDto);
+        Long saveId = commentService.saveComment(userPrincipal.getId(), requestCommentDto);
 
         redirectAttributes.addAttribute("id", requestCommentDto.getBoardId());
 
@@ -34,12 +35,12 @@ public class CommentController {
     }
 
     @GetMapping("/{id}/edit")
-    public String getEditComment(@AuthenticationPrincipal UserDetailsImpl userDetails,
+    public String getEditComment(@AuthenticationPrincipal UserPrincipal userPrincipal,
                                  @PathVariable(name = "id") Long id,
                                  Model model) {
         Comment findComment = commentService.findCommentById(id);
 
-        validUser(userDetails.getId(), findComment.getWriter().getId());
+        validUser(userPrincipal.getId(), findComment.getWriter().getId());
 
         EditCommentDto editCommentDto = new EditCommentDto();
         editCommentDto.setId(findComment.getId());
@@ -51,12 +52,12 @@ public class CommentController {
     }
 
     @PostMapping("/{id}/edit")
-    public String postEditComment(@AuthenticationPrincipal UserDetailsImpl userDetails,
+    public String postEditComment(@AuthenticationPrincipal UserPrincipal userPrincipal,
                                   @PathVariable(name = "id") Long id,
                                   @ModelAttribute EditCommentDto editCommentDto,
                                   RedirectAttributes redirectAttributes) {
-        log.info("userId = {}, commentId = {}", userDetails.getId(), editCommentDto.getId());
-        Long boardId = commentService.editComment(userDetails.getId(), editCommentDto);
+        log.info("userId = {}, commentId = {}", userPrincipal.getId(), editCommentDto.getId());
+        Long boardId = commentService.editComment(userPrincipal.getId(), editCommentDto);
 
         redirectAttributes.addAttribute("id", boardId);
         return "redirect:/board/{id}";
