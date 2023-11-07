@@ -27,8 +27,6 @@ import static org.assertj.core.api.Assertions.*;
 class BoardServiceTest {
 
     @Autowired
-    LogEntityJpaRepository logEntityRepository;
-    @Autowired
     BoardService boardService;
     @Autowired
     BoardJpaRepository boardRepository;
