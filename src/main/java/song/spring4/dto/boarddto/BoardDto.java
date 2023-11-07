@@ -13,7 +13,7 @@ import java.util.List;
 public class BoardDto {
     private Long id;
     private Long writerId;
-    private String writer;
+    private String writerUsername;
     private String title;
     private String content;
     private Long views;
@@ -23,7 +23,7 @@ public class BoardDto {
     public BoardDto(Board board) {
         this.id = board.getId();
         this.writerId = board.getWriter().getId();
-        this.writer = board.getWriter().getUsername();
+        this.writerUsername = board.getWriter().getUsername();
         this.title = board.getTitle();
         this.content = board.getContent();
         this.views = board.getViews();

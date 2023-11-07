@@ -69,7 +69,7 @@
     <div class="comment mb-3" th:each="comment : ${boardDto.commentList}" th:if="${comment.parentId == null}">
         <div class="comment-header">
             <label for="comment">
-                <span th:if="${comment.writerId != null}" th:text="${comment.writer}">writer</span>
+                <span th:if="${comment.writerId != null}" th:text="${comment.writerUsername}">writer</span>
                 <span th:unless="${comment.writerId != null}">삭제된 댓글</span>
             </label>
 
@@ -101,7 +101,7 @@
         <div class="mb-3" th:each="reply : ${comment.childList}" style="margin-left: 20px;">
             <div class="comment-header">
                 <label for="reply">
-                    <span th:if="${reply.writerId != null}" th:text="${reply.writer}">writer</span>
+                    <span th:if="${reply.writerId != null}" th:text="${reply.writerUsername}">writer</span>
                     <span th:unless="${reply.writerId != null}">삭제된 댓글</span>
                 </label>
 
