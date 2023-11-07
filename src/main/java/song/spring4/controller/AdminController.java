@@ -8,6 +8,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import song.spring4.security.user.UserPrincipal;
 import song.spring4.security.userdetails.UserDetailsImpl;
 
 import java.util.List;
@@ -20,9 +21,9 @@ public class AdminController {
 
     @ResponseBody
     @GetMapping
-    public List<SimpleGrantedAuthority> getAdmin(@AuthenticationPrincipal UserDetailsImpl userDetails) {
+    public List<SimpleGrantedAuthority> getAdmin(@AuthenticationPrincipal UserPrincipal userPrincipal) {
 
-        List<SimpleGrantedAuthority> authorities = userDetails.getAuthorities().stream().map(
+        List<SimpleGrantedAuthority> authorities = userPrincipal.getAuthorities().stream().map(
                 role -> new SimpleGrantedAuthority(role.getAuthority().toString())
         ).toList();
 

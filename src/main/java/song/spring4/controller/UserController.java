@@ -41,18 +41,18 @@ public class UserController {
     }
 
     @GetMapping("/updateUsername")
-    public String getUsername(@AuthenticationPrincipal UserDetailsImpl userDetails,
+    public String getUsername(@AuthenticationPrincipal UserPrincipal userPrincipal,
                               @ModelAttribute UpdateUsernameDto updateUsernameDto) {
-        updateUsernameDto.setUsername(userDetails.getUsername());
+        updateUsernameDto.setUsername(userPrincipal.getUsername());
 
         return "user/updateUsername";
     }
 
     @ResponseStatus(HttpStatus.OK)
     @PostMapping("/updateUsername")
-    public void postUpdateUsername(@AuthenticationPrincipal UserDetailsImpl userDetails,
+    public void postUpdateUsername(@AuthenticationPrincipal UserPrincipal userPrincipal,
                                    @Valid @ModelAttribute UpdateUsernameDto updateUsernameDto) {
-        Long id = userService.updateUsername(userDetails.getId(), updateUsernameDto.getUsername());
+        Long id = userService.updateUsername(userPrincipal.getId(), updateUsernameDto.getUsername());
     }
 
     @GetMapping("/updatePassword")
@@ -63,41 +63,41 @@ public class UserController {
 
     @ResponseStatus(HttpStatus.OK)
     @PostMapping("/updatePassword")
-    public void postUpdatePassword(@AuthenticationPrincipal UserDetailsImpl userDetails,
+    public void postUpdatePassword(@AuthenticationPrincipal UserPrincipal userPrincipal,
                                    @Valid @ModelAttribute UpdatePasswordDto updatePasswordDto) {
-        Long id = userService.updatePassword(userDetails.getId(), updatePasswordDto.getOriginalPassword(), updatePasswordDto.getNewPassword());
+        Long id = userService.updatePassword(userPrincipal.getId(), updatePasswordDto.getOriginalPassword(), updatePasswordDto.getNewPassword());
 
     }
 
     @GetMapping("/updateName")
-    public String getName(@AuthenticationPrincipal UserDetailsImpl userDetails,
+    public String getName(@AuthenticationPrincipal UserPrincipal userPrincipal,
                           @ModelAttribute UpdateNameDto updateNameDto) {
-        updateNameDto.setName(userDetails.getName());
+        updateNameDto.setName(userPrincipal.getName());
 
         return "user/updateName";
     }
 
     @PostMapping("/updateName")
-    public String postUpdateName(@AuthenticationPrincipal UserDetailsImpl userDetails,
+    public String postUpdateName(@AuthenticationPrincipal UserPrincipal userPrincipal,
                                  @Valid @ModelAttribute UpdateNameDto updateNameDto) {
-        Long id = userService.updateName(userDetails.getId(), updateNameDto.getName());
+        Long id = userService.updateName(userPrincipal.getId(), updateNameDto.getName());
 
         return "redirect:/user";
     }
 
     @GetMapping("/updateEmail")
-    public String getEmail(@AuthenticationPrincipal UserDetailsImpl userDetails,
+    public String getEmail(@AuthenticationPrincipal UserPrincipal userPrincipal,
                            @ModelAttribute UpdateEmailDto updateEmailDto) {
-        updateEmailDto.setEmail(userDetails.getEmail());
+        updateEmailDto.setEmail(userPrincipal.getEmail());
 
         return "user/updateEmail";
     }
 
     @ResponseStatus(HttpStatus.OK)
     @PostMapping("/updateEmail")
-    public void postUpdateEmail(@AuthenticationPrincipal UserDetailsImpl userDetails,
+    public void postUpdateEmail(@AuthenticationPrincipal UserPrincipal userPrincipals,
                                 @Valid @ModelAttribute UpdateEmailDto updateEmailDto) {
-        userService.updateEmail(userDetails.getId(), updateEmailDto.getEmail());
+        userService.updateEmail(userPrincipals.getId(), updateEmailDto.getEmail());
     }
 
     @ResponseStatus(HttpStatus.OK)
@@ -159,9 +159,9 @@ public class UserController {
 
     @ResponseStatus(HttpStatus.OK)
     @PostMapping("/deleteUser")
-    public void postDeleteUser(@AuthenticationPrincipal UserDetailsImpl userDetails,
+    public void postDeleteUser(@AuthenticationPrincipal UserPrincipal userPrincipal,
                                HttpServletRequest request) {
-        userService.deleteUserById(userDetails.getId());
+        userService.deleteUserById(userPrincipal.getId());
 
         SecurityContextHolder.clearContext();
         HttpSession session = request.getSession(false);
