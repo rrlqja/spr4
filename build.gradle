@@ -31,6 +31,8 @@ dependencies {
 
 	runtimeOnly 'com.mysql:mysql-connector-j'
 
+	implementation 'com.github.ulisesbocchio:jasypt-spring-boot:3.0.5'
+
 	//lombok
 	compileOnly 'org.projectlombok:lombok'
 	annotationProcessor 'org.projectlombok:lombok'

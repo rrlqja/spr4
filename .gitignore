@@ -37,6 +37,4 @@ out/
 .vscode/
 
 ### my ###
-src/main/resources/*.yml
-!src/main/resources/application.yml
 src/main/java/song/spring4/TestClass.java
