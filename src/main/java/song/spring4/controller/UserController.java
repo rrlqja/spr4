@@ -14,11 +14,10 @@ import org.springframework.web.bind.annotation.*;
 import song.spring4.dto.*;
 import song.spring4.dto.userdto.*;
 import song.spring4.entity.User;
-import song.spring4.security.user.UserPrincipal;
+import song.spring4.security.pricipal.UserPrincipal;
 import song.spring4.service.EmailService;
 import song.spring4.service.ResetPasswordService;
 import song.spring4.service.UserService;
-import song.spring4.security.userdetails.UserDetailsImpl;
 
 @Slf4j
 @Controller

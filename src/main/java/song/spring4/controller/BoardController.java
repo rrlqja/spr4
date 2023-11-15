@@ -17,11 +17,10 @@ import song.spring4.dto.boarddto.EditBoardDto;
 import song.spring4.dto.commentdto.SaveCommentDto;
 import song.spring4.entity.FileEntity;
 import song.spring4.exception.IllegalRequestArgumentException;
-import song.spring4.security.user.UserPrincipal;
+import song.spring4.security.pricipal.UserPrincipal;
 import song.spring4.service.BoardService;
 import song.spring4.service.FileEntityService;
 import song.spring4.service.FileService;
-import song.spring4.security.userdetails.UserDetailsImpl;
 
 import java.util.List;
 

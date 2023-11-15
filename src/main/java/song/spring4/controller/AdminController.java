@@ -8,8 +8,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
-import song.spring4.security.user.UserPrincipal;
-import song.spring4.security.userdetails.UserDetailsImpl;
+import song.spring4.security.pricipal.UserPrincipal;
 
 import java.util.List;
 

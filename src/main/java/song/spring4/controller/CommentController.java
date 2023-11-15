@@ -12,9 +12,8 @@ import song.spring4.dto.EditCommentDto;
 import song.spring4.dto.RequestCommentDto;
 import song.spring4.entity.Comment;
 import song.spring4.exception.IllegalRequestArgumentException;
-import song.spring4.security.user.UserPrincipal;
+import song.spring4.security.pricipal.UserPrincipal;
 import song.spring4.service.CommentService;
-import song.spring4.security.userdetails.UserDetailsImpl;
 
 @Slf4j
 @Controller

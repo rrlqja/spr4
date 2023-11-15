@@ -10,7 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 import song.spring4.entity.User;
 import song.spring4.exception.notfoundexception.UserNotFoundException;
 import song.spring4.repository.UserJpaRepository;
-import song.spring4.security.user.UserPrincipal;
+import song.spring4.security.pricipal.UserPrincipal;
 
 @Slf4j
 @Service
