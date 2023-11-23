@@ -17,13 +17,10 @@ import song.spring4.exception.notfoundexception.UserNotFoundException;
 import song.spring4.repository.UserJpaRepository;
 import song.spring4.security.userdetails.UserDetailsImpl;
 
-import java.util.Optional;
-
 @Slf4j
 @Service
 @RequiredArgsConstructor
 public class UserService {
-
     private final UserJpaRepository userRepository;
     private final BCryptPasswordEncoder passwordEncoder;
 
@@ -40,7 +37,7 @@ public class UserService {
     public Long updateUsername(Long userId, String newUsername) {
         User findUser = getById(userId);
 
-        validUsername(newUsername);
+        validateUsername(newUsername);
 
         findUser.updateUsername(newUsername);
 
@@ -49,21 +46,20 @@ public class UserService {
         return findUser.getId();
     }
 
-    public void validUsername(String username) {
-        if (!StringUtils.hasText(username)) {
-            throw new IllegalRequestArgumentException("입력값을 확인해주세요.");
-        }
-        Optional<User> findUser = userRepository.findByUsername(username);
-        if (findUser.isPresent()) {
-            throw new AlreadyExistsUsernameException("이미 존재하는 Username 입니다.");
-        }
+    public void validateUsername(String username) {
+        hasText(username);
+
+        userRepository.findByUsername(username)
+                .ifPresent(user -> {
+                    throw new AlreadyExistsUsernameException("이미 존재하는 Username 입니다.");
+                });
     }
 
     @Transactional
     public Long updatePassword(Long userId, String originalPassword, String newPassword) {
         User findUser = getById(userId);
 
-        validOrigPassword(originalPassword, findUser.getPassword());
+        validateOriginalPassword(originalPassword, findUser.getPassword());
 
         findUser.updatePassword(passwordEncoder.encode(newPassword));
 
@@ -145,6 +141,12 @@ public class UserService {
         );
     }
 
+    private void hasText(String username) {
+        if (!StringUtils.hasText(username)) {
+            throw new IllegalRequestArgumentException("입력값을 확인해주세요.");
+        }
+    }
+
     private User getByUsername(String username) {
         return userRepository.findByUsername(username).orElseThrow(
                 () -> new UserNotFoundException("사용자를 찾을 수 없습니다."));
@@ -155,8 +157,8 @@ public class UserService {
                 () -> new UserNotFoundException("사용자를 찾을 수 없습니다."));
     }
 
-    private void validOrigPassword(String origPassword, String currentPassword) {
-        if (!passwordEncoder.matches(origPassword, currentPassword)) {
+    private void validateOriginalPassword(String originalPassword, String currentPassword) {
+        if (!passwordEncoder.matches(originalPassword, currentPassword)) {
             throw new IllegalRequestArgumentException("현재 비밀번호가 일치하지 않습니다.");
         }
     }
