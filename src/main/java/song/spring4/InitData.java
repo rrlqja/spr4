@@ -45,7 +45,7 @@ public class InitData {
             User userA = User.builder()
                     .username("a")
                     .password(passwordEncoder.encode("a"))
-                    .name("a")
+                    .name("nameA")
                     .email("dkclasltmf22@naver.com")
                     .isAccountNonExpired(true)
                     .isAccountNonLocked(true)
@@ -57,12 +57,14 @@ public class InitData {
             User userB = User.builder()
                     .username("b")
                     .password(passwordEncoder.encode("a"))
-                    .name("b")
+                    .name("nameB")
+//                    .email("dkclasltmf@naver.com")
                     .isAccountNonExpired(true)
                     .isAccountNonLocked(true)
                     .isCredentialsNonExpired(true)
                     .isEnabled(true)
                     .build();
+
             User saveUserB = userRepository.save(userB);
 
             userRoleService.grantRole(saveUserA.getId(), RoleName.ROLE_USER);

@@ -5,7 +5,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import song.spring4.entity.User;
-import song.spring4.entity.oauth2.Provider;
+import song.spring4.entity.oauth2.Sns;
 
 import java.util.*;
 
@@ -39,8 +39,8 @@ public class UserPrincipal implements UserDetails, OAuth2User {
         this.attributes = new HashMap<>();
     }
 
-    private UserPrincipal(Provider provider) {
-        User user = provider.getUser();
+    private UserPrincipal(Sns sns) {
+        User user = sns.getUser();
 
         this.id = user.getId();
         this.roleList = user.getRoleList().stream().map(userRole ->
@@ -50,14 +50,15 @@ public class UserPrincipal implements UserDetails, OAuth2User {
         this.isCredentialsNonExpired = user.isCredentialsNonExpired();
         this.isEnabled = user.isEnabled();
 
-        Map<String, Object> providerAttributes = provider.getAttributes();
-        this.username = (String) providerAttributes.get("snsName");
+        Map<String, Object> providerAttributes = sns.getAttributes();
+//        this.username = (String) providerAttributes.get("snsName");
+        this.username = user.getUsername();
         this.email = (String) providerAttributes.get("snsEmail");
         this.attributes = Map.copyOf(providerAttributes);
     }
 
-    public static UserPrincipal create(Provider provider) {
-        return new UserPrincipal(provider);
+    public static UserPrincipal create(Sns SNS) {
+        return new UserPrincipal(SNS);
     }
 
     public static UserPrincipal create(User user) {

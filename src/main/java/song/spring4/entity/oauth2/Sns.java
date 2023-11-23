@@ -15,20 +15,19 @@ import java.util.Map;
 @Getter
 @NoArgsConstructor
 @EntityListeners(AuditingEntityListener.class)
-public class Provider extends BaseTimeEntity {
-    @Id @GeneratedValue
-    private Long id;
+public class Sns extends BaseTimeEntity {
+    @Id
+    private String snsId;
 
     @JoinColumn(name = "user_id")
     @OneToOne(fetch = FetchType.LAZY)
     private User user;
 
-    private String snsId;
     private String snsName;
     private String snsEmail;
 
     @Builder
-    public Provider(String snsId, String snsName, String snsEmail, User user) {
+    public Sns(String snsId, String snsName, String snsEmail, User user) {
         this.snsId = snsId;
         this.snsName = snsName;
         this.snsEmail = snsEmail;

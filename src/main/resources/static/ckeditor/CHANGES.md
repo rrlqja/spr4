@@ -1116,7 +1116,7 @@ Other Changes:
 
 * Updated [SCAYT](https://ckeditor.com/cke4/addon/scayt) (Spell Check As You Type) and [WebSpellChecker](https://ckeditor.com/cke4/addon/wsc) plugins:
 	* Fixed: DOM Exception after clicking "Remove Language" on a selected word with enabled [Language](https://ckeditor.com/cke4/addon/language) plugin in SCAYT.
-* [#16958](https://dev.ckeditor.com/ticket/16958): Switched the default MathJax CDN provider for the [Mathematical Formulas](https://ckeditor.com/cke4/addon/mathjax) plugin from `cdn.mathjax.org` to [cdnjs](https://cdnjs.com/), due to closing of `cdn.mathjax.org` scheduled for April 30, 2017.
+* [#16958](https://dev.ckeditor.com/ticket/16958): Switched the default MathJax CDN SNS for the [Mathematical Formulas](https://ckeditor.com/cke4/addon/mathjax) plugin from `cdn.mathjax.org` to [cdnjs](https://cdnjs.com/), due to closing of `cdn.mathjax.org` scheduled for April 30, 2017.
 * [#16954](https://dev.ckeditor.com/ticket/16954): Removed the paste dialog.
 * [#16982](https://dev.ckeditor.com/ticket/16982): Latest Safari now supports enhanced Clipboard API introduced in CKEditor 4.5.0.
 * [#17025](https://dev.ckeditor.com/ticket/17025): Updated [Bender.js](https://github.com/benderjs/benderjs) to 0.4.2.

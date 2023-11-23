@@ -3,14 +3,14 @@ package song.spring4.repository;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
-import song.spring4.entity.oauth2.Provider;
+import song.spring4.entity.oauth2.Sns;
 
 import java.util.Optional;
 
 @Repository
-public interface ProviderJpaRepository extends JpaRepository<Provider, Long> {
+public interface SnsJpaRepository extends JpaRepository<Sns, String> {
 
     @EntityGraph(attributePaths = {"user"})
-    Optional<Provider> findBySnsId(String snsId);
+    Optional<Sns> findBySnsId(String snsId);
 
 }

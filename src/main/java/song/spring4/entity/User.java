@@ -3,7 +3,7 @@ package song.spring4.entity;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
-import song.spring4.entity.oauth2.Provider;
+import song.spring4.entity.oauth2.Sns;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,7 +23,7 @@ public class User extends BaseTimeEntity{
     private List<UserRole> roleList = new ArrayList<>();
 
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
-    private Provider provider;
+    private Sns Sns;
 
     private String username;
     private String password;
