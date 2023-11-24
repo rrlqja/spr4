@@ -2,6 +2,7 @@ spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: ENC(mNi/s9ugf4V8IDn2Y68bA/8IJjM2xmsHGXAl+vtFV3aIGfdl6R0yEdm5AEQvRk/JG+vDKTPoVX3BhsXCtheByzbY6GNbwbUwYK2+ZHZ9pKzbPor2oKTVuLCvwU36k1hw)
+#    jdbc:mysql://localhost:3306/DB_NAME?serverTimezone=Asia/Seoul&characterEncoding=UTF-8
     username: ENC(23zb4jGeJ534RDnyz2XeDg==)
     password: ENC(O7YPSm7B08gfyf5R4NhR7A==)
   mail:
