@@ -26,7 +26,8 @@ public class ProviderService {
         Optional<Sns> findProvider = providerRepository.findBySnsId(snsId);
         if (findProvider.isEmpty()) {
             User newUser = userRepository.findByEmail(snsEmail)
-                    .orElseGet(() -> userRepository.save(new User(generateUsername(), null, snsName, snsEmail, true, true, true, true)));
+                    .orElseGet(() -> userRepository.save(
+                            User.of(generateUsername(), null, snsName, snsEmail)));
             userRoleService.grantRole(newUser.getId(), RoleName.ROLE_USER.name());
 
             Sns sns = new Sns(snsId, snsName, snsEmail, newUser);

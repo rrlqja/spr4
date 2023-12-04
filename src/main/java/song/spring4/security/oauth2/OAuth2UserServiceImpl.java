@@ -61,7 +61,7 @@ public class OAuth2UserServiceImpl implements OAuth2UserService<OAuth2UserReques
 
         Sns saveSns = providerService.findOrCreate(snsId, snsName, snsEmail);
 
-        UserPrincipal userPrincipal = UserPrincipal.create(saveSns);
+        UserPrincipal userPrincipal = UserPrincipal.of(saveSns);
 
         return userPrincipal;
     }

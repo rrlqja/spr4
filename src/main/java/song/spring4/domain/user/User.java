@@ -36,9 +36,19 @@ public class User extends BaseTimeEntity {
     private boolean isCredentialsNonExpired;
     private boolean isEnabled;
 
-
-    public void encodePassword(String password) {
+    private User(String username, String password, String name, String email) {
+        this.username = username;
         this.password = password;
+        this.name = name;
+        this.email = email;
+        this.isAccountNonExpired = true;
+        this.isAccountNonLocked = true;
+        this.isCredentialsNonExpired = true;
+        this.isEnabled = true;
+    }
+
+    public static User of(String username, String password, String name, String email) {
+        return new User(username, password, name, email);
     }
 
     public void addUserRole(UserRole userRole) {

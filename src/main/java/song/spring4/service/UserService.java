@@ -15,7 +15,7 @@ import song.spring4.exception.AlreadyExistsUsernameException;
 import song.spring4.exception.IllegalRequestArgumentException;
 import song.spring4.exception.notfoundexception.UserNotFoundException;
 import song.spring4.repository.UserJpaRepository;
-import song.spring4.security.userdetails.UserDetailsImpl;
+import song.spring4.security.pricipal.UserPrincipal;
 
 @Slf4j
 @Service
@@ -26,8 +26,7 @@ public class UserService {
 
     @Transactional
     public Long join(SignupDto signupDto) {
-        User user = signupDto.toEntity();
-        user.encodePassword(passwordEncoder.encode(user.getPassword()));
+        User user = User.of(signupDto.getUsername(), passwordEncoder.encode(signupDto.getPassword()), signupDto.getName(), signupDto.getEmail());
 
         User saveUser = userRepository.save(user);
         return saveUser.getId();
@@ -35,17 +34,19 @@ public class UserService {
 
     @Transactional
     public Long updateUsername(Long userId, String newUsername) {
-        User findUser = getById(userId);
-
         validateUsername(newUsername);
 
-        findUser.updateUsername(newUsername);
+        User user = getById(userId);
 
-        updateSecurityContext(findUser);
+        user.updateUsername(newUsername);
+        User updateUser = userRepository.save(user);
 
-        return findUser.getId();
+        updateSecurityContext(updateUser);
+
+        return updateUser.getId();
     }
 
+    @Transactional
     public void validateUsername(String username) {
         hasText(username);
 
@@ -57,67 +58,70 @@ public class UserService {
 
     @Transactional
     public Long updatePassword(Long userId, String originalPassword, String newPassword) {
-        User findUser = getById(userId);
+        User user = getById(userId);
 
-        validateOriginalPassword(originalPassword, findUser.getPassword());
+        validateOriginalPassword(originalPassword, user.getPassword());
 
-        findUser.updatePassword(passwordEncoder.encode(newPassword));
+        user.updatePassword(passwordEncoder.encode(newPassword));
+        User updateUser = userRepository.save(user);
 
-        updateSecurityContext(findUser);
+        updateSecurityContext(updateUser);
 
-        return findUser.getId();
+        return updateUser.getId();
     }
 
     @Transactional
     public Long updateName(Long userId, String newName) {
-        User findUser = getById(userId);
+        User user = getById(userId);
 
-        findUser.updateName(newName);
+        user.updateName(newName);
+        User updateUser = userRepository.save(user);
 
-        updateSecurityContext(findUser);
+        updateSecurityContext(updateUser);
 
-        return findUser.getId();
+        return updateUser.getId();
     }
 
     @Transactional
     public Long updateEmail(Long userId, String newEmail) {
-        User findUser = getById(userId);
+        User user = getById(userId);
 
-        findUser.updateEmail(newEmail);
+        user.updateEmail(newEmail);
+        User updateUser = userRepository.save(user);
 
-        updateSecurityContext(findUser);
+        updateSecurityContext(updateUser);
 
-        return findUser.getId();
+        return updateUser.getId();
     }
 
     @Transactional
     public User findUserById(Long userId) {
-        User findUser = getById(userId);
+        User user = getById(userId);
 
-        return findUser;
+        return user;
     }
 
     @Transactional
     public User findUserByUsername(String username) {
-        User findUser = getByUsername(username);
+        User user = getByUsername(username);
 
-        return findUser;
+        return user;
     }
 
     @Transactional
     public String findUsername(String name, String email) {
-        User finsUser = userRepository.findByNameAndEmail(name, email)
+        User user = userRepository.findByNameAndEmail(name, email)
                 .orElseThrow(() -> new UserNotFoundException("사용자를 찾을 수 없습니다."));
 
-        return finsUser.getUsername();
+        return user.getUsername();
     }
 
     @Transactional
     public String findPassword(String username, String name, String email) {
-        User findUser = userRepository.findByUsernameAndNameAndEmail(username, name, email)
+        User user = userRepository.findByUsernameAndNameAndEmail(username, name, email)
                 .orElseThrow(() -> new UserNotFoundException("사용자를 찾을 수 없습니다."));
 
-        return findUser.getEmail();
+        return user.getEmail();
     }
 
     @Transactional
@@ -165,9 +169,9 @@ public class UserService {
 
     private void updateSecurityContext(User updateUser) {
         SecurityContext context = SecurityContextHolder.getContext();
-        UserDetailsImpl userDetails = new UserDetailsImpl(updateUser);
+        UserPrincipal userPrincipal = UserPrincipal.of(updateUser);
         UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
-                userDetails, null, userDetails.getAuthorities());
+                userPrincipal, null, userPrincipal.getAuthorities());
         context.setAuthentication(authenticationToken);
     }
 }

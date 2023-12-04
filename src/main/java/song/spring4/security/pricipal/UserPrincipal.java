@@ -57,11 +57,11 @@ public class UserPrincipal implements UserDetails, OAuth2User {
         this.attributes = Map.copyOf(providerAttributes);
     }
 
-    public static UserPrincipal create(Sns SNS) {
+    public static UserPrincipal of(Sns SNS) {
         return new UserPrincipal(SNS);
     }
 
-    public static UserPrincipal create(User user) {
+    public static UserPrincipal of(User user) {
         return new UserPrincipal(user);
     }
 
