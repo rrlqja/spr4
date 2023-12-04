@@ -16,13 +16,14 @@ import java.util.Map;
 @NoArgsConstructor
 @EntityListeners(AuditingEntityListener.class)
 public class Sns extends BaseTimeEntity {
-    @Id
-    private String snsId;
+    @Id @GeneratedValue
+    private Long id;
 
     @JoinColumn(name = "user_id")
     @OneToOne(fetch = FetchType.LAZY)
     private User user;
 
+    private String snsId;
     private String snsName;
     private String snsEmail;
 
@@ -32,6 +33,8 @@ public class Sns extends BaseTimeEntity {
         this.snsName = snsName;
         this.snsEmail = snsEmail;
         this.user = user;
+
+//        user.getSnsList().add(this);
     }
 
     public Map<String, Object> getAttributes() {
