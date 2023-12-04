@@ -26,7 +26,7 @@ public class UserPrincipal implements UserDetails, OAuth2User {
     private UserPrincipal(User user) {
         this.id = user.getId();
         this.roleList = user.getRoleList().stream().map(userRole ->
-                new SimpleGrantedAuthority(userRole.getRole().getRoleName().toString())).toList();
+                new SimpleGrantedAuthority(userRole.getRole().name())).toList();
         this.username = user.getUsername();
         this.name = user.getName();
         this.password = user.getPassword();
@@ -44,7 +44,7 @@ public class UserPrincipal implements UserDetails, OAuth2User {
 
         this.id = user.getId();
         this.roleList = user.getRoleList().stream().map(userRole ->
-                new SimpleGrantedAuthority(userRole.getRole().getRoleName().toString())).toList();
+                new SimpleGrantedAuthority(userRole.getRole().name())).toList();
         this.isAccountNonExpired = user.isAccountNonExpired();
         this.isAccountNonLocked = user.isAccountNonLocked();
         this.isCredentialsNonExpired = user.isCredentialsNonExpired();

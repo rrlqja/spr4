@@ -64,7 +64,7 @@ public class HomeController {
     @PostMapping("/signup")
     public void postSignup(@Valid @ModelAttribute SignupDto signupDto) {
         Long id = userService.join(signupDto);
-        userRoleService.grantRole(id, RoleName.ROLE_USER);
+        userRoleService.grantRole(id, RoleName.ROLE_USER.name());
     }
 
 

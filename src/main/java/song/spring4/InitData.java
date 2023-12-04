@@ -67,8 +67,8 @@ public class InitData {
 
             User saveUserB = userRepository.save(userB);
 
-            userRoleService.grantRole(saveUserA.getId(), RoleName.ROLE_USER);
-            userRoleService.grantRole(saveUserA.getId(), RoleName.ROLE_ADMIN);
+            userRoleService.grantRole(saveUserA.getId(), RoleName.ROLE_USER.name());
+            userRoleService.grantRole(saveUserA.getId(), RoleName.ROLE_ADMIN.name());
 
             for (int i = 0; i < 30; i++) {
                 Board board = Board.builder()

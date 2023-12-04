@@ -43,8 +43,6 @@ public class User extends BaseTimeEntity {
 
     public void addUserRole(UserRole userRole) {
         this.roleList.add(userRole);
-
-        userRole.setUser(this);
     }
 
     @Builder
