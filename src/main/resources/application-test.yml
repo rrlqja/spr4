@@ -1,14 +1,14 @@
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: ENC(C24pV/qP9PWFYmozqe26LtN20kFkkCZ7tmSBwMzzypqa0msH++csbAthFjjtxoU75Puz/w6Fe4EIvtQfRZaL7ulbH4SQ5A9hgj7x/TNmJcaJr852qzRmgmHGezZSy9ve)
-    username: ENC(20Y47uqYwjIGJQ524+daLA==)
-    password: ENC(RjZnNGDdbI+N9zS8Oqutfw==
+    url: ENC(tee9Pyl3Q69JVbJPNswgNey/QxauIOIboT0/a8aIzfYx+QIqIqnqIt8jWSwhFBXSnblqntQ2QL7DqvqHTAcH+TwyhFQUrf8kaNLfwPUlkveI9GJtwvrGKFRlzgxBCI8p)
+    username: ENC(18Qe93owdyrxejEV1I9pzA==)
+    password: ENC(KZLi3obgueRnbXlMihrzlA==)
   mail:
     host: smtp.naver.com
     port: 587
-    username: ENC(+0FRyAzyYgR4Vr1fTJOP6gw+4lFteNoO)
-    password: ENC(HubMnmDG9ea/TXHYSYGgNDR+ri+e395B)
+    username: ENC(MFfFSoclBuum0BZt21c3prr2jmC/aMfq)
+    password: ENC(hoaJJhnKMq7GUGDK0HTgPHynOYY9JaMc)
     properties:
       mail:
         smtp:
@@ -20,8 +20,8 @@ spring:
       client:
         registration:
           naver:
-            client-id: ENC(wra9t3qoARQiOuWCRpj8Q/X+ZTRos0A9sxdJHxQRd6Y=)
-            client-secret: ENC(9OamsH9KA6eqiVzjzCoS24CZvsGaaoIx)
+            client-id: ENC(JdBMh81ONTxN6tJifd+yaEtqsafPrSb/n8/h9ofoAyA=)
+            client-secret: ENC(x9jENnCUFVz47F0S80Ay7xEWk2868tBZ)
             redirect-uri: http://localhost:8080/login/oauth2/code/naver
             authorization-grant-type: authorization_code
             scope: name, email, gender, birthday
@@ -34,4 +34,4 @@ spring:
             user_name_attribute: response
 
 upload:
-  path: ENC(FAgRs+5Qv0/NJNe3WUe2BYk3ToSNSVV8FgyUsHutX4O3sLQOLxRvrC/YGHbblMrsRbGIy4YEEgY=)
+  path: ENC(Zx+hfsxTb+wK2BUfpZPWrulgQREkXkezduHIWT2JAprb7Jk0kZh/ZBzMyFQ7iB+srZIQvcDlKcE=)
