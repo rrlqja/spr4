@@ -11,10 +11,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import song.spring4.domain.userrole.consts.Role;
 import song.spring4.dto.boarddto.BoardListDto;
 import song.spring4.dto.LoginDto;
 import song.spring4.dto.SignupDto;
-import song.spring4.entity.role.RoleName;
 import song.spring4.service.BoardService;
 import song.spring4.service.UserRoleService;
 import song.spring4.service.UserService;
@@ -64,7 +64,7 @@ public class HomeController {
     @PostMapping("/signup")
     public void postSignup(@Valid @ModelAttribute SignupDto signupDto) {
         Long id = userService.join(signupDto);
-        userRoleService.grantRole(id, RoleName.ROLE_USER.name());
+        userRoleService.grantRole(id, Role.ROLE_USER.name());
     }
 
 

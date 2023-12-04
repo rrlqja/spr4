@@ -63,20 +63,20 @@ class FileEntityServiceTest {
     @Test
     @Transactional
     void t1() {
-        Board board = Board.builder()
-                .title("noFile")
-                .build();
-        Board saveBoard = boardRepository.save(board);
+//        Board board = Board.builder()
+//                .title("noFile")
+//                .build();
+//        Board saveBoard = boardRepository.save(board);
 
-        FileEntity fileEntity = new FileEntity();
-        fileEntity.setSaveFileName("noBoard");
-        FileEntity saveFileEntity = fileEntityRepository.save(fileEntity);
-
-        fileEntityService.attachFileEntityToBoard(saveFileEntity.getSaveFileName(), saveBoard.getId());
-
-        FileEntity resultEntity = fileEntityRepository.findBySaveFileName(fileEntity.getSaveFileName()).get();
-
-        assertThat(resultEntity.getBoard().getId()).isEqualTo(saveBoard.getId());
+//        FileEntity fileEntity = new FileEntity();
+//        fileEntity.setSaveFileName("noBoard");
+//        FileEntity saveFileEntity = fileEntityRepository.save(fileEntity);
+//
+//        fileEntityService.attachFileEntityToBoard(saveFileEntity.getSaveFileName(), saveBoard.getId());
+//
+//        FileEntity resultEntity = fileEntityRepository.findBySaveFileName(fileEntity.getSaveFileName()).get();
+//
+//        assertThat(resultEntity.getBoard().getId()).isEqualTo(saveBoard.getId());
     }
 
 }

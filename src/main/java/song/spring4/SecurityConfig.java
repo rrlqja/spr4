@@ -17,9 +17,9 @@ import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
+import song.spring4.domain.userrole.consts.Role;
 import song.spring4.security.authentication.LoginFailureHandler;
 import song.spring4.security.authentication.LoginSuccessHandler;
-import song.spring4.entity.role.RoleName;
 import song.spring4.security.oauth2.OAuth2UserServiceImpl;
 
 import static org.springframework.security.web.util.matcher.RegexRequestMatcher.*;
@@ -46,7 +46,7 @@ public class SecurityConfig {
                         .requestMatchers(regexMatcher("^/board/[0-9]+$")).permitAll()
                         .requestMatchers("/board/**").authenticated()
                         .requestMatchers("/comment/**").authenticated()
-                        .requestMatchers("/admin/**").hasAuthority(RoleName.ROLE_ADMIN.name())
+                        .requestMatchers("/admin/**").hasAuthority(Role.ROLE_ADMIN.name())
                         .anyRequest().permitAll())
                 .formLogin(formLogin -> formLogin
                         .loginPage("/login")

@@ -5,8 +5,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import song.spring4.domain.user.User;
+import song.spring4.domain.userrole.consts.Role;
 import song.spring4.entity.oauth2.Sns;
-import song.spring4.entity.role.RoleName;
 import song.spring4.repository.SnsJpaRepository;
 import song.spring4.repository.UserJpaRepository;
 
@@ -28,7 +28,7 @@ public class ProviderService {
             User newUser = userRepository.findByEmail(snsEmail)
                     .orElseGet(() -> userRepository.save(
                             User.of(generateUsername(), null, snsName, snsEmail)));
-            userRoleService.grantRole(newUser.getId(), RoleName.ROLE_USER.name());
+            userRoleService.grantRole(newUser.getId(), Role.ROLE_USER.name());
 
             Sns sns = new Sns(snsId, snsName, snsEmail, newUser);
             return providerRepository.save(sns);

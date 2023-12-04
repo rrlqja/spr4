@@ -6,11 +6,11 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
+import song.spring4.domain.userrole.consts.Role;
 import song.spring4.dto.UploadFileDto;
 import song.spring4.domain.board.Board;
 import song.spring4.domain.comment.Comment;
 import song.spring4.domain.user.User;
-import song.spring4.entity.role.RoleName;
 import song.spring4.repository.BoardJpaRepository;
 import song.spring4.repository.CommentJpaRepository;
 import song.spring4.repository.UserJpaRepository;
@@ -67,8 +67,8 @@ public class InitData {
 
             User saveUserB = userRepository.save(userB);
 
-            userRoleService.grantRole(saveUserA.getId(), RoleName.ROLE_USER.name());
-            userRoleService.grantRole(saveUserA.getId(), RoleName.ROLE_ADMIN.name());
+            userRoleService.grantRole(saveUserA.getId(), Role.ROLE_USER.name());
+            userRoleService.grantRole(saveUserA.getId(), Role.ROLE_ADMIN.name());
 
             for (int i = 0; i < 30; i++) {
                 Board board = Board.of(userA, "test title " + (i + 1), "test content" + (i + 1));
