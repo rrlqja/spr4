@@ -15,21 +15,21 @@ import java.util.Optional;
 @Repository
 public interface BoardJpaRepository extends JpaRepository<Board, Long> {
 
-    @EntityGraph(attributePaths = {"writer"})
+    @EntityGraph(attributePaths = {"user"})
     Optional<Board> findEntityGraphById(Long id);
 
-    @EntityGraph(attributePaths = {"writer"})
+    @EntityGraph(attributePaths = {"user"})
     Page<Board> findAll(Pageable pageable);
 
-    @EntityGraph(attributePaths = {"writer"})
-    @Query("select b from Board b where b.writer.username like %:username%")
+    @EntityGraph(attributePaths = {"user"})
+    @Query("select b from Board b where b.user.username like %:username%")
     Page<Board> findAllByUsernameLike(@Param(value = "username") String username, Pageable pageable);
 
-    @EntityGraph(attributePaths = {"writer"})
+    @EntityGraph(attributePaths = {"user"})
     @Query("select b from Board b where b.title like %:title%")
     Page<Board> findAllByTitleLike(@Param(value = "title") String title, Pageable pageable);
 
-    @EntityGraph(attributePaths = {"writer"})
+    @EntityGraph(attributePaths = {"user"})
     @Query("select b from Board b where b.content like %:content%")
     Page<Board> findAllByContentLike(@Param(value = "content") String content, Pageable pageable);
 

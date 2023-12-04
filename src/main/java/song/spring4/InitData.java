@@ -71,11 +71,7 @@ public class InitData {
             userRoleService.grantRole(saveUserA.getId(), RoleName.ROLE_ADMIN.name());
 
             for (int i = 0; i < 30; i++) {
-                Board board = Board.builder()
-                        .title("title" + (i + 1))
-                        .content("content" + (i + 1))
-                        .build();
-                board.setWriter(userA);
+                Board board = Board.of(userA, "test title " + (i + 1), "test content" + (i + 1));
                 Board saveBoard = boardRepository.save(board);
                 if (i == 29) {
                     UploadFileDto uploadFileDto = new UploadFileDto("spring.png", "spring.png");

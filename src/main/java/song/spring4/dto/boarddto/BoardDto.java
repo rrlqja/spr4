@@ -16,14 +16,14 @@ public class BoardDto {
     private String writerUsername;
     private String title;
     private String content;
-    private Long views;
+    private Integer views;
     private LocalDateTime createDate;
     private List<CommentDto> commentList = new ArrayList<>();
 
     public BoardDto(Board board) {
         this.id = board.getId();
-        this.writerId = board.getWriter().getId();
-        this.writerUsername = board.getWriter().getUsername();
+        this.writerId = board.getUser().getId();
+        this.writerUsername = board.getUser().getUsername();
         this.title = board.getTitle();
         this.content = board.getContent();
         this.views = board.getViews();

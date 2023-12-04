@@ -17,8 +17,6 @@ import song.spring4.exception.notfoundexception.UserNotFoundException;
 import song.spring4.repository.BoardJpaRepository;
 import song.spring4.repository.UserJpaRepository;
 
-import java.util.Optional;
-
 @Slf4j
 @Service
 @RequiredArgsConstructor
@@ -30,9 +28,7 @@ public class BoardService {
     public Long saveBoard(Long userId, SaveBoardDto saveBoardDto) {
         User user = getUserById(userId);
 
-        Board board = saveBoardDto.toEntity();
-        board.setWriter(user);
-
+        Board board = Board.of(user, saveBoardDto.getTitle(), saveBoardDto.getContent());
         Board saveBoard = boardRepository.save(board);
 
         return saveBoard.getId();
@@ -95,18 +91,12 @@ public class BoardService {
     }
 
     private User getUserById(Long userId) {
-        Optional<User> findUser = userRepository.findById(userId);
-        if (findUser.isEmpty()) {
-            throw new UserNotFoundException("사용자를 찾을 수 없습니다.");
-        }
-        return findUser.get();
+        return userRepository.findById(userId)
+                .orElseThrow(UserNotFoundException::new);
     }
 
     private Board getBoardById(Long boardId) {
-        Optional<Board> findBoard = boardRepository.findEntityGraphById(boardId);
-        if (findBoard.isEmpty()) {
-            throw new BoardNotFoundException("게시글을 찾을 수 없습니다.");
-        }
-        return findBoard.get();
+        return boardRepository.findEntityGraphById(boardId)
+                .orElseThrow(BoardNotFoundException::new);
     }
 }

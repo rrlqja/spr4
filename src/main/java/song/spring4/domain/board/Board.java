@@ -13,16 +13,15 @@ import java.util.List;
 
 @Entity
 @Getter
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @EntityListeners(AuditingEntityListener.class)
 public class Board extends BaseTimeEntity {
-
     @Id @GeneratedValue
     private Long id;
 
     @JoinColumn(name = "writer_id")
     @ManyToOne(fetch = FetchType.LAZY)
-    private User writer;
+    private User user;
 
     @OneToMany(mappedBy = "board",fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Comment> commentList = new ArrayList<>();
@@ -34,19 +33,17 @@ public class Board extends BaseTimeEntity {
 
     @Column(columnDefinition = "TEXT")
     private String content;
-    private Long views;
+    private Integer views;
 
-    @Builder
-    public Board(User writer, String title, String content) {
-        this.writer = writer;
+    private Board(User user, String title, String content) {
+        this.user = user;
         this.title = title;
         this.content = content;
-        this.views = 0L;
+        this.views = 0;
     }
 
-    public void setWriter(User writer) {
-        this.writer = writer;
-        writer.getBoardList().add(this);
+    public static Board of(User user, String title, String content) {
+        return new Board(user, title, content);
     }
 
     public void updateBoard(String title, String content) {
