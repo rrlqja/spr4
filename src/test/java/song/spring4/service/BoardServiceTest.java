@@ -15,7 +15,7 @@ import song.spring4.dto.boarddto.BoardListDto;
 import song.spring4.dto.boarddto.SaveBoardDto;
 import song.spring4.dto.commentdto.CommentDto;
 import song.spring4.dto.boarddto.EditBoardDto;
-import song.spring4.entity.Board;
+import song.spring4.domain.board.Board;
 import song.spring4.exception.notfoundexception.BoardNotFoundException;
 import song.spring4.repository.BoardJpaRepository;
 

@@ -13,7 +13,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import song.spring4.dto.*;
 import song.spring4.dto.userdto.*;
-import song.spring4.entity.User;
+import song.spring4.domain.user.User;
 import song.spring4.security.pricipal.UserPrincipal;
 import song.spring4.service.EmailService;
 import song.spring4.service.ResetPasswordService;

@@ -16,7 +16,7 @@ import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
-import song.spring4.entity.User;
+import song.spring4.domain.user.User;
 import song.spring4.service.ResetPasswordService;
 import song.spring4.service.UserService;
 import song.spring4.security.userdetails.UserDetailsServiceImpl;

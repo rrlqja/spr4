@@ -1,9 +1,11 @@
-package song.spring4.entity;
+package song.spring4.domain.user;
 
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
-import song.spring4.entity.oauth2.Sns;
+import song.spring4.entity.BaseTimeEntity;
+import song.spring4.domain.board.Board;
+import song.spring4.domain.userrole.UserRole;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,7 +14,7 @@ import java.util.List;
 @Getter
 @NoArgsConstructor
 @EntityListeners(AuditingEntityListener.class)
-public class User extends BaseTimeEntity{
+public class User extends BaseTimeEntity {
     @Id @GeneratedValue
     private Long id;
 

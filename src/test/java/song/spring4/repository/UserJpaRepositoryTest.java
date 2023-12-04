@@ -5,9 +5,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
-import song.spring4.entity.User;
-
-import static org.junit.jupiter.api.Assertions.*;
+import song.spring4.domain.user.User;
 
 @Slf4j
 @SpringBootTest

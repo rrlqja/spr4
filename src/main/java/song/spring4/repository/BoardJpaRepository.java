@@ -8,7 +8,7 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
-import song.spring4.entity.Board;
+import song.spring4.domain.board.Board;
 
 import java.util.Optional;
 

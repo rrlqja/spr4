@@ -7,7 +7,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
-import song.spring4.entity.User;
+import song.spring4.domain.user.User;
 import song.spring4.service.UserService;
 
 import static org.assertj.core.api.Assertions.*;

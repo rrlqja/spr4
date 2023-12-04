@@ -5,7 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import song.spring4.dto.UploadFileDto;
-import song.spring4.entity.Board;
+import song.spring4.domain.board.Board;
 import song.spring4.entity.FileEntity;
 import song.spring4.exception.FileEntityNotFoundException;
 import song.spring4.exception.notfoundexception.BoardNotFoundException;

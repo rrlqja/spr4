@@ -2,7 +2,7 @@ package song.spring4.dto;
 
 import lombok.Getter;
 import lombok.Setter;
-import song.spring4.entity.Comment;
+import song.spring4.domain.comment.Comment;
 
 @Getter @Setter
 public class RequestCommentDto {

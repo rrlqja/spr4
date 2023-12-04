@@ -2,7 +2,7 @@ package song.spring4.dto.commentdto;
 
 import lombok.Getter;
 import lombok.Setter;
-import song.spring4.entity.Comment;
+import song.spring4.domain.comment.Comment;
 
 import java.util.ArrayList;
 import java.util.List;

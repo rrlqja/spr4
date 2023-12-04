@@ -4,7 +4,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
-import song.spring4.entity.User;
+import song.spring4.domain.user.User;
 
 @Getter @Setter
 public class SignupDto {

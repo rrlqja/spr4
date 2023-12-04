@@ -1,8 +1,10 @@
-package song.spring4.entity;
+package song.spring4.domain.userrole;
 
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import song.spring4.domain.user.User;
+import song.spring4.entity.Role;
 
 @Entity
 @Getter

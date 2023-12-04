@@ -3,7 +3,7 @@ package song.spring4.dto.boarddto;
 import lombok.Getter;
 import lombok.Setter;
 import song.spring4.dto.commentdto.CommentDto;
-import song.spring4.entity.Board;
+import song.spring4.domain.board.Board;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;

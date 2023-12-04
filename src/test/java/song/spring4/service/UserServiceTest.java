@@ -10,7 +10,7 @@ import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
 import song.spring4.dto.SignupDto;
-import song.spring4.entity.User;
+import song.spring4.domain.user.User;
 import song.spring4.exception.notfoundexception.UserNotFoundException;
 
 import static org.assertj.core.api.Assertions.*;
