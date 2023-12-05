@@ -6,6 +6,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import song.spring4.domain.board.dto.RequestBoardDto;
 import song.spring4.domain.board.dto.ResponseBoardDto;
 import song.spring4.dto.boarddto.SaveBoardDto;
 import song.spring4.domain.comment.dto.BoardListDto;
@@ -25,10 +26,10 @@ public class BoardService {
     private final UserJpaRepository userRepository;
 
     @Transactional
-    public Long saveBoard(Long userId, SaveBoardDto saveBoardDto) {
+    public Long saveBoard(Long userId, RequestBoardDto requestBoardDto) {
         User user = getUserById(userId);
 
-        Board board = Board.of(user, saveBoardDto.getTitle(), saveBoardDto.getContent());
+        Board board = Board.of(user, requestBoardDto.getTitle(), requestBoardDto.getContent());
         Board saveBoard = boardRepository.save(board);
 
         return saveBoard.getId();
@@ -63,6 +64,7 @@ public class BoardService {
         return boardPage.map(BoardListDto::new);
     }
 
+    @Transactional
     public Page<BoardListDto> findBoardByContent(String content, Pageable pageable) {
         Page<Board> boardPage = boardRepository.findAllByContentLike(content, pageable);
 
@@ -82,8 +84,7 @@ public class BoardService {
 
     @Transactional
     public void deleteBoard(Long boardId) {
-        boardRepository.findById(boardId).ifPresent(board ->
-                boardRepository.delete(board));
+        boardRepository.deleteById(boardId);
     }
 
     private User getUserById(Long userId) {

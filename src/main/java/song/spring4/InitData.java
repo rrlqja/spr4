@@ -11,8 +11,10 @@ import song.spring4.dto.UploadFileDto;
 import song.spring4.domain.board.Board;
 import song.spring4.domain.comment.Comment;
 import song.spring4.domain.user.User;
+import song.spring4.entity.FileEntity;
 import song.spring4.repository.BoardJpaRepository;
 import song.spring4.repository.CommentJpaRepository;
+import song.spring4.repository.FileEntityJpaRepository;
 import song.spring4.repository.UserJpaRepository;
 import song.spring4.service.FileEntityService;
 import song.spring4.service.UserRoleService;
@@ -21,7 +23,6 @@ import song.spring4.service.UserRoleService;
 @Component
 @RequiredArgsConstructor
 public class InitData {
-
     private final InitService initService;
 
     @PostConstruct
@@ -33,12 +34,12 @@ public class InitData {
     @Transactional
     @RequiredArgsConstructor
     static class InitService{
-
         private final UserRoleService userRoleService;
         private final FileEntityService fileEntityService;
         private final UserJpaRepository userRepository;
         private final BoardJpaRepository boardRepository;
         private final CommentJpaRepository commentRepository;
+        private final FileEntityJpaRepository fileEntityRepository;
         private final BCryptPasswordEncoder passwordEncoder;
 
         public void init1() {
@@ -74,10 +75,13 @@ public class InitData {
                 Board board = Board.of(userA, "test title " + (i + 1), "test content" + (i + 1));
                 Board saveBoard = boardRepository.save(board);
                 if (i == 29) {
-                    UploadFileDto uploadFileDto = new UploadFileDto("spring.png", "spring.png");
-                    fileEntityService.saveFileEntity(uploadFileDto);
-                    board.updateBoard("title", "<p>board</p><br> <img src=/file/downloadFile/spring.png>");
-                    fileEntityService.attachFileEntityToBoard(uploadFileDto.getFileName(), saveBoard.getId());
+                    FileEntity spring = FileEntity.of("spring.png", "spring.png");
+                    spring.setBoard(board);
+                    fileEntityRepository.save(spring);
+                    FileEntity security = FileEntity.of("security.png", "security.png");
+                    security.setBoard(board);
+                    fileEntityRepository.save(security);
+                    board.updateBoard("title", "<p>board</p><br> <img src=/file/downloadFile/spring.png> <img src=/file/downloadFile/security.png>");
                 }
 
                 if (i == 0) {

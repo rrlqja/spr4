@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import song.spring4.dto.UploadFileDto;
 import song.spring4.service.FileEntityService;
-import song.spring4.service.FileService;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
@@ -21,26 +20,21 @@ import java.net.MalformedURLException;
 @RequestMapping("/file")
 @RequiredArgsConstructor
 public class FileController {
-    private final FileService fileService;
     private final FileEntityService fileEntityService;
 
     @ResponseBody
     @PostMapping("/uploadFile")
     public UploadFileDto postUpload(@RequestParam MultipartFile upload) throws IOException {
-        System.out.println("upload.getName() = " + upload.getOriginalFilename());
-        UploadFileDto uploadFileDto = fileService.upload(upload);
-        fileEntityService.saveFileEntity(uploadFileDto);
+        UploadFileDto uploadFileDto = fileEntityService.createFileEntity(upload);
 
         return uploadFileDto;
     }
 
     @ResponseBody
-    @GetMapping("/downloadFile/{fileName}")
-    public ResponseEntity<Resource> getDownload(@PathVariable(value = "fileName") String saveFileName) throws MalformedURLException {
-        fileService.isExists(saveFileName);
-
-        UrlResource resource = new UrlResource("file:" + fileService.getFullPath(saveFileName));
-        String contentType = getContentType(saveFileName);
+    @GetMapping("/downloadFile/{savedFileName}")
+    public ResponseEntity<Resource> getDownload(@PathVariable(value = "savedFileName") String savedFileName) throws MalformedURLException {
+        UrlResource resource = fileEntityService.findBySavedFileName(savedFileName);
+        String contentType = getContentType(savedFileName);
 
         return ResponseEntity.ok()
                 .contentType(MediaType.parseMediaType(contentType))

@@ -10,47 +10,29 @@ import song.spring4.exception.notfoundexception.FileNotFoundException;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.UUID;
 
 @Slf4j
 @Service
 @RequiredArgsConstructor
 public class FileService {
-
     @Value("${upload.path}")
     private String uploadPath;
-
-    public List<UploadFileDto> upload(List<MultipartFile> multipartFileList) throws IOException {
-        if (multipartFileList.isEmpty()) {
-            return null;
-        }
-        List<UploadFileDto> uploadFileList = new ArrayList<>();
-        for (MultipartFile file : multipartFileList) {
-            if (!file.isEmpty()) {
-                UploadFileDto uploadFile = upload(file);
-                uploadFileList.add(uploadFile);
-            }
-        }
-
-        return uploadFileList;
-    }
 
     public UploadFileDto upload(MultipartFile multipartFile) throws IOException {
         if (multipartFile.isEmpty()) {
             return null;
         }
 
-        String originalFilename = multipartFile.getOriginalFilename();
-        String saveFileName = createSaveFileName(originalFilename);
-        multipartFile.transferTo(new File(getFullPath(saveFileName)));
+        String originalFilename = multipartFile.getOriginalFilename().replace(" ", "");
+        String savedFileName = createSavedFileName(originalFilename);
+        multipartFile.transferTo(new File(getFullPath(savedFileName)));
 
-        return new UploadFileDto(originalFilename, saveFileName);
+        return new UploadFileDto(originalFilename, savedFileName);
     }
 
-    public void delete(String saveFileName) {
-        File file = new File(getFullPath(saveFileName));
+    public void delete(String savedFileName) {
+        File file = new File(getFullPath(savedFileName));
 
         if (file.exists()) {
             file.delete();
@@ -61,7 +43,7 @@ public class FileService {
         return uploadPath + saveFileName;
     }
 
-    private String createSaveFileName(String originalFilename) {
+    private String createSavedFileName(String originalFilename) {
         String ext = getExt(originalFilename);
         String uuid = UUID.randomUUID().toString().substring(0, 8);
         return originalFilename.substring(0, originalFilename.lastIndexOf(".")) + uuid + "." + ext;

@@ -5,15 +5,15 @@ import lombok.Setter;
 
 @Getter @Setter
 public class UploadFileDto {
-    private String uploadFileName;
+    private String originalFileName;
     private Long uploaded;
-    private String fileName;
+    private String savedFileName;
     private String url;
 
-    public UploadFileDto(String originalFilename, String saveFileName) {
-        this.uploadFileName = originalFilename;
+    public UploadFileDto(String originalFilename, String savedFileName) {
         this.uploaded = 1L;
-        this.fileName = saveFileName;
-        this.url = "/file/downloadFile/" + saveFileName;
+        this.originalFileName = originalFilename;
+        this.savedFileName = savedFileName;
+        this.url = "/file/downloadFile/" + savedFileName;
     }
 }

@@ -12,12 +12,10 @@ import java.util.Optional;
 
 @Repository
 public interface FileEntityJpaRepository extends JpaRepository<FileEntity, Long> {
-
     @EntityGraph(attributePaths = {"board"})
-    @Query("select f from FileEntity f where f.saveFileName = :saveFileName")
-    Optional<FileEntity> findBySaveFileName(@Param(value = "saveFileName") String saveFileName);
+    @Query("select f from FileEntity f where f.savedFileName = :savedFileName")
+    Optional<FileEntity> findBySavedFileName(@Param(value = "savedFileName") String savedFileName);
 
-    @EntityGraph(attributePaths = {"board"})
-    @Query("select f from FileEntity f where f.board.id = :boardId")
-    List<FileEntity> findByBoardId(@Param(value = "boardId") Long boardId);
+    @Query("select f from FileEntity f where f.savedFileName in :savedFileNameList")
+    List<FileEntity> findAllBySavedFileNameList(@Param("savedFileNameList") List<String> savedFileNameList);
 }

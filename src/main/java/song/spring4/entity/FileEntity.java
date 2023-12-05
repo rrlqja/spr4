@@ -1,14 +1,14 @@
 package song.spring4.entity;
 
 import jakarta.persistence.*;
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 import song.spring4.domain.board.Board;
 
 @Entity
-@Getter @Setter
-@NoArgsConstructor
+@Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class FileEntity {
     @Id @GeneratedValue
     private Long id;
@@ -17,16 +17,23 @@ public class FileEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     private Board board;
 
-    private String uploadFileName;
-    private String saveFileName;
+    private String originalFileName;
+    private String savedFileName;
 
-    public FileEntity(String uploadFileName, String saveFileName) {
-        this.uploadFileName = uploadFileName;
-        this.saveFileName = saveFileName;
+    private FileEntity(String originalFileName, String savedFileName) {
+        this.originalFileName = originalFileName;
+        this.savedFileName = savedFileName;
+    }
+
+    public static FileEntity of(String uploadFileName, String saveFileName) {
+        return new FileEntity(uploadFileName, saveFileName);
     }
 
     public void setBoard(Board board) {
         this.board = board;
-//        board.getFileEntityList().add(this);
+    }
+
+    public void removeBoard() {
+        this.board = null;
     }
 }

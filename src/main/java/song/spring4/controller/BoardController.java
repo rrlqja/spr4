@@ -2,64 +2,40 @@ package song.spring4.controller;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
-import org.jsoup.select.Elements;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import song.spring4.domain.board.dto.RequestBoardDto;
 import song.spring4.domain.board.dto.ResponseBoardDto;
-import song.spring4.dto.boarddto.BoardDto;
-import song.spring4.dto.boarddto.SaveBoardDto;
 import song.spring4.dto.boarddto.EditBoardDto;
 import song.spring4.dto.commentdto.SaveCommentDto;
-import song.spring4.entity.FileEntity;
 import song.spring4.exception.IllegalRequestArgumentException;
 import song.spring4.security.pricipal.UserPrincipal;
 import song.spring4.service.BoardService;
 import song.spring4.service.FileEntityService;
-import song.spring4.service.FileService;
-
-import java.util.List;
 
 @Slf4j
 @Controller
 @RequestMapping("/board")
 @RequiredArgsConstructor
 public class BoardController {
-
     private final BoardService boardService;
     private final FileEntityService fileEntityService;
-    private final FileService fileService;
 
     @GetMapping("/save")
-    public String getSaveBoard(@ModelAttribute SaveBoardDto saveBoardDto) {
+    public String getSaveBoard(@ModelAttribute RequestBoardDto requestBoardDto) {
 
         return "board/saveBoard";
     }
 
     @PostMapping("/save")
     public String postSaveBoard(@AuthenticationPrincipal UserPrincipal userPrincipal,
-                                @ModelAttribute SaveBoardDto saveBoardDto,
+                                @ModelAttribute RequestBoardDto requestBoardDto,
                                 RedirectAttributes redirectAttributes) {
-        Long boardId = boardService.saveBoard(userPrincipal.getId(), saveBoardDto);
-
-        ResponseBoardDto boardDto = boardService.findBoardById(boardId);
-        String content = boardDto.getContent();
-        Document doc = Jsoup.parse(content);
-        Elements img = doc.select("img");
-
-        for (Element element : img) {
-            String imgUrl = element.attr("src");
-
-            String saveFileName = imgUrl.substring(imgUrl.lastIndexOf("/") + 1);
-            System.out.println("saveFileName = " + saveFileName);
-
-            fileEntityService.attachFileEntityToBoard(saveFileName, boardId);
-        }
+        Long boardId = boardService.saveBoard(userPrincipal.getId(), requestBoardDto);
+        fileEntityService.updateFileEntity(boardId);
 
         redirectAttributes.addAttribute("id", boardId);
         return "redirect:/board/{id}";
@@ -78,14 +54,12 @@ public class BoardController {
     @GetMapping("/{id}/edit")
     public String getEditBoard(@PathVariable(name = "id") Long id,
                                @AuthenticationPrincipal UserPrincipal userPrincipal,
-                               @ModelAttribute EditBoardDto editBoardDto) {
+                               Model model) {
         ResponseBoardDto boardDto = boardService.findBoardById(id);
-
         validUser(userPrincipal.getId(), boardDto.getUserId());
 
-        editBoardDto.setId(boardDto.getId());
-        editBoardDto.setTitle(boardDto.getTitle());
-        editBoardDto.setContent(boardDto.getContent());
+        EditBoardDto editBoardDto = new EditBoardDto(boardDto.getId(), boardDto.getTitle(), boardDto.getContent());
+        model.addAttribute("editBoardDto", editBoardDto);
 
         return "board/editBoard";
     }
@@ -96,40 +70,7 @@ public class BoardController {
                                 @ModelAttribute EditBoardDto editBoardDto,
                                 RedirectAttributes redirectAttributes) {
         Long boardId = boardService.editBoard(id, editBoardDto);
-
-        Document doc = Jsoup.parse(editBoardDto.getContent());
-        Elements img = doc.select("img");
-
-//        get Edit ImgList
-        List<String> editImgList = img.stream()
-                .map(element -> element.attr("src"))
-                .map(this::extractFileNameFromUrl)
-                .toList();
-
-//        get Board ImgList
-        List<FileEntity> fileEntityList = fileEntityService.findByBoardId(boardId);
-        List<String> boardFileList = fileEntityList.stream()
-                .map(FileEntity::getSaveFileName)
-                .toList();
-
-//        get new ImgList from EditBoardDto
-        List<String> addFileNameList = editImgList.stream()
-                .filter(fileName -> !boardFileList.contains(fileName))
-                .toList();
-
-//        get removeImgList from Board
-        List<String> removeFileList = boardFileList.stream()
-                .filter(fileName -> !editImgList.contains(fileName))
-                .toList();
-
-        for (String fileName : addFileNameList) {
-            fileEntityService.attachFileEntityToBoard(fileName, boardId);
-        }
-
-        for (String fileName : removeFileList) {
-            fileEntityService.detachFileEntityBySaveFileName(fileName);
-            fileService.delete(fileName);
-        }
+        fileEntityService.editFileEntity(boardId);
 
         redirectAttributes.addAttribute("id", boardId);
 
@@ -147,9 +88,5 @@ public class BoardController {
         if (!userId.equals(boardWriterId)) {
             throw new IllegalRequestArgumentException("권한이 없습니다.");
         }
-    }
-
-    private String extractFileNameFromUrl(String url) {
-        return url.substring(url.lastIndexOf("/") + 1);
     }
 }

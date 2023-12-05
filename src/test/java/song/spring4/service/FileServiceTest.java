@@ -38,7 +38,7 @@ class FileServiceTest {
 
         UploadFileDto uploadFileDto = fileService.upload(mockMultipartFile);
 
-        File file = new File(path + uploadFileDto.getFileName());
+        File file = new File(path + uploadFileDto.getSavedFileName());
         assertThat(file.exists()).isTrue();
         file.delete();
     }

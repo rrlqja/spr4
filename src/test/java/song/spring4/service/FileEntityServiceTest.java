@@ -7,7 +7,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
 import song.spring4.dto.UploadFileDto;
-import song.spring4.domain.board.Board;
 import song.spring4.entity.FileEntity;
 import song.spring4.repository.BoardJpaRepository;
 import song.spring4.repository.FileEntityJpaRepository;
@@ -36,7 +35,7 @@ class FileEntityServiceTest {
         UploadFileDto uploadFileDto = new UploadFileDto("a", "b");
         fileEntityService.saveFileEntity(uploadFileDto);
 
-        Optional<FileEntity> findEntity = fileEntityRepository.findBySaveFileName(uploadFileDto.getFileName());
+        Optional<FileEntity> findEntity = fileEntityRepository.findBySavedFileName(uploadFileDto.getSavedFileName());
         assertThat(findEntity.isPresent()).isTrue();
     }
 
