@@ -55,6 +55,9 @@
   - token(String): 인증 토큰
   - createTime(LocalDateTime): 생성 시간
   - expiryTime(LocalDateTime): 만료 시간
+- 역할
+  - 회원가입, 이메일 변경시 이메일 인증에 사용되는 엔티티
+  - 입력받은 이메일로 토큰이 전송되고 토큰인증을 거쳐야 한다.
 
 ### ResetPasswordToken
 - 속성
@@ -63,6 +66,9 @@
   - token(String): 인증 토큰
   - createTime(LocalDateTime): 생성 시간
   - expiryTime(LocalDateTime): 만료 시간
+- 역할
+  - 비밀번호를 초기시 사용되는 엔티티
+  - 입력받은 이메일로 새로운 비밀번호 생성 주소가 전송된다.
 
 ### FileEntity
 - 속성
