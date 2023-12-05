@@ -81,25 +81,15 @@ public class InitData {
                 }
 
                 if (i == 0) {
-                    Comment comment1 = new Comment();
-                    comment1.setBoard(saveBoard);
-                    comment1.setWriter(saveUserA);
-                    comment1.setContent("comment" + (i + 1));
+                    Comment comment1 = Comment.of(saveUserA, saveBoard, null, "comment" + (i + 1));
                     Comment saveComment1 = commentRepository.save(comment1);
 
                     for (int j = 0; j < 3; j++) {
-                        Comment reply = new Comment();
-                        reply.setBoard(saveBoard);
-                        reply.setWriter(saveUserA);
-                        reply.setParent(saveComment1);
-                        reply.setContent("reply" + (j + 1));
+                        Comment reply = Comment.of(saveUserA, saveBoard, saveComment1, "comment" + (i + 1));
                         commentRepository.save(reply);
                     }
 
-                    Comment comment2 = new Comment();
-                    comment2.setBoard(saveBoard);
-                    comment2.setWriter(saveUserA);
-                    comment2.setContent("comment" + (i + 1));
+                    Comment comment2 = Comment.of(saveUserA, saveBoard, null, "comment" + (i + 1));
                     commentRepository.save(comment2);
                 }
             }

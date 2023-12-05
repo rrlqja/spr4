@@ -12,7 +12,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import song.spring4.domain.userrole.consts.Role;
-import song.spring4.dto.boarddto.BoardListDto;
+import song.spring4.domain.comment.dto.BoardListDto;
 import song.spring4.dto.LoginDto;
 import song.spring4.dto.SignupDto;
 import song.spring4.service.BoardService;

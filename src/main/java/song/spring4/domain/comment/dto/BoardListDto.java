@@ -1,4 +1,4 @@
-package song.spring4.dto.boarddto;
+package song.spring4.domain.comment.dto;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -10,13 +10,13 @@ import java.time.LocalDateTime;
 public class BoardListDto {
     private Long id;
     private String title;
-    private String writer;
+    private String username;
     private LocalDateTime createDate;
 
     public BoardListDto(Board board) {
         this.id = board.getId();
         this.title = board.getTitle();
-        this.writer = board.getUser().getUsername();
+        this.username = board.getUser().getUsername();
         this.createDate = board.getCreateDate();
     }
 }

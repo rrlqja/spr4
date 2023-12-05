@@ -27,6 +27,6 @@ public class FileEntity {
 
     public void setBoard(Board board) {
         this.board = board;
-        board.getFileEntityList().add(this);
+//        board.getFileEntityList().add(this);
     }
 }

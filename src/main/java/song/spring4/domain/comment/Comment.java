@@ -1,10 +1,7 @@
 package song.spring4.domain.comment;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import song.spring4.domain.board.Board;
 import song.spring4.domain.user.User;
@@ -14,21 +11,20 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Getter @Setter
-@NoArgsConstructor
-@AllArgsConstructor
+@Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @EntityListeners(AuditingEntityListener.class)
 public class Comment extends BaseTimeEntity {
     @Id @GeneratedValue
     private Long id;
 
+    @JoinColumn(name = "writer_id")
+    @ManyToOne(fetch = FetchType.LAZY)
+    private User user;
+
     @JoinColumn(name = "board_id")
     @ManyToOne(fetch = FetchType.LAZY)
     private Board board;
-
-    @JoinColumn(name = "writer_id")
-    @ManyToOne(fetch = FetchType.LAZY)
-    private User writer;
 
     @JoinColumn(name = "parent_id")
     @ManyToOne(fetch = FetchType.LAZY)
@@ -39,16 +35,23 @@ public class Comment extends BaseTimeEntity {
 
     private String content;
 
-    public void setBoard(Board board) {
+    private Comment(User user, Board board, Comment parent, String content) {
+        this.user = user;
         this.board = board;
-
-        board.getCommentList().add(this);
+        this.parent = parent;
+        this.content = content;
     }
 
-    public void setParent(Comment parent) {
-        this.parent = parent;
-        if (parent != null) {
-            parent.getChildList().add(this);
-        }
+    public static Comment of(User user, Board board, Comment parent, String content) {
+        return new Comment(user, board, parent, content);
+    }
+
+    public void updateContent(String content) {
+        this.content = content;
+    }
+
+    public void delete() {
+        this.user = null;
+        this.content = "삭제된 댓글입니다.";
     }
 }

@@ -30,15 +30,11 @@ public class CommentService {
 
     @Transactional
     public Long saveComment(Long userId, RequestCommentDto requestCommentDto) {
-        User findUser = getUserById(userId);
-        Board findBoard = getBoardById(requestCommentDto.getBoardId());
+        User user = getUserById(userId);
+        Board board = getBoardById(requestCommentDto.getBoardId());
         Comment parent = getParent(requestCommentDto.getParentId());
 
-        Comment comment = requestCommentDto.toEntity();
-        comment.setWriter(findUser);
-        comment.setBoard(findBoard);
-        comment.setParent(parent);
-
+        Comment comment = Comment.of(user, board, parent, requestCommentDto.getContent());
         Comment saveComment = commentRepository.save(comment);
 
         return saveComment.getId();
@@ -53,10 +49,10 @@ public class CommentService {
     @Transactional
     public Long editComment(Long userId, EditCommentDto editCommentDto) {
         Comment findComment = getCommentById(editCommentDto.getId());
-        if (!userId.equals(findComment.getWriter().getId())) {
+        if (!userId.equals(findComment.getUser().getId())) {
             throw new IllegalRequestArgumentException("잘못된 요청입니다.");
         }
-        findComment.setContent(editCommentDto.getContent());
+        findComment.updateContent(editCommentDto.getContent());
 
         Comment editComment = commentRepository.save(findComment);
 
@@ -65,11 +61,10 @@ public class CommentService {
 
     @Transactional
     public Long deleteComment(Long id) {
-        Comment findComment = getCommentById(id);
+        Comment comment = getCommentById(id);
 
-        findComment.setWriter(null);
-        findComment.setContent("삭제된 댓글 입니다.");
-        Comment saveComment = commentRepository.save(findComment);
+        comment.delete();
+        Comment saveComment = commentRepository.save(comment);
         return saveComment.getId();
     }
 

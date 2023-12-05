@@ -6,9 +6,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import song.spring4.dto.boarddto.BoardDto;
+import song.spring4.domain.board.dto.ResponseBoardDto;
 import song.spring4.dto.boarddto.SaveBoardDto;
-import song.spring4.dto.boarddto.BoardListDto;
+import song.spring4.domain.comment.dto.BoardListDto;
 import song.spring4.dto.boarddto.EditBoardDto;
 import song.spring4.domain.board.Board;
 import song.spring4.domain.user.User;
@@ -35,15 +35,11 @@ public class BoardService {
     }
 
     @Transactional
-    public BoardDto findBoardById(Long boardId) {
-        Board findBoard = getBoardById(boardId);
-        findBoard.increaseViews();
+    public ResponseBoardDto findBoardById(Long boardId) {
+        Board board = getBoardById(boardId);
+        board.increaseViews();
 
-        Board saveBoard = boardRepository.save(findBoard);
-
-        BoardDto boardDto = new BoardDto(saveBoard);
-
-        return boardDto;
+        return new ResponseBoardDto(board);
     }
 
     @Transactional

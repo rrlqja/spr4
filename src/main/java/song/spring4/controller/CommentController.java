@@ -39,7 +39,7 @@ public class CommentController {
                                  Model model) {
         Comment findComment = commentService.findCommentById(id);
 
-        validUser(userPrincipal.getId(), findComment.getWriter().getId());
+        validUser(userPrincipal.getId(), findComment.getUser().getId());
 
         EditCommentDto editCommentDto = new EditCommentDto();
         editCommentDto.setId(findComment.getId());

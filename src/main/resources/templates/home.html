@@ -176,7 +176,7 @@
         <div class="board" th:each="board : ${boardPage.getContent()}">
             <div class="boardId" th:text="${board.id}"></div>
             <div class="boardTitle" th:onclick="|location.href='@{/board/{id}(id=${board.id})}'|" th:text="${board.title}"></div>
-            <div class="boardWriter" th:text="${board.writer}"></div>
+            <div class="boardWriter" th:text="${board.username}"></div>
             <div class="boardCreateDate" th:text="${#temporals.format(board.createDate, 'yyyy-MM-dd HH:mm')}"></div>
         </div>
     </div>

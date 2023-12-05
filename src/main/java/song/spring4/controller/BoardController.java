@@ -11,6 +11,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import song.spring4.domain.board.dto.ResponseBoardDto;
 import song.spring4.dto.boarddto.BoardDto;
 import song.spring4.dto.boarddto.SaveBoardDto;
 import song.spring4.dto.boarddto.EditBoardDto;
@@ -46,7 +47,7 @@ public class BoardController {
                                 RedirectAttributes redirectAttributes) {
         Long boardId = boardService.saveBoard(userPrincipal.getId(), saveBoardDto);
 
-        BoardDto boardDto = boardService.findBoardById(boardId);
+        ResponseBoardDto boardDto = boardService.findBoardById(boardId);
         String content = boardDto.getContent();
         Document doc = Jsoup.parse(content);
         Elements img = doc.select("img");
@@ -68,8 +69,8 @@ public class BoardController {
     public String getBoard(@PathVariable(name = "id") Long id,
                            @ModelAttribute SaveCommentDto saveCommentDto,
                            Model model) {
-        BoardDto boardDto = boardService.findBoardById(id);
-        model.addAttribute("boardDto", boardDto);
+        ResponseBoardDto boardDto = boardService.findBoardById(id);
+        model.addAttribute("board", boardDto);
 
         return "board/board";
     }
@@ -78,9 +79,9 @@ public class BoardController {
     public String getEditBoard(@PathVariable(name = "id") Long id,
                                @AuthenticationPrincipal UserPrincipal userPrincipal,
                                @ModelAttribute EditBoardDto editBoardDto) {
-        BoardDto boardDto = boardService.findBoardById(id);
+        ResponseBoardDto boardDto = boardService.findBoardById(id);
 
-        validUser(userPrincipal.getId(), boardDto.getWriterId());
+        validUser(userPrincipal.getId(), boardDto.getUserId());
 
         editBoardDto.setId(boardDto.getId());
         editBoardDto.setTitle(boardDto.getTitle());

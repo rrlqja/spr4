@@ -11,7 +11,7 @@ import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
 import song.spring4.dto.boarddto.BoardDto;
-import song.spring4.dto.boarddto.BoardListDto;
+import song.spring4.domain.comment.dto.BoardListDto;
 import song.spring4.dto.boarddto.SaveBoardDto;
 import song.spring4.dto.commentdto.CommentDto;
 import song.spring4.dto.boarddto.EditBoardDto;
