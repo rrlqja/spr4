@@ -58,7 +58,7 @@
         let formData = new FormData();
         formData.append('email', email);
 
-        fetch('/verifyEmail', {
+        fetch('/account/verifyEmail', {
             method: 'POST',
             body: formData,
         })
@@ -82,7 +82,7 @@
     document.getElementById("verifyToken").addEventListener("click", function() {
         const token = document.getElementById("token").value;
 
-        fetch('/verifyEmail/' + token, {
+        fetch('/account/verifyEmail/' + token, {
             method: 'POST',
         })
         .then(response => {

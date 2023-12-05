@@ -19,23 +19,21 @@ public class ResetPasswordService {
 
     @Transactional
     public String createPasswordToken(String email) {
-        Optional<ResetPasswordToken> findToken = resetPasswordTokenRepository.findByEmail(email);
-        if (findToken.isPresent()) {
-            ResetPasswordToken PasswordToken = findToken.get();
-            PasswordToken.setToken(UUID.randomUUID().toString().substring(0, 5));
-            ResetPasswordToken saveToken = resetPasswordTokenRepository.save(PasswordToken);
+        Optional<ResetPasswordToken> optionalPasswordToken = resetPasswordTokenRepository.findByEmail(email);
+        if (optionalPasswordToken.isPresent()) {
+            ResetPasswordToken passwordToken = optionalPasswordToken.get();
+            passwordToken.updateToken(UUID.randomUUID().toString().substring(0, 5));
+            ResetPasswordToken saveToken = resetPasswordTokenRepository.save(passwordToken);
             return saveToken.getToken();
         }
 
-        ResetPasswordToken resetPasswordToken = new ResetPasswordToken();
-        resetPasswordToken.setEmail(email);
-        resetPasswordToken.setToken(UUID.randomUUID().toString().substring(0, 5));
-        ResetPasswordToken saveToken = resetPasswordTokenRepository.save(resetPasswordToken);
+        ResetPasswordToken passwordToken = ResetPasswordToken.of(email, UUID.randomUUID().toString().substring(0, 5));
+        ResetPasswordToken saveToken = resetPasswordTokenRepository.save(passwordToken);
         return saveToken.getToken();
     }
 
     @Transactional
-    public void validToken(String token) {
+    public void validateToken(String token) {
         resetPasswordTokenRepository.findByToken(token).orElseThrow(() ->
                 new TokenNotFoundException("토큰을 찾을 수 없습니다."));
     }
@@ -43,8 +41,7 @@ public class ResetPasswordService {
     @Transactional
     public String getUserEmail(String token) {
         ResetPasswordToken findPasswordToken = resetPasswordTokenRepository.findByToken(token)
-                .orElseThrow(() -> new TokenNotFoundException("토큰을 찾을 수 없습니다.")
-                );
+                .orElseThrow(() -> new TokenNotFoundException("토큰을 찾을 수 없습니다."));
         return findPasswordToken.getEmail();
 
     }

@@ -10,7 +10,6 @@ import java.util.Optional;
 
 @Repository
 public interface UserJpaRepository extends JpaRepository<User, Long> {
-
     @Query("select u from User u where u.username = :username")
     Optional<User> findByUsername(@Param(value = "username") String username);
 
@@ -22,6 +21,6 @@ public interface UserJpaRepository extends JpaRepository<User, Long> {
 
     @Query("select u from User u where u.username = :username and u.name = :name and u.email = :email")
     Optional<User> findByUsernameAndNameAndEmail(@Param(value = "username") String username,
-        @Param(value = "name") String name, @Param(value = "email") String email);
-
+                                                 @Param(value = "name") String name,
+                                                 @Param(value = "email") String email);
 }

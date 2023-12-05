@@ -31,9 +31,9 @@ class ResetPasswordServiceTest {
     void valid1() {
         String token = resetPasswordService.createPasswordToken("d");
 
-        resetPasswordService.validToken(token);
+        resetPasswordService.validateToken(token);
 
-        assertThatThrownBy(() -> resetPasswordService.validToken(token + "x"))
+        assertThatThrownBy(() -> resetPasswordService.validateToken(token + "x"))
                 .isInstanceOf(TokenNotFoundException.class);
     }
 

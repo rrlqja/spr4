@@ -20,7 +20,7 @@ import java.util.Map;
 public class ControllerExceptionHandler {
 
     @ExceptionHandler({NotFoundException.class, TokenAlreadyVerifiedException.class,
-    AlreadyExistsUsernameException.class, IllegalRequestArgumentException.class,
+    AlreadyExistsUsernameException.class, IllegalRequestArgumentException.class, AlreadyExistsEmailException.class,
     FileEntityNotFoundException.class})
     public ResponseEntity<String> notFoundExceptionHandler(Exception e) {
         return ResponseEntity

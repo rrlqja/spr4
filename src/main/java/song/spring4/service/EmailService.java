@@ -35,7 +35,7 @@ public class EmailService {
     }
 
     @Transactional
-    public EmailDto sendSimpleMessage(String to, String subject, String text) {
+    public void sendSimpleMessage(String to, String subject, String text) {
         SimpleMailMessage message = new SimpleMailMessage();
         message.setFrom("dkclasltmf@naver.com");
         message.setTo(to);
@@ -44,13 +44,5 @@ public class EmailService {
 
         log.info("[send email] to = {}, message = {}", message.getTo(), message.getText());
         emailSender.send(message);
-
-        EmailDto emailDto = new EmailDto();
-        emailDto.setFromEmail(message.getFrom());
-        emailDto.setToEmail(message.getTo());
-        emailDto.setSubject(message.getSubject());
-        emailDto.setContent(message.getText());
-
-        return emailDto;
     }
 }

@@ -104,32 +104,6 @@ public class UserService {
     }
 
     @Transactional
-    public String findUsername(String name, String email) {
-        User user = userRepository.findByNameAndEmail(name, email)
-                .orElseThrow(() -> new UserNotFoundException("사용자를 찾을 수 없습니다."));
-
-        return user.getUsername();
-    }
-
-    @Transactional
-    public String findPassword(String username, String name, String email) {
-        User user = userRepository.findByUsernameAndNameAndEmail(username, name, email)
-                .orElseThrow(() -> new UserNotFoundException("사용자를 찾을 수 없습니다."));
-
-        return user.getEmail();
-    }
-
-    @Transactional
-    public Long resetPassword(String email, String newPassword) {
-        User findUser = getByEmail(email);
-
-        findUser.updatePassword(passwordEncoder.encode(newPassword));
-
-        User updateUser = userRepository.save(findUser);
-        return updateUser.getId();
-    }
-
-    @Transactional
     public void deleteUserById(Long userId) {
         userRepository.deleteById(userId);
     }
@@ -144,11 +118,6 @@ public class UserService {
         if (!StringUtils.hasText(username)) {
             throw new IllegalRequestArgumentException("입력값을 확인해주세요.");
         }
-    }
-
-    private User getByEmail(String email) {
-        return userRepository.findByEmail(email).orElseThrow(
-                () -> new UserNotFoundException("사용자를 찾을 수 없습니다."));
     }
 
     private void validatePassword(String originalPassword, String newPassword, String userPassword) {

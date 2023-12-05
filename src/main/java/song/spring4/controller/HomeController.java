@@ -71,6 +71,6 @@ public class HomeController {
     @GetMapping("/login")
     private String getLogin(@ModelAttribute LoginDto loginDto) {
 
-        return "login";
+        return "login/login";
     }
 }

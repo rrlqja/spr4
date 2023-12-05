@@ -11,9 +11,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import song.spring4.dto.*;
 import song.spring4.dto.userdto.*;
-import song.spring4.domain.user.User;
 import song.spring4.security.pricipal.UserPrincipal;
 import song.spring4.service.EmailService;
 import song.spring4.service.ResetPasswordService;
@@ -24,7 +22,6 @@ import song.spring4.service.UserService;
 @RequestMapping("/user")
 @RequiredArgsConstructor
 public class UserController {
-
     private final UserService userService;
     private final EmailService emailService;
     private final ResetPasswordService resetPasswordService;
@@ -102,57 +99,6 @@ public class UserController {
     @PostMapping("/validUsername")
     public void postCheckUsername(@RequestParam String username) {
         userService.validateUsername(username);
-    }
-
-    @GetMapping("/findUsername")
-    public String getFindUsername(@ModelAttribute FindUsernameDto findUsernameDto) {
-
-        return "user/findUsername";
-    }
-
-    @ResponseStatus(HttpStatus.OK)
-    @ResponseBody
-    @PostMapping("/findUsername")
-    public ResponseUsername postFindUsername(@Valid @ModelAttribute FindUsernameDto findUsernameDto) {
-        String username = userService.findUsername(findUsernameDto.getName(), findUsernameDto.getEmail());
-
-        ResponseUsername responseUsername = new ResponseUsername();
-        responseUsername.setUsername(username);
-
-        return responseUsername;
-    }
-
-    @GetMapping("/findPassword")
-    public String getFindPassword(@ModelAttribute FindPasswordDto findPasswordDto) {
-
-        return "user/findPassword";
-    }
-
-    @ResponseStatus(HttpStatus.CREATED)
-    @PostMapping("/findPassword")
-    public void postFindPassword(@Valid @ModelAttribute FindPasswordDto findPasswordDto) {
-        String email = userService.findPassword(findPasswordDto.getUsername(), findPasswordDto.getName(), findPasswordDto.getEmail());
-        String token = resetPasswordService.createPasswordToken(email);
-        EmailDto emailDto = emailService.sendSimpleMessage(email, "reset password",
-                "localhost:8080/user/resetPassword/" + token);
-    }
-
-    @GetMapping("/resetPassword/{token}")
-    public String getResetPassword(@PathVariable(name = "token") String token) {
-        resetPasswordService.validToken(token);
-
-        return "user/resetPassword";
-    }
-
-    @ResponseStatus(HttpStatus.OK)
-    @PostMapping("/resetPassword/{token}")
-    public void postResetPassword(@PathVariable(name = "token") String token,
-                                  @Valid @ModelAttribute ResetPasswordDto resetPasswordDto) {
-        String email = resetPasswordService.getUserEmail(token);
-
-        Long userId = userService.resetPassword(email, resetPasswordDto.getNewPassword());
-
-        resetPasswordService.deleteToken(token);
     }
 
     @ResponseStatus(HttpStatus.OK)
