@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 import song.spring4.dto.SignupDto;
 import song.spring4.domain.user.User;
+import song.spring4.dto.userdto.UserDto;
 import song.spring4.exception.AlreadyExistsUsernameException;
 import song.spring4.exception.IllegalRequestArgumentException;
 import song.spring4.exception.notfoundexception.UserNotFoundException;
@@ -26,6 +27,7 @@ public class UserService {
 
     @Transactional
     public Long join(SignupDto signupDto) {
+        validateUsername(signupDto.getUsername());
         User user = User.of(signupDto.getUsername(), passwordEncoder.encode(signupDto.getPassword()), signupDto.getName(), signupDto.getEmail());
 
         User saveUser = userRepository.save(user);
@@ -60,7 +62,7 @@ public class UserService {
     public Long updatePassword(Long userId, String originalPassword, String newPassword) {
         User user = getById(userId);
 
-        validateOriginalPassword(originalPassword, user.getPassword());
+        validatePassword(originalPassword, newPassword, user.getPassword());
 
         user.updatePassword(passwordEncoder.encode(newPassword));
         User updateUser = userRepository.save(user);
@@ -95,17 +97,10 @@ public class UserService {
     }
 
     @Transactional
-    public User findUserById(Long userId) {
+    public UserDto findUserById(Long userId) {
         User user = getById(userId);
 
-        return user;
-    }
-
-    @Transactional
-    public User findUserByUsername(String username) {
-        User user = getByUsername(username);
-
-        return user;
+        return new UserDto(user);
     }
 
     @Transactional
@@ -136,7 +131,7 @@ public class UserService {
 
     @Transactional
     public void deleteUserById(Long userId) {
-        userRepository.findById(userId).ifPresent(userRepository::delete);
+        userRepository.deleteById(userId);
     }
 
     private User getById(Long userId) {
@@ -151,19 +146,24 @@ public class UserService {
         }
     }
 
-    private User getByUsername(String username) {
-        return userRepository.findByUsername(username).orElseThrow(
-                () -> new UserNotFoundException("사용자를 찾을 수 없습니다."));
-    }
-
     private User getByEmail(String email) {
         return userRepository.findByEmail(email).orElseThrow(
                 () -> new UserNotFoundException("사용자를 찾을 수 없습니다."));
     }
 
+    private void validatePassword(String originalPassword, String newPassword, String userPassword) {
+        validateOriginalPassword(originalPassword, userPassword);
+        validateNewPassword(originalPassword, newPassword);
+    }
+
     private void validateOriginalPassword(String originalPassword, String currentPassword) {
         if (!passwordEncoder.matches(originalPassword, currentPassword)) {
             throw new IllegalRequestArgumentException("현재 비밀번호가 일치하지 않습니다.");
+        }
+    }
+    private void validateNewPassword(String originalPassword, String newPassword) {
+        if (originalPassword.equals(newPassword)) {
+            throw new IllegalRequestArgumentException("동일한 비밀번호로 변경할 수 없습니다.");
         }
     }
 

@@ -32,10 +32,9 @@ public class UserController {
     @GetMapping
     public String getUser(@AuthenticationPrincipal UserPrincipal userPrincipal,
                           Model model) {
-        User findUser = userService.findUserById(userPrincipal.getId());
-        UserDto userDto = new UserDto(findUser);
+        UserDto user = userService.findUserById(userPrincipal.getId());
 
-        model.addAttribute("userDto", userDto);
+        model.addAttribute("user", user);
         return "user/user";
     }
 
