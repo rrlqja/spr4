@@ -53,7 +53,6 @@
   - id(Long): 식별자
   - email(String): 이메일
   - token(String): 인증 토큰
-  - isVerified(boolean): 인증 여부
   - createTime(LocalDateTime): 생성 시간
   - expiryTime(LocalDateTime): 만료 시간
 
