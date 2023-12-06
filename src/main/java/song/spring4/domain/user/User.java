@@ -3,7 +3,7 @@ package song.spring4.domain.user;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
-import song.spring4.entity.BaseTimeEntity;
+import song.spring4.domain.common.BaseTimeEntity;
 import song.spring4.domain.board.Board;
 import song.spring4.domain.userrole.UserRole;
 

@@ -5,8 +5,9 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
+import song.spring4.domain.account.service.ResetPasswordService;
 import song.spring4.exception.notfoundexception.TokenNotFoundException;
-import song.spring4.repository.ResetPasswordTokenJpaRepository;
+import song.spring4.domain.account.repository.ResetPasswordTokenJpaRepository;
 
 import static org.assertj.core.api.Assertions.*;
 

@@ -8,6 +8,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
 import song.spring4.domain.board.Board;
+import song.spring4.domain.board.repository.BoardJpaRepository;
 
 @Slf4j
 @SpringBootTest

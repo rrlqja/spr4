@@ -6,9 +6,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import song.spring4.domain.user.User;
 import song.spring4.domain.userrole.consts.Role;
+import song.spring4.domain.userrole.service.UserRoleService;
 import song.spring4.entity.oauth2.Sns;
 import song.spring4.repository.SnsJpaRepository;
-import song.spring4.repository.UserJpaRepository;
+import song.spring4.domain.user.repository.UserJpaRepository;
 
 import java.util.Optional;
 import java.util.UUID;

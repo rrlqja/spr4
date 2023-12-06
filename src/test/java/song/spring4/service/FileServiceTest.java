@@ -7,7 +7,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.context.ActiveProfiles;
-import song.spring4.dto.UploadFileDto;
+import song.spring4.domain.file.service.FileService;
+import song.spring4.domain.file.dto.UploadFileDto;
 
 import java.io.File;
 import java.io.IOException;

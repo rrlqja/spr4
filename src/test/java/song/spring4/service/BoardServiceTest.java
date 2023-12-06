@@ -10,14 +10,14 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
-import song.spring4.dto.boarddto.BoardDto;
-import song.spring4.domain.comment.dto.BoardListDto;
-import song.spring4.dto.boarddto.SaveBoardDto;
-import song.spring4.dto.commentdto.CommentDto;
-import song.spring4.dto.boarddto.EditBoardDto;
+import song.spring4.domain.board.dto.BoardDto;
+import song.spring4.domain.board.dto.BoardListDto;
+import song.spring4.domain.board.service.BoardService;
+import song.spring4.domain.comment.dto.CommentDto;
+import song.spring4.domain.board.dto.EditBoardDto;
 import song.spring4.domain.board.Board;
 import song.spring4.exception.notfoundexception.BoardNotFoundException;
-import song.spring4.repository.BoardJpaRepository;
+import song.spring4.domain.board.repository.BoardJpaRepository;
 
 import static org.assertj.core.api.Assertions.*;
 

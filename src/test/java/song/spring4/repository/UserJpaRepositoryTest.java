@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import song.spring4.domain.user.User;
+import song.spring4.domain.user.repository.UserJpaRepository;
 
 @Slf4j
 @SpringBootTest

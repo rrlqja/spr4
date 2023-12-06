@@ -4,9 +4,9 @@ import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import song.spring4.domain.user.User;
-import song.spring4.entity.BaseTimeEntity;
+import song.spring4.domain.common.BaseTimeEntity;
 import song.spring4.domain.comment.Comment;
-import song.spring4.entity.FileEntity;
+import song.spring4.domain.file.FileEntity;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -6,10 +6,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
-import song.spring4.dto.UploadFileDto;
-import song.spring4.entity.FileEntity;
-import song.spring4.repository.BoardJpaRepository;
-import song.spring4.repository.FileEntityJpaRepository;
+import song.spring4.domain.file.service.FileEntityService;
+import song.spring4.domain.file.dto.UploadFileDto;
+import song.spring4.domain.file.FileEntity;
+import song.spring4.domain.board.repository.BoardJpaRepository;
+import song.spring4.domain.file.repository.FileEntityJpaRepository;
 
 import java.util.ArrayList;
 import java.util.List;

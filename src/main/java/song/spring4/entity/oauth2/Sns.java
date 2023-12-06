@@ -5,7 +5,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
-import song.spring4.entity.BaseTimeEntity;
+import song.spring4.domain.common.BaseTimeEntity;
 import song.spring4.domain.user.User;
 
 import java.util.HashMap;

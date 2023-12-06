@@ -9,7 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.TestPropertySource;
 import song.spring4.domain.userrole.consts.Role;
-import song.spring4.repository.UserRoleJpaRepository;
+import song.spring4.domain.userrole.service.UserRoleService;
+import song.spring4.domain.userrole.repository.UserRoleJpaRepository;
 
 @Slf4j
 @SpringBootTest

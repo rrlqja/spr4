@@ -7,17 +7,16 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import song.spring4.domain.userrole.consts.Role;
-import song.spring4.dto.UploadFileDto;
 import song.spring4.domain.board.Board;
 import song.spring4.domain.comment.Comment;
 import song.spring4.domain.user.User;
-import song.spring4.entity.FileEntity;
-import song.spring4.repository.BoardJpaRepository;
-import song.spring4.repository.CommentJpaRepository;
-import song.spring4.repository.FileEntityJpaRepository;
-import song.spring4.repository.UserJpaRepository;
-import song.spring4.service.FileEntityService;
-import song.spring4.service.UserRoleService;
+import song.spring4.domain.file.FileEntity;
+import song.spring4.domain.board.repository.BoardJpaRepository;
+import song.spring4.domain.comment.repository.CommentJpaRepository;
+import song.spring4.domain.file.repository.FileEntityJpaRepository;
+import song.spring4.domain.user.repository.UserJpaRepository;
+import song.spring4.domain.file.service.FileEntityService;
+import song.spring4.domain.userrole.service.UserRoleService;
 
 @Slf4j
 @Component

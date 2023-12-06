@@ -1,24 +1,20 @@
 package song.spring4.service;
 
-import jakarta.persistence.EntityManager;
 import lombok.extern.slf4j.Slf4j;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.test.annotation.Rollback;
-import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.transaction.annotation.Transactional;
-import song.spring4.dto.SignupDto;
+import song.spring4.domain.user.service.UserService;
+import song.spring4.domain.common.dto.SignupDto;
 import song.spring4.domain.user.User;
 import song.spring4.exception.AlreadyExistsUsernameException;
 import song.spring4.exception.IllegalRequestArgumentException;
 import song.spring4.exception.notfoundexception.UserNotFoundException;
-import song.spring4.repository.UserJpaRepository;
+import song.spring4.domain.user.repository.UserJpaRepository;
 
 import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.*;

@@ -18,8 +18,8 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 import song.spring4.domain.board.Board;
 import song.spring4.exception.notfoundexception.BoardNotFoundException;
-import song.spring4.repository.BoardJpaRepository;
-import song.spring4.service.BoardService;
+import song.spring4.domain.board.repository.BoardJpaRepository;
+import song.spring4.domain.board.service.BoardService;
 
 import static org.assertj.core.api.Assertions.*;
 import static org.hamcrest.Matchers.*;
