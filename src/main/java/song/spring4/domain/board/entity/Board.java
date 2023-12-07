@@ -23,7 +23,7 @@ public class Board extends BaseTimeEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     private User user;
 
-    @OneToMany(mappedBy = "board",fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "board",fetch = FetchType.LAZY, orphanRemoval = true)
     private List<Comment> commentList = new ArrayList<>();
 
     @OneToMany(mappedBy = "board", fetch = FetchType.LAZY)

@@ -42,29 +42,10 @@ public class InitData {
         private final BCryptPasswordEncoder passwordEncoder;
 
         public void init1() {
-            User userA = User.builder()
-                    .username("a")
-                    .password(passwordEncoder.encode("a"))
-                    .name("nameA")
-                    .email("dkclasltmf22@naver.com")
-                    .isAccountNonExpired(true)
-                    .isAccountNonLocked(true)
-                    .isCredentialsNonExpired(true)
-                    .isEnabled(true)
-                    .build();
+            User userA = User.of("a", passwordEncoder.encode("a"), "nameA", "dkclasltmf22@naver.com");
             User saveUserA = userRepository.save(userA);
 
-            User userB = User.builder()
-                    .username("b")
-                    .password(passwordEncoder.encode("a"))
-                    .name("nameB")
-//                    .email("dkclasltmf@naver.com")
-                    .isAccountNonExpired(true)
-                    .isAccountNonLocked(true)
-                    .isCredentialsNonExpired(true)
-                    .isEnabled(true)
-                    .build();
-
+            User userB = User.of("b", passwordEncoder.encode("b"), "nameB", "");
             User saveUserB = userRepository.save(userB);
 
             userRoleService.grantRole(saveUserA.getId(), Role.ROLE_USER.name());

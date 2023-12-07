@@ -4,7 +4,6 @@ import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import song.spring4.domain.common.entity.BaseTimeEntity;
-import song.spring4.domain.board.entity.Board;
 import song.spring4.domain.userrole.entity.UserRole;
 
 import java.util.ArrayList;
@@ -12,14 +11,11 @@ import java.util.List;
 
 @Entity
 @Getter
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @EntityListeners(AuditingEntityListener.class)
 public class User extends BaseTimeEntity {
     @Id @GeneratedValue
     private Long id;
-
-    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Board> boardList = new ArrayList<>();
 
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     private List<UserRole> roleList = new ArrayList<>();
@@ -41,10 +37,10 @@ public class User extends BaseTimeEntity {
         this.password = password;
         this.name = name;
         this.email = email;
-        this.isAccountNonExpired = true;
-        this.isAccountNonLocked = true;
-        this.isCredentialsNonExpired = true;
-        this.isEnabled = true;
+        unexpireAccount();
+        unlockAccount();
+        unexpireCredentials();
+        enableAccount();
     }
 
     public static User of(String username, String password, String name, String email) {
@@ -53,19 +49,6 @@ public class User extends BaseTimeEntity {
 
     public void addUserRole(UserRole userRole) {
         this.roleList.add(userRole);
-    }
-
-    @Builder
-    public User(String username, String password, String name, String email,
-                boolean isAccountNonExpired, boolean isAccountNonLocked, boolean isCredentialsNonExpired, boolean isEnabled) {
-        this.username = username;
-        this.password = password;
-        this.name = name;
-        this.email = email;
-        this.isAccountNonExpired = isAccountNonExpired;
-        this.isAccountNonLocked = isAccountNonLocked;
-        this.isCredentialsNonExpired = isCredentialsNonExpired;
-        this.isEnabled = isEnabled;
     }
 
     public void updateUsername(String username) {
@@ -84,19 +67,34 @@ public class User extends BaseTimeEntity {
         this.email = email;
     }
 
-    public void updateAccountNonExpired(boolean isAccountNonExpired) {
-        this.isAccountNonExpired = isAccountNonExpired;
+    public void expireAccount() {
+        this.isAccountNonExpired = false;
+    }
+    public void unexpireAccount() {
+        this.isAccountNonExpired = true;
     }
 
-    public void updateAccountNonLocked(boolean isAccountNonLocked) {
-        this.isAccountNonLocked = isAccountNonLocked;
+    public void lockAccount() {
+        this.isAccountNonLocked = false;
     }
 
-    public void updateCredentialsNonExpired(boolean isCredentialsNonExpired) {
-        this.isCredentialsNonExpired = isCredentialsNonExpired;
+    public void unlockAccount() {
+        this.isAccountNonLocked = true;
     }
 
-    public void updateEnabled(boolean isEnabled) {
-        this.isEnabled = isEnabled;
+    public void expireCredentials() {
+        this.isCredentialsNonExpired = false;
+    }
+
+    public void unexpireCredentials() {
+        this.isCredentialsNonExpired = true;
+    }
+
+    public void disableAccount() {
+        this.isEnabled = false;
+    }
+
+    public void enableAccount() {
+        this.isEnabled = true;
     }
 }
