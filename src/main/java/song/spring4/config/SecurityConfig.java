@@ -5,22 +5,17 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
-import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
-import org.springframework.security.oauth2.client.userinfo.OAuth2UserService;
-import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import song.spring4.domain.userrole.consts.Role;
-import song.spring4.security.authentication.LoginFailureHandler;
-import song.spring4.security.authentication.LoginSuccessHandler;
-import song.spring4.security.oauth2.OAuth2UserServiceImpl;
+import song.spring4.security.authenticationhandler.LoginFailureHandler;
+import song.spring4.security.authenticationhandler.LoginSuccessHandler;
+import song.spring4.security.service.OAuth2UserServiceImpl;
 
 import static org.springframework.security.web.util.matcher.RegexRequestMatcher.*;
 

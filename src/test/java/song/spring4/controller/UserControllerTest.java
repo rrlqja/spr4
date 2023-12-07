@@ -18,7 +18,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 import song.spring4.domain.account.service.ResetPasswordService;
 import song.spring4.domain.user.service.UserService;
-import song.spring4.security.userdetails.UserDetailsServiceImpl;
+import song.spring4.security.service.UserDetailsServiceImpl;
 
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;

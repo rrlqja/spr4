@@ -1,4 +1,4 @@
-package song.spring4.security.userdetails;
+package song.spring4.security.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -22,7 +22,6 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         User findUser = userRepository.findByUsername(username).orElseThrow(() -> new UsernameNotFoundException("사용자를 찾을 수 없습니다."));
 
-//        return new UserDetailsImpl(findUser);
         return UserPrincipal.of(findUser);
     }
 }

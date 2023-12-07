@@ -1,4 +1,4 @@
-package song.spring4.security.oauth2;
+package song.spring4.security.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
