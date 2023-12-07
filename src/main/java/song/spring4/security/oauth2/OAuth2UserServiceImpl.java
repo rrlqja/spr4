@@ -9,9 +9,9 @@ import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import song.spring4.entity.oauth2.Sns;
+import song.spring4.domain.oauth2.entity.Sns;
 import song.spring4.security.pricipal.UserPrincipal;
-import song.spring4.service.ProviderService;
+import song.spring4.domain.oauth2.service.ProviderService;
 
 import java.util.Map;
 

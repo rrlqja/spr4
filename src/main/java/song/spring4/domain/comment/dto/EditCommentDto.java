@@ -2,7 +2,7 @@ package song.spring4.domain.comment.dto;
 
 import lombok.Getter;
 import lombok.Setter;
-import song.spring4.domain.comment.Comment;
+import song.spring4.domain.comment.entity.Comment;
 
 @Getter @Setter
 public class EditCommentDto {

@@ -1,10 +1,10 @@
-package song.spring4.domain.file;
+package song.spring4.domain.file.entity;
 
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import song.spring4.domain.board.Board;
+import song.spring4.domain.board.entity.Board;
 
 @Entity
 @Getter

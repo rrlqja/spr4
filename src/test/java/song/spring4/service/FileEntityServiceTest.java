@@ -8,7 +8,7 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
 import song.spring4.domain.file.service.FileEntityService;
 import song.spring4.domain.file.dto.UploadFileDto;
-import song.spring4.domain.file.FileEntity;
+import song.spring4.domain.file.entity.FileEntity;
 import song.spring4.domain.board.repository.BoardJpaRepository;
 import song.spring4.domain.file.repository.FileEntityJpaRepository;
 

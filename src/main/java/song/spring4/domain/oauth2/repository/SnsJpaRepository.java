@@ -1,9 +1,9 @@
-package song.spring4.repository;
+package song.spring4.domain.oauth2.repository;
 
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
-import song.spring4.entity.oauth2.Sns;
+import song.spring4.domain.oauth2.entity.Sns;
 
 import java.util.Optional;
 

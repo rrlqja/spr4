@@ -1,4 +1,4 @@
-package song.spring4.aop;
+package song.spring4.aop.aspect;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -17,7 +17,7 @@ public class LogAspect {
     @RequiredArgsConstructor
     public static class ControllerAop {
 
-        @Around("song.spring4.aop.Pointcuts.controllerPointcut()")
+        @Around("song.spring4.aop.pointcut.Pointcuts.controllerPointcut()")
         public Object resultTimeLog(ProceedingJoinPoint joinPoint) throws Throwable {
             log.info("[Controller Aop] {}.{}({})", joinPoint.getSignature().getDeclaringTypeName(), joinPoint.getSignature().getName(), joinPoint.getArgs());
 
@@ -43,7 +43,7 @@ public class LogAspect {
     @RequiredArgsConstructor
     public static class ServiceAop {
 
-        @Around("song.spring4.aop.Pointcuts.servicePointcut()")
+//        @Around("song.spring4.aop.pointcut.Pointcuts.servicePointcut()")
         public Object resultTimeLog(ProceedingJoinPoint joinPoint) throws Throwable {
             log.info("[Service Aop] {}.{}({})", joinPoint.getSignature().getDeclaringTypeName(), joinPoint.getSignature().getName(), joinPoint.getArgs());
 
@@ -69,7 +69,7 @@ public class LogAspect {
     @RequiredArgsConstructor
     public static class RepositoryAop {
 
-        @Around("song.spring4.aop.Pointcuts.repositoryPointcut()")
+//        @Around("song.spring4.aop.pointcut.Pointcuts.repositoryPointcut()")
         public Object resultTimeLog(ProceedingJoinPoint joinPoint) throws Throwable {
             log.info("[Repository Aop] {}.{}({})", joinPoint.getSignature().getDeclaringTypeName(), joinPoint.getSignature().getName(), joinPoint.getArgs());
 

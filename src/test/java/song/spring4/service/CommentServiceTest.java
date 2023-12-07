@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import song.spring4.domain.comment.dto.RequestCommentDto;
-import song.spring4.domain.comment.Comment;
+import song.spring4.domain.comment.entity.Comment;
 import song.spring4.domain.comment.service.CommentService;
 import song.spring4.domain.comment.repository.CommentJpaRepository;
 

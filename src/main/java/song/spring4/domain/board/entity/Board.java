@@ -1,12 +1,12 @@
-package song.spring4.domain.board;
+package song.spring4.domain.board.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
-import song.spring4.domain.user.User;
-import song.spring4.domain.common.BaseTimeEntity;
-import song.spring4.domain.comment.Comment;
-import song.spring4.domain.file.FileEntity;
+import song.spring4.domain.user.entity.User;
+import song.spring4.domain.common.entity.BaseTimeEntity;
+import song.spring4.domain.comment.entity.Comment;
+import song.spring4.domain.file.entity.FileEntity;
 
 import java.util.ArrayList;
 import java.util.List;

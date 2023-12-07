@@ -1,4 +1,4 @@
-package song.spring4.domain.account;
+package song.spring4.domain.account.entity;
 
 import jakarta.persistence.*;
 import lombok.*;

@@ -1,4 +1,4 @@
-package song.spring4.controlleradvice;
+package song.spring4.domain.common.controller;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

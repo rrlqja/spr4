@@ -1,12 +1,12 @@
-package song.spring4.entity.oauth2;
+package song.spring4.domain.oauth2.entity;
 
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
-import song.spring4.domain.common.BaseTimeEntity;
-import song.spring4.domain.user.User;
+import song.spring4.domain.common.entity.BaseTimeEntity;
+import song.spring4.domain.user.entity.User;
 
 import java.util.HashMap;
 import java.util.Map;

@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 import song.spring4.domain.common.dto.SignupDto;
-import song.spring4.domain.user.User;
+import song.spring4.domain.user.entity.User;
 import song.spring4.domain.user.dto.ResponseUserDto;
 import song.spring4.exception.already.exceptions.AlreadyExistsUsernameException;
 import song.spring4.exception.invalid.exceptions.IllegalArgumentException;

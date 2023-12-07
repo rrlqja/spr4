@@ -2,7 +2,7 @@ package song.spring4.domain.user.dto;
 
 import lombok.Getter;
 import lombok.Setter;
-import song.spring4.domain.user.User;
+import song.spring4.domain.user.entity.User;
 
 @Getter @Setter
 public class ResponseUserDto {

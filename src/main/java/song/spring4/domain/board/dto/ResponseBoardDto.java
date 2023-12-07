@@ -2,7 +2,7 @@ package song.spring4.domain.board.dto;
 
 import lombok.Getter;
 import lombok.Setter;
-import song.spring4.domain.board.Board;
+import song.spring4.domain.board.entity.Board;
 import song.spring4.domain.comment.dto.ResponseCommentDto;
 
 import java.time.LocalDateTime;

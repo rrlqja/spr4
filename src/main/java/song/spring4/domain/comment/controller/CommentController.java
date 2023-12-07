@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import song.spring4.domain.comment.dto.EditCommentDto;
 import song.spring4.domain.comment.dto.RequestCommentDto;
-import song.spring4.domain.comment.Comment;
+import song.spring4.domain.comment.entity.Comment;
 import song.spring4.exception.invalid.exceptions.IllegalArgumentException;
 import song.spring4.security.pricipal.UserPrincipal;
 import song.spring4.domain.comment.service.CommentService;

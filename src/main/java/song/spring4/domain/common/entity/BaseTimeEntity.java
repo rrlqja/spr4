@@ -1,4 +1,4 @@
-package song.spring4.domain.common;
+package song.spring4.domain.common.entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.EntityListeners;

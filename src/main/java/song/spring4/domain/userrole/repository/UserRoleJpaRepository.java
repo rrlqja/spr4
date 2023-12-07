@@ -5,7 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
-import song.spring4.domain.userrole.UserRole;
+import song.spring4.domain.userrole.entity.UserRole;
 import song.spring4.domain.userrole.consts.Role;
 
 import java.util.Optional;

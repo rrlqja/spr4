@@ -10,7 +10,7 @@ import org.springframework.test.context.TestPropertySource;
 import org.springframework.transaction.annotation.Transactional;
 import song.spring4.domain.user.service.UserService;
 import song.spring4.domain.common.dto.SignupDto;
-import song.spring4.domain.user.User;
+import song.spring4.domain.user.entity.User;
 import song.spring4.exception.already.exceptions.AlreadyExistsUsernameException;
 import song.spring4.exception.invalid.exceptions.IllegalArgumentException;
 import song.spring4.exception.notfound.exceptions.UserNotFoundException;
