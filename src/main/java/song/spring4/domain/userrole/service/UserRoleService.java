@@ -7,7 +7,7 @@ import org.springframework.transaction.annotation.Transactional;
 import song.spring4.domain.user.User;
 import song.spring4.domain.userrole.UserRole;
 import song.spring4.domain.userrole.consts.Role;
-import song.spring4.exception.notfoundexception.UserNotFoundException;
+import song.spring4.exception.notfound.exceptions.UserNotFoundException;
 import song.spring4.domain.user.repository.UserJpaRepository;
 import song.spring4.domain.userrole.repository.UserRoleJpaRepository;
 

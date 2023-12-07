@@ -1,6 +1,8 @@
-package song.spring4.exception;
+package song.spring4.exception.already.exceptions;
 
-public class AlreadyExistsUsernameException extends RuntimeException {
+import song.spring4.exception.already.AlreadyException;
+
+public class AlreadyExistsUsernameException extends AlreadyException {
     public AlreadyExistsUsernameException() {
         super("Already Exists Username Exception");
 

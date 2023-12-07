@@ -11,9 +11,9 @@ import org.springframework.transaction.annotation.Transactional;
 import song.spring4.domain.user.service.UserService;
 import song.spring4.domain.common.dto.SignupDto;
 import song.spring4.domain.user.User;
-import song.spring4.exception.AlreadyExistsUsernameException;
-import song.spring4.exception.IllegalRequestArgumentException;
-import song.spring4.exception.notfoundexception.UserNotFoundException;
+import song.spring4.exception.already.exceptions.AlreadyExistsUsernameException;
+import song.spring4.exception.invalid.exceptions.IllegalArgumentException;
+import song.spring4.exception.notfound.exceptions.UserNotFoundException;
 import song.spring4.domain.user.repository.UserJpaRepository;
 
 import static org.assertj.core.api.Assertions.*;
@@ -116,7 +116,7 @@ class UserServiceTest {
         String newPassword = "a";
 
         assertThatThrownBy(() -> userService.updatePassword(userId, originalPassword, newPassword))
-                .isInstanceOf(IllegalRequestArgumentException.class);
+                .isInstanceOf(IllegalArgumentException.class);
     }
 
     @DisplayName("이름 변경")

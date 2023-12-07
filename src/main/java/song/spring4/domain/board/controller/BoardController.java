@@ -10,7 +10,8 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import song.spring4.domain.board.dto.RequestBoardDto;
 import song.spring4.domain.board.dto.ResponseBoardDto;
 import song.spring4.domain.board.dto.EditBoardDto;
-import song.spring4.exception.IllegalRequestArgumentException;
+import song.spring4.domain.comment.dto.RequestCommentDto;
+import song.spring4.exception.invalid.exceptions.IllegalArgumentException;
 import song.spring4.security.pricipal.UserPrincipal;
 import song.spring4.domain.board.service.BoardService;
 import song.spring4.domain.file.service.FileEntityService;
@@ -42,6 +43,7 @@ public class BoardController {
 
     @GetMapping("/{id}")
     public String getBoard(@PathVariable(name = "id") Long id,
+                           @ModelAttribute RequestCommentDto requestCommentDto,
                            Model model) {
         ResponseBoardDto boardDto = boardService.findBoardById(id);
         model.addAttribute("board", boardDto);
@@ -84,7 +86,7 @@ public class BoardController {
 
     private void validUser(Long userId, Long boardWriterId) {
         if (!userId.equals(boardWriterId)) {
-            throw new IllegalRequestArgumentException("권한이 없습니다.");
+            throw new IllegalArgumentException("권한이 없습니다.");
         }
     }
 }

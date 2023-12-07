@@ -12,8 +12,8 @@ import org.springframework.web.multipart.MultipartFile;
 import song.spring4.domain.file.dto.UploadFileDto;
 import song.spring4.domain.board.Board;
 import song.spring4.domain.file.FileEntity;
-import song.spring4.exception.FileEntityNotFoundException;
-import song.spring4.exception.notfoundexception.BoardNotFoundException;
+import song.spring4.exception.notfound.exceptions.FileEntityNotFoundException;
+import song.spring4.exception.notfound.exceptions.BoardNotFoundException;
 import song.spring4.domain.board.repository.BoardJpaRepository;
 import song.spring4.domain.file.repository.FileEntityJpaRepository;
 

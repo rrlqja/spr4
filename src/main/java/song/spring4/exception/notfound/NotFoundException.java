@@ -1,4 +1,4 @@
-package song.spring4.exception;
+package song.spring4.exception.notfound;
 
 public abstract class NotFoundException extends RuntimeException{
     public NotFoundException() {

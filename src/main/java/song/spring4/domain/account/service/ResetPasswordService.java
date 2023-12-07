@@ -5,7 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import song.spring4.domain.account.ResetPasswordToken;
-import song.spring4.exception.notfoundexception.TokenNotFoundException;
+import song.spring4.exception.notfound.exceptions.TokenNotFoundException;
 import song.spring4.domain.account.repository.ResetPasswordTokenJpaRepository;
 
 import java.util.Optional;

@@ -1,6 +1,6 @@
-package song.spring4.exception.notfoundexception;
+package song.spring4.exception.notfound.exceptions;
 
-import song.spring4.exception.NotFoundException;
+import song.spring4.exception.notfound.NotFoundException;
 
 public class FileNotFoundException extends NotFoundException {
     public FileNotFoundException() {

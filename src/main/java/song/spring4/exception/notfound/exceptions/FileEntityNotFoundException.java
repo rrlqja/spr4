@@ -1,6 +1,8 @@
-package song.spring4.exception;
+package song.spring4.exception.notfound.exceptions;
 
-public class FileEntityNotFoundException extends RuntimeException {
+import song.spring4.exception.notfound.NotFoundException;
+
+public class FileEntityNotFoundException extends NotFoundException {
     public FileEntityNotFoundException() {
         super("File Entity Not Found Exception");
     }

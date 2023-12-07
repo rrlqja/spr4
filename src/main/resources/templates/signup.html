@@ -225,7 +225,6 @@
             if(response.ok) {
                 window.location.href = '/login';
             } else {
-                // 에러 처리
                 response.json().then(function(errors) {
                     for(let field in errors) {
                         document.getElementById(field + 'Error').textContent = errors[field];

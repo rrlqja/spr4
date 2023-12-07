@@ -118,7 +118,7 @@
         </div>
     </div>
 
-    <form method="post" th:action="@{/comment/save}" th:object="${saveCommentDto}" sec:authorize="isAuthenticated()">
+    <form method="post" th:action="@{/comment/save}" th:object="${requestCommentDto}" sec:authorize="isAuthenticated()">
         <div class="mb-3">
             <label for="saveComment">saveComment</label>
             <input type="text" th:field="*{content}" class="form-control" id="saveComment">
@@ -149,7 +149,6 @@
     function confirmDelete(commentId) {
         if (confirm("정말로 삭제하시겠습니까?")) {
             var formData = new FormData();
-            // 필요한 경우 formData.append('key', 'value'); 로 데이터 추가
 
             fetch(`/comment/${commentId}/delete`, {
                 method: 'POST',

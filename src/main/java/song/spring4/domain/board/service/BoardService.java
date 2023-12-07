@@ -12,8 +12,8 @@ import song.spring4.domain.board.dto.BoardListDto;
 import song.spring4.domain.board.dto.EditBoardDto;
 import song.spring4.domain.board.Board;
 import song.spring4.domain.user.User;
-import song.spring4.exception.notfoundexception.BoardNotFoundException;
-import song.spring4.exception.notfoundexception.UserNotFoundException;
+import song.spring4.exception.notfound.exceptions.BoardNotFoundException;
+import song.spring4.exception.notfound.exceptions.UserNotFoundException;
 import song.spring4.domain.board.repository.BoardJpaRepository;
 import song.spring4.domain.user.repository.UserJpaRepository;
 

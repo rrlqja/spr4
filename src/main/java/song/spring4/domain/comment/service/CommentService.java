@@ -9,10 +9,10 @@ import song.spring4.domain.comment.dto.RequestCommentDto;
 import song.spring4.domain.board.Board;
 import song.spring4.domain.comment.Comment;
 import song.spring4.domain.user.User;
-import song.spring4.exception.IllegalRequestArgumentException;
-import song.spring4.exception.notfoundexception.BoardNotFoundException;
-import song.spring4.exception.notfoundexception.CommentNotFoundException;
-import song.spring4.exception.notfoundexception.UserNotFoundException;
+import song.spring4.exception.invalid.exceptions.IllegalArgumentException;
+import song.spring4.exception.notfound.exceptions.BoardNotFoundException;
+import song.spring4.exception.notfound.exceptions.CommentNotFoundException;
+import song.spring4.exception.notfound.exceptions.UserNotFoundException;
 import song.spring4.domain.board.repository.BoardJpaRepository;
 import song.spring4.domain.comment.repository.CommentJpaRepository;
 import song.spring4.domain.user.repository.UserJpaRepository;
@@ -50,7 +50,7 @@ public class CommentService {
     public Long editComment(Long userId, EditCommentDto editCommentDto) {
         Comment findComment = getCommentById(editCommentDto.getId());
         if (!userId.equals(findComment.getUser().getId())) {
-            throw new IllegalRequestArgumentException("잘못된 요청입니다.");
+            throw new IllegalArgumentException("잘못된 요청입니다.");
         }
         findComment.updateContent(editCommentDto.getContent());
 

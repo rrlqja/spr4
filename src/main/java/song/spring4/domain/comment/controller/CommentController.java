@@ -11,7 +11,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import song.spring4.domain.comment.dto.EditCommentDto;
 import song.spring4.domain.comment.dto.RequestCommentDto;
 import song.spring4.domain.comment.Comment;
-import song.spring4.exception.IllegalRequestArgumentException;
+import song.spring4.exception.invalid.exceptions.IllegalArgumentException;
 import song.spring4.security.pricipal.UserPrincipal;
 import song.spring4.domain.comment.service.CommentService;
 
@@ -67,7 +67,7 @@ public class CommentController {
 
     private void validUser(Long userId, Long boardWriterId) {
         if (!userId.equals(boardWriterId)) {
-            throw new IllegalRequestArgumentException("권한이 없습니다.");
+            throw new IllegalArgumentException("권한이 없습니다.");
         }
     }
 }

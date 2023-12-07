@@ -16,7 +16,7 @@ import song.spring4.domain.board.service.BoardService;
 import song.spring4.domain.comment.dto.CommentDto;
 import song.spring4.domain.board.dto.EditBoardDto;
 import song.spring4.domain.board.Board;
-import song.spring4.exception.notfoundexception.BoardNotFoundException;
+import song.spring4.exception.notfound.exceptions.BoardNotFoundException;
 import song.spring4.domain.board.repository.BoardJpaRepository;
 
 import static org.assertj.core.api.Assertions.*;
