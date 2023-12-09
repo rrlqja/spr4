@@ -14,7 +14,6 @@ import java.util.Optional;
 
 @Repository
 public interface BoardJpaRepository extends JpaRepository<Board, Long> {
-
     @EntityGraph(attributePaths = {"user"})
     Optional<Board> findById(Long id);
 

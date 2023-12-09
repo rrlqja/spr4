@@ -69,11 +69,11 @@ public class InitData {
                     Comment saveComment1 = commentRepository.save(comment1);
 
                     for (int j = 0; j < 3; j++) {
-                        Comment reply = Comment.of(saveUserA, saveBoard, saveComment1, "comment" + (i + 1));
+                        Comment reply = Comment.of(saveUserA, saveBoard, saveComment1, "comment" + (j + 1));
                         commentRepository.save(reply);
                     }
 
-                    Comment comment2 = Comment.of(saveUserA, saveBoard, null, "comment" + (i + 1));
+                    Comment comment2 = Comment.of(saveUserA, saveBoard, null, "comment" + (i + 2));
                     commentRepository.save(comment2);
                 }
             }

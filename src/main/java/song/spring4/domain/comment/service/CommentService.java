@@ -92,7 +92,7 @@ public class CommentService {
     }
 
     private Comment getCommentById(Long id) {
-        Optional<Comment> findComment = commentRepository.findEntityGraphById(id);
+        Optional<Comment> findComment = commentRepository.findById(id);
         if (findComment.isEmpty()) {
             throw new CommentNotFoundException("댓글을 찾을 수 없습니다.");
         }

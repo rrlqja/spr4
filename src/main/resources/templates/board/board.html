@@ -89,7 +89,7 @@
         <input type="text" th:value="${comment.content}" class="form-control" id="comment" readonly>
 
         <div class="reply-form" id="reply-form" style="display: none;">
-            <form th:action="@{/comment/save}" method="post" th:object="${saveCommentDto}">
+            <form th:action="@{/comment/save}" method="post" th:object="${requestCommentDto}">
                 <textarea class="comment-textarea form-control" rows="3" th:field="*{content}"></textarea>
                 <input type="hidden" name="boardId" th:value="${board.id}">
                 <input type="hidden" name="parentId" th:value="${comment.id}">
@@ -120,8 +120,8 @@
 
     <form method="post" th:action="@{/comment/save}" th:object="${requestCommentDto}" sec:authorize="isAuthenticated()">
         <div class="mb-3">
-            <label for="saveComment">saveComment</label>
-            <input type="text" th:field="*{content}" class="form-control" id="saveComment">
+            <label for="requestComment">saveComment</label>
+            <input type="text" th:field="*{content}" class="form-control" id="requestComment">
         </div>
         <input type="hidden" name="boardId" th:value="${board.id}">
         <input type="submit" class="btn btn-secondary" value="댓글 쓰기">

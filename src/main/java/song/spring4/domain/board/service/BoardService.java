@@ -11,11 +11,14 @@ import song.spring4.domain.board.dto.ResponseBoardDto;
 import song.spring4.domain.board.dto.BoardListDto;
 import song.spring4.domain.board.dto.EditBoardDto;
 import song.spring4.domain.board.entity.Board;
+import song.spring4.domain.comment.repository.CommentJpaRepository;
 import song.spring4.domain.user.entity.User;
 import song.spring4.exception.notfound.exceptions.BoardNotFoundException;
 import song.spring4.exception.notfound.exceptions.UserNotFoundException;
 import song.spring4.domain.board.repository.BoardJpaRepository;
 import song.spring4.domain.user.repository.UserJpaRepository;
+
+import java.util.List;
 
 @Slf4j
 @Service
@@ -23,6 +26,7 @@ import song.spring4.domain.user.repository.UserJpaRepository;
 public class BoardService {
     private final BoardJpaRepository boardRepository;
     private final UserJpaRepository userRepository;
+    private final CommentJpaRepository commentRepository;
 
     @Transactional
     public Long saveBoard(Long userId, RequestBoardDto requestBoardDto) {
@@ -39,7 +43,9 @@ public class BoardService {
         Board board = getBoardById(boardId);
         board.increaseViews();
 
-        return new ResponseBoardDto(board);
+        List commentList = commentRepository.findByBoardId(board.getId());
+
+        return new ResponseBoardDto(board, commentList);
     }
 
     @Transactional

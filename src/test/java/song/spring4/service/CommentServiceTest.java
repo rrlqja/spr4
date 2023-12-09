@@ -32,7 +32,7 @@ class CommentServiceTest {
 
         Long id = commentService.saveComment(1L, requestCommentDto);
 
-        Comment findComment = commentRepository.findEntityGraphById(id).get();
+        Comment findComment = commentRepository.findById(id).get();
 
         assertThat(findComment.getBoard().getTitle()).isEqualTo("title1");
     }
