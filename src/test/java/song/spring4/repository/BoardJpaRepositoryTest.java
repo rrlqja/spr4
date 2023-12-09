@@ -8,6 +8,8 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.transaction.annotation.Transactional;
@@ -54,19 +56,22 @@ class BoardJpaRepositoryTest {
         assertDoesNotThrow(() -> boardRepository.save(board));
     }
 
-    @DisplayName("게시글 업데이트")
+    @DisplayName("게시글 조회")
     @Test
-    void updateTest() {
-        Board board = Board.of(userA, "test title", "test content");
-        Board saveBoard = boardRepository.save(board);
+    void findTEst() {
+        saveBoard(100);
+        Page<Board> boardPage = boardRepository.findAll(PageRequest.of(0, 10));
 
-        String updateTitle = "updateTitle";
-        Board testBoard = boardRepository.findById(saveBoard.getId()).get();
-        testBoard.updateBoard(updateTitle, "updateContent");
-        Board updateBoard = boardRepository.save(testBoard);
+        assertThat(boardPage.getTotalElements())
+                .isEqualTo(100);
+        assertThat(boardPage.getTotalPages())
+                .isEqualTo(10);
+    }
 
-        Board findBoard = boardRepository.findById(updateBoard.getId()).get();
-        assertThat(findBoard.getTitle())
-                .isEqualTo(updateTitle);
+    private void saveBoard(Integer boardQuantity) {
+        for (int i = 0; i < boardQuantity; i++) {
+            Board board = Board.of(userA, "test title " + (i + 1), "test content " + (i + 1));
+            boardRepository.save(board);
+        }
     }
 }

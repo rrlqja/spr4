@@ -92,7 +92,7 @@ public class BoardService {
     }
 
     private Board getBoardById(Long boardId) {
-        return boardRepository.findEntityGraphById(boardId)
+        return boardRepository.findById(boardId)
                 .orElseThrow(BoardNotFoundException::new);
     }
 }

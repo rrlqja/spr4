@@ -16,7 +16,7 @@ import java.util.Optional;
 public interface BoardJpaRepository extends JpaRepository<Board, Long> {
 
     @EntityGraph(attributePaths = {"user"})
-    Optional<Board> findEntityGraphById(Long id);
+    Optional<Board> findById(Long id);
 
     @EntityGraph(attributePaths = {"user"})
     Page<Board> findAll(Pageable pageable);

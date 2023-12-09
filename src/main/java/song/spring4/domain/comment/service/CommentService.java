@@ -77,7 +77,7 @@ public class CommentService {
     }
 
     private Board getBoardById(Long boardId) {
-        Optional<Board> findBoard = boardRepository.findEntityGraphById(boardId);
+        Optional<Board> findBoard = boardRepository.findById(boardId);
         if (findBoard.isEmpty()) {
             throw new BoardNotFoundException("게시글을 찾을 수 없습니다.");
         }
