@@ -73,7 +73,7 @@ public class InitData {
                         commentRepository.save(reply);
                     }
 
-                    Comment comment2 = Comment.of(saveUserA, saveBoard, null, "comment" + (i + 2));
+                    Comment comment2 = Comment.of(saveUserB, saveBoard, null, "comment" + (i + 2));
                     commentRepository.save(comment2);
                 }
             }
