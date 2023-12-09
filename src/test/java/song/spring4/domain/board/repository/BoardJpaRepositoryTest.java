@@ -1,8 +1,6 @@
-package song.spring4.repository;
+package song.spring4.domain.board.repository;
 
-import jakarta.persistence.EntityManager;
 import lombok.extern.slf4j.Slf4j;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -10,11 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.TestPropertySource;
-import org.springframework.transaction.annotation.Transactional;
 import song.spring4.domain.board.entity.Board;
-import song.spring4.domain.board.repository.BoardJpaRepository;
 import song.spring4.domain.file.repository.FileEntityJpaRepository;
 import song.spring4.domain.user.entity.User;
 import song.spring4.domain.user.repository.UserJpaRepository;
@@ -58,7 +53,31 @@ class BoardJpaRepositoryTest {
 
     @DisplayName("게시글 조회")
     @Test
-    void findTEst() {
+    void findBoardTest() {
+        String title = "test title";
+        Board saveBoard = boardRepository.save(Board.of(userA, title, "test content"));
+
+        Board findBoard = boardRepository.findById(saveBoard.getId()).get();
+
+        assertThat(findBoard.getUser().getUsername())
+                .isEqualTo(userA.getUsername());
+        assertThat(findBoard.getTitle())
+                .isEqualTo(title);
+    }
+
+    @Test
+    void findAllTest() {
+        boardRepository.findAll(PageRequest.of(0, 10));
+    }
+
+    @Test
+    void findAllUsernameLikeTest() {
+        boardRepository.findAllByUsernameLike("user", PageRequest.of(0, 10));
+    }
+
+    @DisplayName("게시글 리스트 조회")
+    @Test
+    void findBoardListTest() {
         saveBoard(100);
         Page<Board> boardPage = boardRepository.findAll(PageRequest.of(0, 10));
 
@@ -73,5 +92,8 @@ class BoardJpaRepositoryTest {
             Board board = Board.of(userA, "test title " + (i + 1), "test content " + (i + 1));
             boardRepository.save(board);
         }
+        log.info("=======================================================================");
+        log.info("============================= save board ==============================");
+        log.info("=======================================================================");
     }
 }

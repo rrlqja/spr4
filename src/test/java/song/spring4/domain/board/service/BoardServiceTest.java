@@ -1,4 +1,4 @@
-package song.spring4.service;
+package song.spring4.domain.board.service;
 
 import jakarta.persistence.EntityManager;
 import lombok.extern.slf4j.Slf4j;

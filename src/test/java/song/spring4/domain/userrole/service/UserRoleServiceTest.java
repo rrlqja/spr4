@@ -1,4 +1,4 @@
-package song.spring4.service;
+package song.spring4.domain.userrole.service;
 
 import lombok.extern.slf4j.Slf4j;
 import org.assertj.core.api.Assertions;

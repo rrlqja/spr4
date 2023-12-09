@@ -1,4 +1,4 @@
-package song.spring4.controller;
+package song.spring4.domain.board.controller;
 
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.AfterEach;
