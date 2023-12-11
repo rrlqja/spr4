@@ -45,7 +45,7 @@ class BoardJpaRepositoryTest {
 
     @DisplayName("게시글 저장")
     @Test
-    void saveTest() {
+    void save() {
         Board board = Board.of(userA, "test title", "test content");
 
         assertDoesNotThrow(() -> boardRepository.save(board));
@@ -53,7 +53,7 @@ class BoardJpaRepositoryTest {
 
     @DisplayName("게시글 조회")
     @Test
-    void findBoardTest() {
+    void findBoard() {
         String title = "test title";
         Board saveBoard = boardRepository.save(Board.of(userA, title, "test content"));
 
@@ -65,26 +65,35 @@ class BoardJpaRepositoryTest {
                 .isEqualTo(title);
     }
 
+    @DisplayName("게시글 전체 조회")
     @Test
-    void findAllTest() {
-        boardRepository.findAll(PageRequest.of(0, 10));
+    void findAll() {
+        Page<Board> boardPage = boardRepository.findAll(PageRequest.of(0, 10));
+
+        assertThat(boardPage.getTotalElements())
+                .isEqualTo(0L);
     }
 
+    @DisplayName("게시글 작성자 검색")
     @Test
-    void findAllUsernameLikeTest() {
-        boardRepository.findAllByUsernameLike("user", PageRequest.of(0, 10));
+    void findAllUsernameLike() {
+        saveBoard(3);
+
+        Page<Board> boardPage = boardRepository.findAllByUsernameLike(userA.getUsername(), PageRequest.of(0, 10));
+        assertThat(boardPage.getTotalElements())
+                .isEqualTo(3L);
     }
 
     @DisplayName("게시글 리스트 조회")
     @Test
-    void findBoardListTest() {
+    void findBoardList() {
         saveBoard(100);
         Page<Board> boardPage = boardRepository.findAll(PageRequest.of(0, 10));
 
         assertThat(boardPage.getTotalElements())
-                .isEqualTo(100);
+                .isEqualTo(100L);
         assertThat(boardPage.getTotalPages())
-                .isEqualTo(10);
+                .isEqualTo(10L);
     }
 
     private void saveBoard(Integer boardQuantity) {
