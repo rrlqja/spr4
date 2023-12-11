@@ -61,7 +61,7 @@ public class InitData {
                     FileEntity security = FileEntity.of("security.png", "security.png");
                     security.setBoard(board);
                     fileEntityRepository.save(security);
-                    board.updateBoard("title", "<p>board</p><br> <img src=/file/downloadFile/spring.png> <img src=/file/downloadFile/security.png>");
+                    board.editBoard("title", "<p>board</p><br> <img src=/file/downloadFile/spring.png> <img src=/file/downloadFile/security.png>");
                 }
 
                 if (i == 0) {

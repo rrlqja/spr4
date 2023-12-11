@@ -1,132 +1,169 @@
 package song.spring4.domain.board.service;
 
-import jakarta.persistence.EntityManager;
 import lombok.extern.slf4j.Slf4j;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.test.annotation.Rollback;
-import org.springframework.test.context.ActiveProfiles;
-import org.springframework.transaction.annotation.Transactional;
-import song.spring4.domain.board.dto.BoardDto;
+import org.springframework.test.context.TestPropertySource;
 import song.spring4.domain.board.dto.BoardListDto;
-import song.spring4.domain.board.service.BoardService;
-import song.spring4.domain.comment.dto.CommentDto;
 import song.spring4.domain.board.dto.EditBoardDto;
+import song.spring4.domain.board.dto.RequestBoardDto;
+import song.spring4.domain.board.dto.ResponseBoardDto;
 import song.spring4.domain.board.entity.Board;
-import song.spring4.exception.notfound.exceptions.BoardNotFoundException;
+import song.spring4.domain.file.repository.FileEntityJpaRepository;
+import song.spring4.domain.user.entity.User;
+import song.spring4.domain.user.repository.UserJpaRepository;
 import song.spring4.domain.board.repository.BoardJpaRepository;
+import song.spring4.exception.notfound.NotFoundException;
 
 import static org.assertj.core.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 @Slf4j
 @SpringBootTest
-@ActiveProfiles("test")
+@TestPropertySource(properties = {
+        "spring.profiles.active=test",
+        "JASYPT_ENCRYPTOR_PASSWORD=test"
+})
 class BoardServiceTest {
-
     @Autowired
     BoardService boardService;
     @Autowired
     BoardJpaRepository boardRepository;
     @Autowired
-    EntityManager em;
+    FileEntityJpaRepository fileEntityRepository;
+    @Autowired
+    UserJpaRepository userRepository;
 
-    @Test
-    void save1() {
-//        SaveBoardDto saveBoardDto = new SaveBoardDto();
-//        saveBoardDto.setTitle("title");
-//        saveBoardDto.setContent("content");
-//
-//        Long id = boardService.saveBoard(1L, saveBoardDto);
-//
-//        assertThat(boardRepository.findEntityGraphById(id).get().getTitle())
-//                .isEqualTo(saveBoardDto.getTitle());
+    User userA;
+
+    @BeforeEach
+    void beforeEach() {
+        fileEntityRepository.deleteAll();
+        boardRepository.deleteAll();
+        userA = userRepository.findById(1L).get();
+        log.info("=======================================================================");
+        log.info("============================= before each =============================");
+        log.info("=======================================================================");
     }
 
+    @DisplayName("게시글 저장")
     @Test
-    void find1() {
-//        SaveBoardDto saveBoardDto = new SaveBoardDto();
-//        saveBoardDto.setTitle("title");
-//        saveBoardDto.setContent("content");
-//        Long id = boardService.saveBoard(1L, saveBoardDto);
-//
-//        Board findBoard = boardRepository.findEntityGraphById(id).get();
-//
-//        assertThat(findBoard.getContent()).isEqualTo("content");
+    void save() {
+        RequestBoardDto requestBoardDto = new RequestBoardDto();
+        requestBoardDto.setTitle("test title");
+        requestBoardDto.setContent("test content");
+
+        Long saveBoardId = boardService.saveBoard(userA.getId(), requestBoardDto);
+
+        assertThat(boardRepository.findById(saveBoardId))
+                .isNotEmpty();
     }
 
+    @DisplayName("게시글 id 조회")
     @Test
-    void find2() {
-//        BoardDto findBoardDto = boardService.findBoardById(1L);
-//        assertThat(findBoardDto.getCommentList().size()).isEqualTo(5);
-//        for (CommentDto commentDto : findBoardDto.getCommentList()) {
-//            log.info("comment writer = {}", commentDto.getWriterUsername());
-//        }
+    void findBoardById() {
+        RequestBoardDto requestBoardDto = new RequestBoardDto();
+        requestBoardDto.setTitle("test title");
+        requestBoardDto.setContent("test content");
+
+        Long saveBoardId = boardService.saveBoard(userA.getId(), requestBoardDto);
+
+        ResponseBoardDto boardDto = boardService.findBoardById(saveBoardId);
+        assertThat(boardDto.getTitle())
+                .isEqualTo(requestBoardDto.getTitle());
     }
 
+    @DisplayName("존재하지 않는 게시글 id 조회시 예외 발생")
     @Test
-    void find3() {
-//        BoardDto findBoardDto = boardService.findBoardById(1L);
-//        log.info("title = {}", findBoardDto.getTitle());
-//        log.info("content = {}", findBoardDto.getContent());
-//        log.info("writer = {}", findBoardDto.getWriterUsername());
-//
-//        for (CommentDto commentDto : findBoardDto.getCommentList()) {
-//            log.info("comment = {}", commentDto.getContent());
-//            log.info("comment writer = {}", commentDto.getWriterUsername());
-//            log.info("child size = {}", commentDto.getChildList().size());
-//        }
+    void findBoardByIdException() {
+        assertThatThrownBy(() -> boardService.findBoardById(-1L))
+                .isInstanceOf(NotFoundException.class);
     }
 
+    @DisplayName("게시글 페이징 조회")
     @Test
-    void find4() {
-        PageRequest pageRequest = PageRequest.of(0, 10);
+    void findBoardPage() {
+        saveBoard(10);
 
-        Page<BoardListDto> boardPage = boardService.findBoardList(pageRequest);
-        assertThat(boardPage.getNumber()).isEqualTo(0);
+        Page<BoardListDto> boardpage = boardService.findBoardList(PageRequest.of(0, 10));
+        assertThat(boardpage.getTotalElements())
+                .isEqualTo(10L);
     }
 
+    @DisplayName("게시글 작성자 이름 검색")
     @Test
-    void find5() {
-        PageRequest pageRequest = PageRequest.of(0, 10);
-        Page<BoardListDto> boardPage = boardService.findBoardListByTitle("le", pageRequest);
-        assertThat(boardPage.getTotalElements()).isEqualTo(31);
+    void findBoardByUsername() {
+        saveBoard(5);
+
+        Page<BoardListDto> boardPageByUsername = boardService.findBoardListByUsername(userA.getUsername(), PageRequest.of(0, 10));
+
+        assertThat(boardPageByUsername.getTotalElements())
+                .isEqualTo(5L);
     }
 
+    @DisplayName("게시글 제목 검색")
     @Test
-    void find6() {
-        PageRequest pageRequest = PageRequest.of(0, 10);
-        Page<BoardListDto> boardPage = boardService.findBoardListByUsername("a", pageRequest);
-        assertThat(boardPage.getTotalElements()).isEqualTo(31);
+    void findBoardByTitle() {
+        saveBoard(5);
+
+        String title = "test title 1";
+        Page<BoardListDto> boardPageByTitle = boardService.findBoardListByTitle(title, PageRequest.of(0, 10));
+
+        assertThat(boardPageByTitle.getTotalElements())
+                .isEqualTo(1L);
     }
 
+    @DisplayName("게시글 내용 검색")
     @Test
-    @Transactional
-    @Rollback(value = true)
-    void update1() {
-//        SaveBoardDto saveBoardDto = new SaveBoardDto();
-//        saveBoardDto.setTitle("title");
-//        saveBoardDto.setContent("content");
-//        Long id = boardService.saveBoard(1L, saveBoardDto);
-//
-//        EditBoardDto editBoardDto = new EditBoardDto();
-//        editBoardDto.setTitle("update title");
-//        editBoardDto.setContent("update content");
-//        Long updateId = boardService.editBoard(id, editBoardDto);
-//
-//        assertThat(boardRepository.findEntityGraphById(updateId).get().getTitle())
-//                .isEqualTo(editBoardDto.getTitle());
+    void findBoardByContent() {
+        saveBoard(10);
+
+        String content = "content 5";
+        Page<BoardListDto> boardPageByContent = boardService.findBoardByContent(content, PageRequest.of(0, 10));
+
+        assertThat(boardPageByContent.getTotalElements())
+                .isEqualTo(1L);
     }
 
+    @DisplayName("게시글 수정")
     @Test
-    @Transactional
-    @Rollback(value = true)
-    void delete1() {
-        boardService.deleteBoard( 1L);
+    void editBoard() {
+        RequestBoardDto requestBoardDto = new RequestBoardDto();
+        requestBoardDto.setTitle("title");
+        requestBoardDto.setContent("content");
+        Long saveBoardId = boardService.saveBoard(userA.getId(), requestBoardDto);
 
-        assertThatThrownBy(() -> boardService.findBoardById(1L))
-                .isInstanceOf(BoardNotFoundException.class);
+        String updateTitle = "update title";
+        EditBoardDto editBoardDto = new EditBoardDto(saveBoardId, updateTitle, "update content");
+        Long editedBoardId = boardService.editBoard(saveBoardId, editBoardDto);
+
+        assertThat(boardRepository.findById(editedBoardId).get().getTitle())
+                .isEqualTo(updateTitle);
+    }
+
+    @DisplayName("게시글 삭제")
+    @Test
+    void deleteBoard() {
+        RequestBoardDto requestBoardDto = new RequestBoardDto();
+        requestBoardDto.setTitle("title");
+        requestBoardDto.setContent("content");
+        Long saveBoardId = boardService.saveBoard(userA.getId(), requestBoardDto);
+
+        assertDoesNotThrow(() -> boardService.deleteBoard(saveBoardId));
+    }
+
+    private void saveBoard(Integer boardQuantity) {
+        for (int i = 0; i < boardQuantity; i++) {
+            Board board = Board.of(userA, "test title " + (i + 1), "test content " + (i + 1));
+            boardRepository.save(board);
+        }
+        log.info("=======================================================================");
+        log.info("============================= save board ==============================");
+        log.info("=======================================================================");
     }
 }

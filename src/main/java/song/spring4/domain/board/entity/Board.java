@@ -46,7 +46,7 @@ public class Board extends BaseTimeEntity {
         return new Board(user, title, content);
     }
 
-    public void updateBoard(String title, String content) {
+    public void editBoard(String title, String content) {
         this.title = title;
         this.content = content;
     }

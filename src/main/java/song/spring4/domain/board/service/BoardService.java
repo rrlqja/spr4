@@ -80,7 +80,7 @@ public class BoardService {
     public Long editBoard(Long boardId, EditBoardDto editBoardDto) {
         Board findBoard = getBoardById(boardId);
 
-        findBoard.updateBoard(editBoardDto.getTitle(), editBoardDto.getContent());
+        findBoard.editBoard(editBoardDto.getTitle(), editBoardDto.getContent());
 
         Board saveBoard = boardRepository.save(findBoard);
 
