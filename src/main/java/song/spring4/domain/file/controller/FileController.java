@@ -24,7 +24,7 @@ public class FileController {
 
     @ResponseBody
     @PostMapping("/uploadFile")
-    public UploadFileDto postUpload(@RequestParam MultipartFile upload) throws IOException {
+    public UploadFileDto postUpload(@RequestParam("upload") MultipartFile upload) throws IOException {
         UploadFileDto uploadFileDto = fileEntityService.createFileEntity(upload);
 
         return uploadFileDto;
