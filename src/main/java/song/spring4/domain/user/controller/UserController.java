@@ -91,8 +91,8 @@ public class UserController {
     }
 
     @ResponseStatus(HttpStatus.OK)
-    @PostMapping("/validUsername")
-    public void postCheckUsername(@RequestParam String username) {
+    @PostMapping("/validateUsername")
+    public void postValidateUsername(@RequestParam("username") String username) {
         userService.validateUsername(username);
     }
 

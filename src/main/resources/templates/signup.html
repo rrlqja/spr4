@@ -26,7 +26,7 @@
             <div id="usernameError" style="color: red;"></div>
             <label for="username">Username</label>
             <input type="text" th:field="*{username}" class="form-control" id="username" placeholder="Username">
-            <button type="button" class="btn btn-primary" id="validUsername">중복 확인</button>
+            <button type="button" class="btn btn-primary" id="validateUsername">중복 확인</button>
             <div id="usernameResult"></div>
         </div>
         <div class="mb-3">
@@ -88,10 +88,10 @@
     password.addEventListener('input', validatePassword);
     confirmPassword.addEventListener('input', validatePassword);
 
-    document.getElementById('validUsername').addEventListener('click', function() {
+    document.getElementById('validateUsername').addEventListener('click', function() {
         var username = document.getElementById('username').value;
 
-        fetch('/user/validUsername', {
+        fetch('/user/validateUsername', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded'
