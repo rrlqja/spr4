@@ -1,15 +1,19 @@
-# spr4
+<details>
+<summary> <b>spr4</b> </summary>
 
 게시글 -> 댓글, 댓글, 댓글 -> 댓글 작성자, 댓글 작성자, 댓글 작성자, ... n+1
 
 aop 트랜잭션 전파
 
 파일업로드 ckeditor
+</details>
 
+<details>
+<summary><b>엔티티</b></summary>
 
-## 엔티티
+<details>
+<summary><b>User</b></summary>
 
-### User
 - 속성
     - id(Long): 식별자
     - username(String): 로그인 아이디
@@ -22,15 +26,19 @@ aop 트랜잭션 전파
     - isEnabled(boolean): 계정 활성화 여부
 - 연관관계
     - UserRoleList(List<`UserRole`>): 회원 역할 리스트 `@OneToMany`
+</details>
+<details>
+<summary><b>UserRole</b></summary>
 
-### UserRole
 - 속성
     - id(Long): 식별자
     - Role(Enum): 역할
 - 연관관계
     - User(`User`): 역할이 부여된 회원 `@ManyToOne`
+</details>
+<details>
+<summary><b>Board</b></summary>
 
-### Board
 - 속성
     - id(Long): 식별자
     - title(String): 제목
@@ -39,25 +47,22 @@ aop 트랜잭션 전파
 - 연관관계
     - user(`User`): 작성자 `@ManyToOne`
     - commentList(List<`Comment`>): 댓글 리스트 `@OneToMany`
+</details>
+<details>
+<summary><b>Comment</b></summary>
 
-### Comment
 - 속성
     - id(Long): 식별자
     - content(String): 내용
 - 연관관계
     - user(`User`): 작성자 `@ManyToOne`
     - board(`Board`): 댓글이 달린 게시글 `@ManyToOne`
-    - replyList(List<`Reply`>): 대댓글 리스트 `@OneToMany`
+    - parent(`Comment`): 부모 댓글 `@ManyToOne`
+    - replyList(List<`Comment`>): 대댓글 리스트 `@OneToMany`
+</details>
+<details>
+<summary><b>EmailVerificationToken</b></summary>
 
-### Reply
-- 속성
-    - id(Long): 식별자
-    - content(String): 내용
-- 연관관계
-    - user(`User`): 작성자 `@ManyToOne`
-    - comment(`Comment`): 대댓글이 달린 댓글 `@ManyToOne`
-
-### EmailVerificationToken
 - 속성
     - id(Long): 식별자
     - email(String): 이메일
@@ -67,8 +72,10 @@ aop 트랜잭션 전파
 - 역할
     - 회원가입, 이메일 변경시 이메일 인증에 사용되는 엔티티
     - 입력받은 이메일로 토큰이 전송되고 토큰인증을 거쳐야 한다.
+</details>
+<details>
+<summary><b>ResetPasswordToken</b></summary>
 
-### ResetPasswordToken
 - 속성
     - id(Long): 식별자
     - email(String): 이메일
@@ -78,8 +85,10 @@ aop 트랜잭션 전파
 - 역할
     - 비밀번호를 초기시 사용되는 엔티티
     - 입력받은 이메일로 새로운 비밀번호 생성 주소가 전송된다.
+</details>
+<details>
+<summary><b>FileEntity</b></summary>
 
-### FileEntity
 - 속성
     - id(Long): 식별자
     - uploadFileName(String): 업 로드시 파일 이름
@@ -88,6 +97,9 @@ aop 트랜잭션 전파
     - board(`Board`): 파일이 사용된 게시글
 - 역할
     - 서버에 업 로드된 파일과 게시글을 연결하여 관리하기위한 엔티티
+</details>
+
+</details>
 
 ## 기능
 
@@ -134,7 +146,7 @@ aop 트랜잭션 전파
 - [ ] 게시글 삭제
 - [ ] 댓글 삭제
 
-
+![home](/src/main/resources/content/home.gif)
 
 
 
