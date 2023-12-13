@@ -108,9 +108,8 @@ public class UserService {
     @Transactional
     public void deleteUserById(Long userId) {
         User user = getById(userId);
-        boardRepository.deleteByUserId(user.getId());
 
-        userRepository.delete(user);
+        user.disableAccount();
     }
 
     private User getById(Long userId) {

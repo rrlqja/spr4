@@ -26,7 +26,7 @@
 <body>
 
 <div class="form-container">
-    <form th:object="${user}">
+    <div th:object="${user}">
         <div class="form-group">
             <label for="username">Username</label>
             <input type="text" class="form-control" id="username" th:field="*{username}" readonly>
@@ -54,7 +54,7 @@
             <label for="delete">Delete</label><br>
             <button id="delete" class="btn btn-danger">회원 탈퇴</button>
         </div>
-    </form>
+    </div>
 </div>
 
 <script>
