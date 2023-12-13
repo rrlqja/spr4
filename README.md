@@ -63,12 +63,12 @@ aop 트랜잭션 전파
 - [x] 비밀번호 재설정
 
 ### 게시글
-- [x] 게시글 작성<br/>    
+- [x] 게시글 작성<br/>
   ![saveBoard](/src/main/resources/content/saveBoard.gif)
   - [x] 게시글 내용에 이미지 첨부 가능
-- [x] 게시글 수정<br/>    
+- [x] 게시글 수정<br/>
   ![editBoard](/src/main/resources/content/editBoard.gif)
-- [x] 게시글 삭제<br/>    
+- [x] 게시글 삭제<br/>
   ![deleteBoard](/src/main/resources/content/deleteBoard.gif)
 
 ### 댓글
