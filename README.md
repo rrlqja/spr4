@@ -19,42 +19,42 @@ aop 트랜잭션 전파
 
 ### 회원
 - [x] 로그인
-    ![login](/src/main/resources/content/login.gif)
+  ![login](/src/main/resources/content/login.gif)
 - [x] 회원 가입
-    ![signup](/src/main/resources/content/signupEnd.gif)
-    <details> 
-    <summary><b>username 중복 검사</b></summary>
-
-    ![validateUsername](/src/main/resources/content/validateUsername.gif)
-    </details>
-    <details>
-    <summary><b>email 인증</b></summary> 
-
-    ![verifyEmail](/src/main/resources/content/verifyEmail.gif)
-    </details>
-- [x] 회원 정보 관리
-    <details>
-    <summary><b>username 변경</b></summary> 
-
-    ![verifyEmail](/src/main/resources/content/verifyEmail.gif)
-    </details>
-    <details>
-    <summary><b>password 변경</b></summary> 
+  ![signup](/src/main/resources/content/signupEnd.gif)
+  <details> 
+  <summary><b>username 중복 검사</b></summary>
   
-    ![verifyEmail](/src/main/resources/content/verifyEmail.gif)
-    - [x] 기존 비밀번호, 새 비밀번호가 같으면 예외 발생 
-    </details>
-    <details>
-    <summary><b>name 변경</b></summary> 
+  ![validateUsername](/src/main/resources/content/validateUsername.gif)
+  </details>
+  <details>
+  <summary><b>email 인증</b></summary> 
+  
+  ![verifyEmail](/src/main/resources/content/verifyEmail.gif)
+  </details>
+- [x] 회원 정보 관리
+  <details>
+  <summary><b>username 변경</b></summary> 
 
-    ![verifyEmail](/src/main/resources/content/verifyEmail.gif)
-    </details>
-    <details>
-    <summary><b>email 변경</b></summary> 
+  ![verifyEmail](/src/main/resources/content/verifyEmail.gif)
+  </details>
+  <details>
+  <summary><b>password 변경</b></summary> 
 
-    ![verifyEmail](/src/main/resources/content/verifyEmail.gif)
-    - [x] email 인증
-    </details>
+  ![verifyEmail](/src/main/resources/content/verifyEmail.gif)
+  - [x] 기존 비밀번호, 새 비밀번호가 같으면 예외 발생 
+  </details>
+  <details>
+  <summary><b>name 변경</b></summary> 
+
+  ![verifyEmail](/src/main/resources/content/verifyEmail.gif)
+  </details>
+  <details>
+  <summary><b>email 변경</b></summary> 
+
+  ![verifyEmail](/src/main/resources/content/verifyEmail.gif)
+  - [x] email 인증
+  </details>
 - [ ] sns 인증
 - [x] 회원 탈퇴
 
@@ -64,12 +64,17 @@ aop 트랜잭션 전파
 
 ### 게시글
 - [x] 게시글 작성
-    ![saveBoard](/src/main/resources/content/saveBoard.gif)
-    - [x] 게시글 내용에 이미지 첨부 가능
+![saveBoard](/src/main/resources/content/saveBoard.gif)
+  - [x] 게시글 내용에 이미지 첨부 가능
+
+
 - [x] 게시글 수정
-    ![editBoard](/src/main/resources/content/editBoard.gif)
+
+![editBoard](/src/main/resources/content/editBoard.gif)
+
 - [x] 게시글 삭제
-    ![deleteBoard](/src/main/resources/content/deleteBoard.gif)
+
+![deleteBoard](/src/main/resources/content/deleteBoard.gif)
 
 ### 댓글
 - [x] 댓글 작성
