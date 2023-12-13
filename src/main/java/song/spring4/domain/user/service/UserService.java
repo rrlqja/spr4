@@ -9,6 +9,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
+import song.spring4.domain.board.repository.BoardJpaRepository;
 import song.spring4.domain.common.dto.SignupDto;
 import song.spring4.domain.user.entity.User;
 import song.spring4.domain.user.dto.ResponseUserDto;
@@ -23,6 +24,7 @@ import song.spring4.security.pricipal.UserPrincipal;
 @RequiredArgsConstructor
 public class UserService {
     private final UserJpaRepository userRepository;
+    private final BoardJpaRepository boardRepository;
     private final BCryptPasswordEncoder passwordEncoder;
 
     @Transactional
@@ -105,7 +107,10 @@ public class UserService {
 
     @Transactional
     public void deleteUserById(Long userId) {
-        userRepository.deleteById(userId);
+        User user = getById(userId);
+        boardRepository.deleteByUserId(user.getId());
+
+        userRepository.delete(user);
     }
 
     private User getById(Long userId) {
