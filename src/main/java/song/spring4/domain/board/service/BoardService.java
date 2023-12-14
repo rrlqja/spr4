@@ -13,6 +13,7 @@ import song.spring4.domain.board.dto.EditBoardDto;
 import song.spring4.domain.board.entity.Board;
 import song.spring4.domain.comment.repository.CommentJpaRepository;
 import song.spring4.domain.user.entity.User;
+import song.spring4.exception.invalid.exceptions.InvalidUserException;
 import song.spring4.exception.notfound.exceptions.BoardNotFoundException;
 import song.spring4.exception.notfound.exceptions.UserNotFoundException;
 import song.spring4.domain.board.repository.BoardJpaRepository;
@@ -77,18 +78,21 @@ public class BoardService {
     }
 
     @Transactional
-    public Long editBoard(Long boardId, EditBoardDto editBoardDto) {
-        Board findBoard = getBoardById(boardId);
+    public Long editBoard(Long boardId, EditBoardDto editBoardDto, Long userId) {
+        Board board = getBoardById(boardId);
+        validateWriter(userId, board);
 
-        findBoard.editBoard(editBoardDto.getTitle(), editBoardDto.getContent());
+        board.editBoard(editBoardDto.getTitle(), editBoardDto.getContent());
 
-        Board saveBoard = boardRepository.save(findBoard);
+        Board saveBoard = boardRepository.save(board);
 
         return saveBoard.getId();
     }
 
     @Transactional
-    public void deleteBoard(Long boardId) {
+    public void deleteBoard(Long boardId, Long userId) {
+        Board board = getBoardById(boardId);
+        validateWriter(userId, board);
         boardRepository.deleteById(boardId);
     }
 
@@ -100,5 +104,11 @@ public class BoardService {
     private Board getBoardById(Long boardId) {
         return boardRepository.findById(boardId)
                 .orElseThrow(BoardNotFoundException::new);
+    }
+
+    private void validateWriter(Long userId, Board board) {
+        if (!userId.equals(board.getUser().getId())) {
+            throw new InvalidUserException();
+        }
     }
 }

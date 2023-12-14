@@ -140,7 +140,7 @@ class BoardServiceTest {
 
         String updateTitle = "update title";
         EditBoardDto editBoardDto = new EditBoardDto(saveBoardId, updateTitle, "update content");
-        Long editedBoardId = boardService.editBoard(saveBoardId, editBoardDto);
+        Long editedBoardId = boardService.editBoard(saveBoardId, editBoardDto, userA.getId());
 
         assertThat(boardRepository.findById(editedBoardId).get().getTitle())
                 .isEqualTo(updateTitle);
@@ -154,7 +154,7 @@ class BoardServiceTest {
         requestBoardDto.setContent("content");
         Long saveBoardId = boardService.saveBoard(userA.getId(), requestBoardDto);
 
-        assertDoesNotThrow(() -> boardService.deleteBoard(saveBoardId));
+        assertDoesNotThrow(() -> boardService.deleteBoard(saveBoardId, userA.getId()));
     }
 
     private void saveBoard(Integer boardQuantity) {
