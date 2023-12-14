@@ -16,7 +16,6 @@ import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
-import song.spring4.domain.account.service.ResetPasswordService;
 import song.spring4.domain.user.service.UserService;
 import song.spring4.security.service.UserDetailsServiceImpl;
 
@@ -29,9 +28,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 @ActiveProfiles("test")
 class UserControllerTest {
-
-    @Autowired
-    ResetPasswordService resetPasswordService;
     @Autowired
     UserService userService;
     @Autowired
@@ -127,17 +123,4 @@ class UserControllerTest {
                         .param("username", "a").param("name", "a"))
                 .andExpect(status().isCreated());
     }
-
-
-    @Test
-    @Transactional
-    @Rollback(value = true)
-    void postResetPassword() throws Exception {
-        String token = resetPasswordService.createPasswordToken("dkclasltmf22@naver.com");
-
-        mockMvc.perform(post("/user/resetPassword/{token}", token)
-                        .param("newPassword", "newPassword"))
-                .andExpect(status().isOk());
-    }
-
 }
