@@ -9,8 +9,7 @@ import java.util.Optional;
 
 @Repository
 public interface SnsJpaRepository extends JpaRepository<Sns, String> {
-
     @EntityGraph(attributePaths = {"user"})
-    Optional<Sns> findBySnsId(String snsId);
+    Optional<Sns> findBySnsEmail(String snsEmail);
 
 }
