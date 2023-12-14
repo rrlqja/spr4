@@ -4,25 +4,19 @@ import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.TestPropertySource;
 import org.springframework.transaction.annotation.Transactional;
-import song.spring4.domain.file.service.FileEntityService;
-import song.spring4.domain.file.dto.UploadFileDto;
-import song.spring4.domain.file.entity.FileEntity;
 import song.spring4.domain.board.repository.BoardJpaRepository;
 import song.spring4.domain.file.repository.FileEntityJpaRepository;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-
-import static org.assertj.core.api.Assertions.*;
 
 @Slf4j
 @SpringBootTest
-@ActiveProfiles("test")
+@TestPropertySource(properties = {
+        "spring.profiles.active=test",
+        "JASYPT_ENCRYPTOR_PASSWORD=test"
+})
 class FileEntityServiceTest {
-
     @Autowired
     FileEntityService fileEntityService;
     @Autowired
@@ -78,5 +72,4 @@ class FileEntityServiceTest {
 //
 //        assertThat(resultEntity.getBoard().getId()).isEqualTo(saveBoard.getId());
     }
-
 }

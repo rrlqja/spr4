@@ -22,5 +22,4 @@ class CommentJpaRepositoryTest {
     void findTest() {
         commentRepository.findById(1L);
     }
-
 }

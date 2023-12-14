@@ -6,8 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.mock.web.MockMultipartFile;
-import org.springframework.test.context.ActiveProfiles;
-import song.spring4.domain.file.service.FileService;
+import org.springframework.test.context.TestPropertySource;
 import song.spring4.domain.file.dto.UploadFileDto;
 
 import java.io.File;
@@ -18,9 +17,11 @@ import static org.assertj.core.api.Assertions.*;
 
 @Slf4j
 @SpringBootTest
-@ActiveProfiles("test")
+@TestPropertySource(properties = {
+        "spring.profiles.active=test",
+        "JASYPT_ENCRYPTOR_PASSWORD=test"
+})
 class FileServiceTest {
-
     @Autowired
     FileService fileService;
 
@@ -43,5 +44,4 @@ class FileServiceTest {
         assertThat(file.exists()).isTrue();
         file.delete();
     }
-
 }

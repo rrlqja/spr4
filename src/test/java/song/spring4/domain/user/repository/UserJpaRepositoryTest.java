@@ -12,7 +12,6 @@ import song.spring4.domain.board.repository.BoardJpaRepository;
 import song.spring4.domain.comment.repository.CommentJpaRepository;
 import song.spring4.domain.file.repository.FileEntityJpaRepository;
 import song.spring4.domain.user.entity.User;
-import song.spring4.domain.user.repository.UserJpaRepository;
 
 @Slf4j
 @SpringBootTest

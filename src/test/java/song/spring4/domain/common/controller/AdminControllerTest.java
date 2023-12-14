@@ -7,7 +7,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.security.test.context.support.WithUserDetails;
-import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
 import song.spring4.security.service.UserDetailsServiceImpl;
 
@@ -17,9 +17,11 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @Slf4j
 @SpringBootTest
 @AutoConfigureMockMvc
-@ActiveProfiles("test")
+@TestPropertySource(properties = {
+        "spring.profiles.active=test",
+        "JASYPT_ENCRYPTOR_PASSWORD=test"
+})
 class AdminControllerTest {
-
     @Autowired
     UserDetailsServiceImpl userDetailsService;
     @Autowired

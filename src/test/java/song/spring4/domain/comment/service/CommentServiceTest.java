@@ -4,19 +4,20 @@ import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.TestPropertySource;
 import song.spring4.domain.comment.dto.RequestCommentDto;
 import song.spring4.domain.comment.entity.Comment;
-import song.spring4.domain.comment.service.CommentService;
 import song.spring4.domain.comment.repository.CommentJpaRepository;
 
 import static org.assertj.core.api.Assertions.*;
 
 @Slf4j
 @SpringBootTest
-@ActiveProfiles("test")
+@TestPropertySource(properties = {
+        "spring.profiles.active=test",
+        "JASYPT_ENCRYPTOR_PASSWORD=test"
+})
 class CommentServiceTest {
-
     @Autowired
     CommentService commentService;
 
@@ -47,5 +48,4 @@ class CommentServiceTest {
 //        Long id = commentService.deleteComment(1L);
 //        assertThat(commentRepository.findById(id).get().getWriter()).isNull();
     }
-
 }
