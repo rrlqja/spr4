@@ -1,19 +1,15 @@
-<details>
-<summary> <b>spr4</b> </summary>
+<b>spr4</b>     
 
 게시글 -> 댓글, 댓글, 댓글 -> 댓글 작성자, 댓글 작성자, 댓글 작성자, ... n+1
 
 aop 트랜잭션 전파
 
 파일업로드 ckeditor
-</details>
 
 
-<details>
-<summary><b>entity relationship diagram</b></summary>
+## entity relationship diagram
 
 ![erd](/src/main/resources/content/spr4.png)
-</details>
 
 ## 시나리오
 
