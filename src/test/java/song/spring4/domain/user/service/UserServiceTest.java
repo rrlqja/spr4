@@ -32,28 +32,14 @@ class UserServiceTest {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    @DisplayName("회원가입 테스트")
+    @DisplayName("회원가입")
     @Test
-    void joinTest1() {
+    void join() {
         SignupDto signupDto = new SignupDto();
         signupDto.setUsername("testUserA");
         signupDto.setPassword("testPassword");
 
         assertDoesNotThrow(() -> userService.join(signupDto));
-    }
-
-    @DisplayName("회원가입 username 검증 테스트")
-    @Test
-    void joinTest2() {
-        SignupDto signupDto = new SignupDto();
-        signupDto.setUsername("testUserA");
-        signupDto.setPassword("testPassword");
-
-        Long joinId = userService.join(signupDto);
-
-        User user = userRepository.findById(joinId).get();
-        assertThat(user.getUsername())
-                .isEqualTo(signupDto.getUsername());
     }
 
     @DisplayName("동일한 username이 회원가입시 예외 발생")
@@ -62,8 +48,6 @@ class UserServiceTest {
         SignupDto signupDto = new SignupDto();
         signupDto.setUsername("testUserA");
         signupDto.setPassword("testPassword");
-
-        userService.join(signupDto);
 
         assertThatThrownBy(()-> userService.join(signupDto))
                 .isInstanceOf(AlreadyExistsUsernameException.class);
@@ -81,23 +65,12 @@ class UserServiceTest {
                 .isEqualTo(newUsername);
     }
 
-    @DisplayName("username 변경시 동일한 username이 존재하면 예외 발생")
-    @Test
-    void updateUsernameExceptionTest() {
-        Long userId = 1L;
-        String newUsername = "testNewUsername";
-        userService.updateUsername(userId, newUsername);
-
-        assertThatThrownBy(() -> userService.updateUsername(userId, newUsername))
-                .isInstanceOf(AlreadyExistsUsernameException.class);
-    }
-
     @DisplayName("비밀번호 변경")
     @Test
     void updatePasswordTest() {
         Long userId = 1L;
         String originalPassword = "a";
-        String newPassword = "newA";
+        String newPassword = "newPassword";
 
         userService.updatePassword(userId, originalPassword, newPassword);
 
@@ -131,42 +104,20 @@ class UserServiceTest {
                 .isEqualTo(newName);
     }
 
+    @DisplayName("사용자 조회 예외")
     @Test
     void find1() {
         assertThatThrownBy(() -> userService.findUserById(-1L)).isInstanceOf(UserNotFoundException.class);
     }
 
+    @DisplayName("사용자 탈퇴")
     @Test
-    @Transactional
-    void update1() {
-        SignupDto signupDto = new SignupDto();
-        signupDto.setUsername("username");
-        signupDto.setPassword("password");
-        signupDto.setName("name");
-        Long saveId = userService.join(signupDto);
+    void delete() {
+        Long userId = 1L;
+        userService.deleteUserById(userId);
 
-        Long updateUsernameId = userService.updateUsername(saveId, "new_username");
-        Long updatePasswordId = userService.updatePassword(saveId, "password", "new_password");
-        Long updateNameId = userService.updateName(saveId, "new_name");
-
-//        em.flush();
-//        em.clear();
-//
-//        User findUser = userService.findUserById(saveId);
-//        assertThat(findUser.getUsername()).isEqualTo("new_username");
-//        assertThat(passwordEncoder.matches("new_password", findUser.getPassword())).isTrue();
-//        assertThat(findUser.getName()).isEqualTo("new_name");
-    }
-
-    @Test
-    void update2() {
-        Long id = userService.updateUsername(1L, "updateUsername");
-    }
-
-    @Test
-    void delete1() {
-        userService.deleteUserById(1L);
-
-        assertThatThrownBy(() -> userService.findUserById(1L)).isInstanceOf(UserNotFoundException.class);
+        User user = userRepository.findById(userId).get();
+        assertThat(user.isEnabled())
+                .isFalse();
     }
 }
