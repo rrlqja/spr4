@@ -56,7 +56,8 @@ aop 트랜잭션 전파
   - [x] email 인증
   </details>
 - [ ] sns 인증
-- [x] 회원 탈퇴
+- [x] 회원 탈퇴<br/>    
+  ![deleteUser](/src/main/resources/content/deleteUser.gif)
 
 ### 사용자
 - [x] username 찾기<br/>    
