@@ -36,23 +36,23 @@ aop 트랜잭션 전파
   <details>
   <summary><b>username 변경</b></summary> 
 
-  ![verifyEmail](/src/main/resources/content/verifyEmail.gif)
+  ![updateUsername](/src/main/resources/content/updateUsername.gif)
   </details>
   <details>
   <summary><b>password 변경</b></summary> 
 
-  ![verifyEmail](/src/main/resources/content/verifyEmail.gif)
+  ![updatePassword](/src/main/resources/content/updatePassword.gif)
   - [x] 기존 비밀번호, 새 비밀번호가 같으면 예외 발생 
   </details>
   <details>
   <summary><b>name 변경</b></summary> 
 
-  ![verifyEmail](/src/main/resources/content/verifyEmail.gif)
+  ![updateName](/src/main/resources/content/updateName.gif)
   </details>
   <details>
   <summary><b>email 변경</b></summary> 
 
-  ![verifyEmail](/src/main/resources/content/verifyEmail.gif)
+  ![updateEmail](/src/main/resources/content/updateEmail.gif)
   - [x] email 인증
   </details>
 - [ ] sns 인증
@@ -72,14 +72,20 @@ aop 트랜잭션 전파
   ![deleteBoard](/src/main/resources/content/deleteBoard.gif)
 
 ### 댓글
-- [x] 댓글 작성
-- [x] 댓글 수정
-- [x] 댓글 삭제
+- [x] 댓글 작성<br/>    
+  ![saveComment](/src/main/resources/content/saveComment.gif)
+- [x] 댓글 수정<br/>    
+  ![editComment](/src/main/resources/content/editComment.gif)
+- [x] 댓글 삭제<br/>    
+  ![deleteComment](/src/main/resources/content/deleteComment.gif)
 
 ### 대댓글
-- [x] 대댓글 작성
-- [x] 대댓글 수정
-- [x] 대댓글 삭제
+- [x] 대댓글 작성<br/>    
+  ![saveReply](/src/main/resources/content/saveReply.gif)
+- [x] 대댓글 수정<br/>    
+  ![editReply](/src/main/resources/content/editReply.gif)
+- [x] 대댓글 삭제<br/>    
+  ![deleteReply](/src/main/resources/content/deleteReply.gif)
 
 ### 관리자
 - [ ] 회원 계정 관리
