@@ -22,7 +22,7 @@ import java.util.Map;
 public class ControllerExceptionHandler {
 
     @ExceptionHandler({NotFoundException.class, InvalidException.class, AlreadyException.class})
-    public ResponseEntity<String> notFoundExceptionHandler(Exception e) {
+    public ResponseEntity<String> badRequestExceptionHandler(Exception e) {
         return ResponseEntity
                 .status(HttpStatus.BAD_REQUEST)
                 .body(e.getMessage());

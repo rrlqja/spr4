@@ -14,7 +14,7 @@ import song.spring4.domain.common.dto.SignupDto;
 import song.spring4.domain.user.entity.User;
 import song.spring4.domain.user.dto.ResponseUserDto;
 import song.spring4.exception.already.exceptions.AlreadyExistsUsernameException;
-import song.spring4.exception.invalid.exceptions.IllegalArgumentException;
+import song.spring4.exception.invalid.exceptions.InvalidUserException;
 import song.spring4.exception.notfound.exceptions.UserNotFoundException;
 import song.spring4.domain.user.repository.UserJpaRepository;
 import song.spring4.security.pricipal.UserPrincipal;
@@ -120,7 +120,7 @@ public class UserService {
 
     private void hasText(String username) {
         if (!StringUtils.hasText(username)) {
-            throw new IllegalArgumentException("입력값을 확인해주세요.");
+            throw new InvalidUserException("입력값을 확인해주세요.");
         }
     }
 
@@ -131,12 +131,12 @@ public class UserService {
 
     private void validateOriginalPassword(String originalPassword, String currentPassword) {
         if (!passwordEncoder.matches(originalPassword, currentPassword)) {
-            throw new IllegalArgumentException("현재 비밀번호가 일치하지 않습니다.");
+            throw new InvalidUserException("현재 비밀번호가 일치하지 않습니다.");
         }
     }
     private void validateNewPassword(String originalPassword, String newPassword) {
         if (originalPassword.equals(newPassword)) {
-            throw new IllegalArgumentException("동일한 비밀번호로 변경할 수 없습니다.");
+            throw new InvalidUserException("동일한 비밀번호로 변경할 수 없습니다.");
         }
     }
 
