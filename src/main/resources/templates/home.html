@@ -17,7 +17,7 @@
             background-color: white;
             min-width: 800px;
             max-width: 800px;
-            min-height: 930px;
+            min-height: 1000px;
             margin: 0 auto;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
@@ -108,6 +108,7 @@
             display: flex;
             justify-content: center;
             align-items: center;
+            min-height: 50px;
             padding: 10px 0;
             position: relative;
         }
@@ -200,7 +201,7 @@
             <a th:if="${boardPage.number != 0}" th:href="@{/(page=0, searchType = ${searchType}, searchValue = ${searchValue})}" class="paging-arrow paging-link">&laquo;</a>
             <a th:if="${boardPage.number != 0}" th:href="@{/(page=${boardPage.number - 1}, searchType = ${searchType}, searchValue = ${searchValue})}" class="paging-arrow paging-link">&lt;</a>
 
-            <th:block th:each="i : ${#numbers.sequence((boardPage.number >= 2) ? (boardPage.number - 2) : 0, (boardPage.totalPages > (boardPage.number + 2)) ? (boardPage.number + 2) : (boardPage.totalPages - 1))}">
+            <th:block th:if="${boardPage.totalElements != 0}" th:each="i : ${#numbers.sequence((boardPage.number >= 2) ? (boardPage.number - 2) : 0, (boardPage.totalPages > (boardPage.number + 2)) ? (boardPage.number + 2) : (boardPage.totalPages - 1))}">
                 <a th:href="@{/(page=${i}, searchType = ${searchType}, searchValue = ${searchValue})}" th:class="${i == boardPage.number} ? 'paging-link active' : 'paging-link'" th:text="${i + 1}"></a>
             </th:block>
 
