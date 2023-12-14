@@ -17,6 +17,10 @@ aop 트랜잭션 전파
 
 ## 시나리오
 
+### 홈
+![home](/src/main/resources/content/home.gif)
+
+
 ### 회원
 - [x] 로그인<br/>    
   ![login](/src/main/resources/content/login.gif)
@@ -73,6 +77,22 @@ aop 트랜잭션 전파
   ![editBoard](/src/main/resources/content/editBoard.gif)
 - [x] 게시글 삭제<br/>    
   ![deleteBoard](/src/main/resources/content/deleteBoard.gif)
+- [x] 게시글 검색<br/>    
+  <details>
+  <summary><b>제목 검색</b></summary> 
+
+  ![findBoardByTitle](/src/main/resources/content/findBoardByTitle.gif)
+  </details>
+  <details>
+  <summary><b>내용 검색</b></summary> 
+
+  ![findBoardByContent](/src/main/resources/content/findBoardByContent.gif)
+  </details>
+  <details>
+  <summary><b>작성자 검색</b></summary> 
+
+  ![findBoardByWriter](/src/main/resources/content/findBoardByWriter.gif)
+  </details>
 
 ### 댓글
 - [x] 댓글 작성<br/>    
@@ -97,7 +117,6 @@ aop 트랜잭션 전파
 - [ ] 게시글 삭제
 - [ ] 댓글 삭제
 
-[//]: # (![home]&#40;/src/main/resources/content/home.gif&#41;)
 
 
 
