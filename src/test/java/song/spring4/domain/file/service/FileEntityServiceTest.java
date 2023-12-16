@@ -4,11 +4,14 @@ import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.context.TestPropertySource;
-import org.springframework.transaction.annotation.Transactional;
-import song.spring4.domain.board.repository.BoardJpaRepository;
-import song.spring4.domain.file.repository.FileEntityJpaRepository;
+import song.spring4.domain.file.dto.UploadFileDto;
 
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+
+import static org.assertj.core.api.Assertions.*;
 
 @Slf4j
 @SpringBootTest
@@ -19,57 +22,21 @@ import song.spring4.domain.file.repository.FileEntityJpaRepository;
 class FileEntityServiceTest {
     @Autowired
     FileEntityService fileEntityService;
-    @Autowired
-    FileEntityJpaRepository fileEntityRepository;
-    @Autowired
-    BoardJpaRepository boardRepository;
 
     @Test
-    @Transactional
-    void save1() {
-//        UploadFileDto uploadFileDto = new UploadFileDto("a", "b");
-//        fileEntityService.saveFileEntity(uploadFileDto);
-//
-//        Optional<FileEntity> findEntity = fileEntityRepository.findBySavedFileName(uploadFileDto.getSavedFileName());
-//        assertThat(findEntity.isPresent()).isTrue();
-    }
+    void saveFileENtity() throws IOException {
+        String content = "mock";
+        String originalFilename = "mock.txt";
+        MockMultipartFile mockMultipartFile = new MockMultipartFile(
+                "file",
+                originalFilename,
+                "text/plain",
+                content.getBytes(StandardCharsets.UTF_8)
+        );
 
-    @Test
-    @Transactional
-    void save2() {
-//        UploadFileDto uploadFileDto1 = new UploadFileDto("o1", "s1");
-//        UploadFileDto uploadFileDto2 = new UploadFileDto("o2", "s2");
-//        UploadFileDto uploadFileDto3 = new UploadFileDto("o3", "s3");
-//        UploadFileDto uploadFileDto4 = new UploadFileDto("o4", "s4");
-//
-//        List<UploadFileDto> uploadFileList = new ArrayList<>();
-//        uploadFileList.add(uploadFileDto1);
-//        uploadFileList.add(uploadFileDto2);
-//        uploadFileList.add(uploadFileDto3);
-//        uploadFileList.add(uploadFileDto4);
-//
-//        fileEntityService.saveFileEntity(uploadFileList);
-//
-//        List<FileEntity> entityList = fileEntityRepository.findAll();
-//        assertThat(entityList.size()).isEqualTo(4);
-    }
+        UploadFileDto uploadFileDto = fileEntityService.createFileEntity(mockMultipartFile);
 
-    @Test
-    @Transactional
-    void t1() {
-//        Board board = Board.builder()
-//                .title("noFile")
-//                .build();
-//        Board saveBoard = boardRepository.save(board);
-
-//        FileEntity fileEntity = new FileEntity();
-//        fileEntity.setSaveFileName("noBoard");
-//        FileEntity saveFileEntity = fileEntityRepository.save(fileEntity);
-//
-//        fileEntityService.attachFileEntityToBoard(saveFileEntity.getSaveFileName(), saveBoard.getId());
-//
-//        FileEntity resultEntity = fileEntityRepository.findBySaveFileName(fileEntity.getSaveFileName()).get();
-//
-//        assertThat(resultEntity.getBoard().getId()).isEqualTo(saveBoard.getId());
+        assertThat(uploadFileDto.getOriginalFileName())
+                .isEqualTo(originalFilename);
     }
 }
