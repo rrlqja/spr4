@@ -7,6 +7,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.TestPropertySource;
 import song.spring4.domain.account.service.EmailService;
 
+import static org.junit.jupiter.api.Assertions.*;
+
 @Slf4j
 @SpringBootTest
 @TestPropertySource(properties = {
@@ -18,8 +20,7 @@ class EmailServiceTest {
     EmailService emailService;
 
     @Test
-    void email1() {
-//        Assertions.assertThat(emailService.sendSimpleMessage("dkclasltmf@naver.com", "test sub", "test").getToEmail().length)
-//                .isEqualTo(1);
+    void sendEmail() {
+        assertDoesNotThrow(() -> emailService.sendSimpleMessage("dkclasltmf@naver.com", "test sub", "test"));
     }
 }
