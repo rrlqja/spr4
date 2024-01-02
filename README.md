@@ -1,10 +1,18 @@
-<b>spr4</b>     
 
-게시글 -> 댓글, 댓글, 댓글 -> 댓글 작성자, 댓글 작성자, 댓글 작성자, ... n+1
+## used
 
-aop 트랜잭션 전파
+### back-end
+|                                                                       Java                                                                       |                                          Spring Boot                                          |                                           Spring Security                                            |                                                Spring Data Jpa                                                |                                                                       MySQL                                                                       |     
+|:------------------------------------------------------------------------------------------------------------------------------------------------:|:---------------------------------------------------------------------------------------------:|:----------------------------------------------------------------------------------------------------:|:-------------------------------------------------------------------------------------------------------------:|:-------------------------------------------------------------------------------------------------------------------------------------------------:|
+| <div style="display: flex; align-items: flex-start;"><img src="./src/main/resources/content/java.png" alt="icon" width="65" height="65" /></div> | <img alt="spring logo" src="./src/main/resources/content/spring.png" width="65" height="65" > | <img alt="spring-boot logo" src="./src/main/resources/content/security.png" width="65" height="65" > | <img alt="spring-security logo" src="./src/main/resources/content/springdatajpa.png" width="65" height="65" > | <div style="display: flex; align-items: flex-start;"><img src="./src/main/resources/content/mysql.png" alt="icon" width="65" height="65" /></div> |     
 
-파일업로드 ckeditor
+### front-end
+|                                                                       HTML                                                                       |                                            Css                                             |                                               JavaScript                                               |                                                 Thymeleaf                                                 |     
+|:------------------------------------------------------------------------------------------------------------------------------------------------:|:------------------------------------------------------------------------------------------:|:------------------------------------------------------------------------------------------------------:|:---------------------------------------------------------------------------------------------------------:|
+| <div style="display: flex; align-items: flex-start;"><img src="./src/main/resources/content/html.png" alt="icon" width="65" height="65" /></div> | <img alt="spring logo" src="./src/main/resources/content/css.png" width="65" height="65" > | <img alt="spring-boot logo" src="./src/main/resources/content/javascript.png" width="65" height="65" > | <img alt="spring-security logo" src="./src/main/resources/content/thymeleaf.png" width="65" height="65" > |
+
+
+
 
 
 ## entity relationship diagram
