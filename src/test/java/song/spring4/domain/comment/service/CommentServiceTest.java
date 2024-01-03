@@ -20,7 +20,6 @@ import static org.assertj.core.api.Assertions.*;
 class CommentServiceTest {
     @Autowired
     CommentService commentService;
-
     @Autowired
     CommentJpaRepository commentRepository;
 

@@ -23,7 +23,6 @@ import java.util.Optional;
 @Service
 @RequiredArgsConstructor
 public class CommentService {
-
     private final CommentJpaRepository commentRepository;
     private final BoardJpaRepository boardRepository;
     private final UserJpaRepository userRepository;
@@ -48,20 +47,20 @@ public class CommentService {
 
     @Transactional
     public Long editComment(Long userId, EditCommentDto editCommentDto) {
-        Comment findComment = getCommentById(editCommentDto.getId());
-        if (!userId.equals(findComment.getUser().getId())) {
-            throw new InvalidUserException("잘못된 요청입니다.");
-        }
-        findComment.updateContent(editCommentDto.getContent());
+        Comment comment = getCommentById(editCommentDto.getId());
+        comment.isWriter(userId);
 
-        Comment editComment = commentRepository.save(findComment);
+        comment.updateContent(editCommentDto.getContent());
+
+        Comment editComment = commentRepository.save(comment);
 
         return editComment.getBoard().getId();
     }
 
     @Transactional
-    public Long deleteComment(Long id) {
-        Comment comment = getCommentById(id);
+    public Long deleteComment(Long userId, Long commentId) {
+        Comment comment = getCommentById(commentId);
+        comment.isWriter(userId);
 
         comment.delete();
         Comment saveComment = commentRepository.save(comment);

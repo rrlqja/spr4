@@ -1,12 +1,11 @@
 package song.spring4.domain.comment.repository;
 
 import lombok.extern.slf4j.Slf4j;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.TestPropertySource;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 @Slf4j
 @SpringBootTest
@@ -19,7 +18,7 @@ class CommentJpaRepositoryTest {
     CommentJpaRepository commentRepository;
 
     @Test
-    void findTest() {
-        commentRepository.findById(1L);
+    void find() {
+        Assertions.assertDoesNotThrow(() -> commentRepository.findById(1L));
     }
 }

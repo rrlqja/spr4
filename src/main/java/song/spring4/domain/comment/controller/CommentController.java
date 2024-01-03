@@ -61,8 +61,9 @@ public class CommentController {
 
     @ResponseStatus(HttpStatus.OK)
     @PostMapping("/{commentId}/delete")
-    public void delete(@PathVariable(name = "commentId") Long id) {
-        Long deleteId = commentService.deleteComment(id);
+    public void delete(@AuthenticationPrincipal UserPrincipal userPrincipal,
+                       @PathVariable(name = "commentId") Long id) {
+        Long deleteId = commentService.deleteComment(userPrincipal.getId(), id);
     }
 
     private void validUser(Long userId, Long boardWriterId) {

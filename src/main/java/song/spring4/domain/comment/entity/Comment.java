@@ -6,6 +6,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import song.spring4.domain.board.entity.Board;
 import song.spring4.domain.user.entity.User;
 import song.spring4.domain.common.entity.BaseTimeEntity;
+import song.spring4.exception.invalid.exceptions.InvalidUserException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -53,5 +54,11 @@ public class Comment extends BaseTimeEntity {
     public void delete() {
         this.user = null;
         this.content = "삭제된 댓글입니다.";
+    }
+
+    public void isWriter(Long userId) {
+        if (!userId.equals(user.getId())) {
+            throw new InvalidUserException("잘못된 요청입니다.");
+        }
     }
 }
